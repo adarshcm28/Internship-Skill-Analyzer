@@ -499,3 +499,7 @@ Final title:
 ```text
 AI-Powered Data Science Internship Skill Tracker
 ```
+
+## UI preview
+
+Open [`sample-ui.html`](sample-ui.html) in a web browser to view the responsive dashboard concept.
