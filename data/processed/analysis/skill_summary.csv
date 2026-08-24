@@ -1,0 +1,32 @@
+rank,skill,category,posting_count,percentage
+1,Python,Programming Languages,11,73.3
+2,SQL,Programming Languages,10,66.7
+3,Excel,Data Tools,7,46.7
+4,Git,Engineering and Cloud,5,33.3
+5,Statistics,Statistics and Math,5,33.3
+6,Communication,Soft Skills,4,26.7
+7,Collaboration,Soft Skills,3,20.0
+8,Data Quality,Engineering and Cloud,3,20.0
+9,Power BI,Data Tools,3,20.0
+10,Presentation,Soft Skills,3,20.0
+11,Tableau,Data Tools,3,20.0
+12,ETL,Engineering and Cloud,2,13.3
+13,Jupyter,Data Tools,2,13.3
+14,Model Evaluation,Machine Learning,2,13.3
+15,Pandas,Data Tools,2,13.3
+16,Plotly,Data Tools,2,13.3
+17,Regression,Statistics and Math,2,13.3
+18,A/B Testing,Statistics and Math,1,6.7
+19,AWS,Engineering and Cloud,1,6.7
+20,Attention to Detail,Soft Skills,1,6.7
+21,Clustering,Machine Learning,1,6.7
+22,Feature Engineering,Machine Learning,1,6.7
+23,Machine Learning,Machine Learning,1,6.7
+24,Matplotlib,Data Tools,1,6.7
+25,NLP,Machine Learning,1,6.7
+26,NumPy,Data Tools,1,6.7
+27,Probability,Statistics and Math,1,6.7
+28,Problem Solving,Soft Skills,1,6.7
+29,PyTorch,Machine Learning,1,6.7
+30,R,Programming Languages,1,6.7
+31,Scikit-learn,Machine Learning,1,6.7

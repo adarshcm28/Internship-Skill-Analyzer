@@ -1,0 +1,84 @@
+posting_id,job_title,company,skill,category
+1,Data Science Intern,Northstar Analytics,Python,Programming Languages
+1,Data Science Intern,Northstar Analytics,SQL,Programming Languages
+1,Data Science Intern,Northstar Analytics,Pandas,Data Tools
+1,Data Science Intern,Northstar Analytics,Statistics,Statistics and Math
+1,Data Science Intern,Northstar Analytics,Git,Engineering and Cloud
+1,Data Science Intern,Northstar Analytics,Presentation,Soft Skills
+2,Data Analyst Intern,Desert Bloom Health,SQL,Programming Languages
+2,Data Analyst Intern,Desert Bloom Health,Excel,Data Tools
+2,Data Analyst Intern,Desert Bloom Health,Power BI,Data Tools
+2,Data Analyst Intern,Desert Bloom Health,Statistics,Statistics and Math
+2,Data Analyst Intern,Desert Bloom Health,Communication,Soft Skills
+3,Machine Learning Intern,Juniper AI,Python,Programming Languages
+3,Machine Learning Intern,Juniper AI,Jupyter,Data Tools
+3,Machine Learning Intern,Juniper AI,Machine Learning,Machine Learning
+3,Machine Learning Intern,Juniper AI,Scikit-learn,Machine Learning
+3,Machine Learning Intern,Juniper AI,Feature Engineering,Machine Learning
+3,Machine Learning Intern,Juniper AI,Model Evaluation,Machine Learning
+3,Machine Learning Intern,Juniper AI,Collaboration,Soft Skills
+4,Business Intelligence Intern,Copper State Retail,SQL,Programming Languages
+4,Business Intelligence Intern,Copper State Retail,Excel,Data Tools
+4,Business Intelligence Intern,Copper State Retail,Tableau,Data Tools
+4,Business Intelligence Intern,Copper State Retail,Communication,Soft Skills
+4,Business Intelligence Intern,Copper State Retail,Attention to Detail,Soft Skills
+5,Data Engineering Intern,MesaWorks,Python,Programming Languages
+5,Data Engineering Intern,MesaWorks,SQL,Programming Languages
+5,Data Engineering Intern,MesaWorks,Git,Engineering and Cloud
+5,Data Engineering Intern,MesaWorks,ETL,Engineering and Cloud
+5,Data Engineering Intern,MesaWorks,Data Quality,Engineering and Cloud
+6,Product Analytics Intern,Orbit Learning,Python,Programming Languages
+6,Product Analytics Intern,Orbit Learning,SQL,Programming Languages
+6,Product Analytics Intern,Orbit Learning,A/B Testing,Statistics and Math
+7,Research Data Intern,Sonoran Research Institute,Python,Programming Languages
+7,Research Data Intern,Sonoran Research Institute,R,Programming Languages
+7,Research Data Intern,Sonoran Research Institute,Excel,Data Tools
+7,Research Data Intern,Sonoran Research Institute,Statistics,Statistics and Math
+7,Research Data Intern,Sonoran Research Institute,Regression,Statistics and Math
+7,Research Data Intern,Sonoran Research Institute,Communication,Soft Skills
+8,Marketing Analytics Intern,Cactus Creative,SQL,Programming Languages
+8,Marketing Analytics Intern,Cactus Creative,Excel,Data Tools
+8,Marketing Analytics Intern,Cactus Creative,Tableau,Data Tools
+8,Marketing Analytics Intern,Cactus Creative,Power BI,Data Tools
+8,Marketing Analytics Intern,Cactus Creative,Presentation,Soft Skills
+9,Operations Data Intern,Sunline Logistics,Python,Programming Languages
+9,Operations Data Intern,Sunline Logistics,SQL,Programming Languages
+9,Operations Data Intern,Sunline Logistics,Excel,Data Tools
+9,Operations Data Intern,Sunline Logistics,Collaboration,Soft Skills
+10,AI Engineering Intern,Prism Robotics,Python,Programming Languages
+10,AI Engineering Intern,Prism Robotics,NLP,Machine Learning
+10,AI Engineering Intern,Prism Robotics,PyTorch,Machine Learning
+10,AI Engineering Intern,Prism Robotics,Model Evaluation,Machine Learning
+10,AI Engineering Intern,Prism Robotics,Git,Engineering and Cloud
+11,Financial Data Analyst Intern,Summit FinTech,Python,Programming Languages
+11,Financial Data Analyst Intern,Summit FinTech,SQL,Programming Languages
+11,Financial Data Analyst Intern,Summit FinTech,Excel,Data Tools
+11,Financial Data Analyst Intern,Summit FinTech,Plotly,Data Tools
+11,Financial Data Analyst Intern,Summit FinTech,Statistics,Statistics and Math
+11,Financial Data Analyst Intern,Summit FinTech,Probability,Statistics and Math
+11,Financial Data Analyst Intern,Summit FinTech,Data Quality,Engineering and Cloud
+12,People Analytics Intern,Evergreen People Labs,Excel,Data Tools
+12,People Analytics Intern,Evergreen People Labs,Power BI,Data Tools
+12,People Analytics Intern,Evergreen People Labs,Statistics,Statistics and Math
+12,People Analytics Intern,Evergreen People Labs,Communication,Soft Skills
+13,Data Visualization Intern,Blue Mesa Energy,Python,Programming Languages
+13,Data Visualization Intern,Blue Mesa Energy,SQL,Programming Languages
+13,Data Visualization Intern,Blue Mesa Energy,Tableau,Data Tools
+13,Data Visualization Intern,Blue Mesa Energy,Plotly,Data Tools
+13,Data Visualization Intern,Blue Mesa Energy,Presentation,Soft Skills
+14,Junior Data Science Intern,Red Rock Insights,Python,Programming Languages
+14,Junior Data Science Intern,Red Rock Insights,Jupyter,Data Tools
+14,Junior Data Science Intern,Red Rock Insights,Pandas,Data Tools
+14,Junior Data Science Intern,Red Rock Insights,NumPy,Data Tools
+14,Junior Data Science Intern,Red Rock Insights,Matplotlib,Data Tools
+14,Junior Data Science Intern,Red Rock Insights,Clustering,Machine Learning
+14,Junior Data Science Intern,Red Rock Insights,Regression,Statistics and Math
+14,Junior Data Science Intern,Red Rock Insights,Git,Engineering and Cloud
+15,Cloud Analytics Intern,Saguaro Systems,Python,Programming Languages
+15,Cloud Analytics Intern,Saguaro Systems,SQL,Programming Languages
+15,Cloud Analytics Intern,Saguaro Systems,Git,Engineering and Cloud
+15,Cloud Analytics Intern,Saguaro Systems,AWS,Engineering and Cloud
+15,Cloud Analytics Intern,Saguaro Systems,ETL,Engineering and Cloud
+15,Cloud Analytics Intern,Saguaro Systems,Data Quality,Engineering and Cloud
+15,Cloud Analytics Intern,Saguaro Systems,Collaboration,Soft Skills
+15,Cloud Analytics Intern,Saguaro Systems,Problem Solving,Soft Skills

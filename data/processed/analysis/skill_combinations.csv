@@ -1,0 +1,142 @@
+skill_1,skill_2,posting_count,percentage
+Python,SQL,7,46.7
+Excel,SQL,5,33.3
+Git,Python,5,33.3
+Communication,Excel,4,26.7
+Excel,Statistics,4,26.7
+Collaboration,Python,3,20.0
+Communication,Statistics,3,20.0
+Data Quality,Python,3,20.0
+Data Quality,SQL,3,20.0
+Excel,Power BI,3,20.0
+Excel,Python,3,20.0
+Git,SQL,3,20.0
+Presentation,SQL,3,20.0
+Python,Statistics,3,20.0
+SQL,Statistics,3,20.0
+SQL,Tableau,3,20.0
+Collaboration,SQL,2,13.3
+Communication,Power BI,2,13.3
+Communication,SQL,2,13.3
+Data Quality,ETL,2,13.3
+Data Quality,Git,2,13.3
+ETL,Git,2,13.3
+ETL,Python,2,13.3
+ETL,SQL,2,13.3
+Excel,Tableau,2,13.3
+Git,Pandas,2,13.3
+Jupyter,Python,2,13.3
+Model Evaluation,Python,2,13.3
+Pandas,Python,2,13.3
+Plotly,Python,2,13.3
+Plotly,SQL,2,13.3
+Power BI,SQL,2,13.3
+Power BI,Statistics,2,13.3
+Presentation,Python,2,13.3
+Presentation,Tableau,2,13.3
+Python,Regression,2,13.3
+A/B Testing,Python,1,6.7
+A/B Testing,SQL,1,6.7
+AWS,Collaboration,1,6.7
+AWS,Data Quality,1,6.7
+AWS,ETL,1,6.7
+AWS,Git,1,6.7
+AWS,Problem Solving,1,6.7
+AWS,Python,1,6.7
+AWS,SQL,1,6.7
+Attention to Detail,Communication,1,6.7
+Attention to Detail,Excel,1,6.7
+Attention to Detail,SQL,1,6.7
+Attention to Detail,Tableau,1,6.7
+Clustering,Git,1,6.7
+Clustering,Jupyter,1,6.7
+Clustering,Matplotlib,1,6.7
+Clustering,NumPy,1,6.7
+Clustering,Pandas,1,6.7
+Clustering,Python,1,6.7
+Clustering,Regression,1,6.7
+Collaboration,Data Quality,1,6.7
+Collaboration,ETL,1,6.7
+Collaboration,Excel,1,6.7
+Collaboration,Feature Engineering,1,6.7
+Collaboration,Git,1,6.7
+Collaboration,Jupyter,1,6.7
+Collaboration,Machine Learning,1,6.7
+Collaboration,Model Evaluation,1,6.7
+Collaboration,Problem Solving,1,6.7
+Collaboration,Scikit-learn,1,6.7
+Communication,Python,1,6.7
+Communication,R,1,6.7
+Communication,Regression,1,6.7
+Communication,Tableau,1,6.7
+Data Quality,Excel,1,6.7
+Data Quality,Plotly,1,6.7
+Data Quality,Probability,1,6.7
+Data Quality,Problem Solving,1,6.7
+Data Quality,Statistics,1,6.7
+ETL,Problem Solving,1,6.7
+Excel,Plotly,1,6.7
+Excel,Presentation,1,6.7
+Excel,Probability,1,6.7
+Excel,R,1,6.7
+Excel,Regression,1,6.7
+Feature Engineering,Jupyter,1,6.7
+Feature Engineering,Machine Learning,1,6.7
+Feature Engineering,Model Evaluation,1,6.7
+Feature Engineering,Python,1,6.7
+Feature Engineering,Scikit-learn,1,6.7
+Git,Jupyter,1,6.7
+Git,Matplotlib,1,6.7
+Git,Model Evaluation,1,6.7
+Git,NLP,1,6.7
+Git,NumPy,1,6.7
+Git,Presentation,1,6.7
+Git,Problem Solving,1,6.7
+Git,PyTorch,1,6.7
+Git,Regression,1,6.7
+Git,Statistics,1,6.7
+Jupyter,Machine Learning,1,6.7
+Jupyter,Matplotlib,1,6.7
+Jupyter,Model Evaluation,1,6.7
+Jupyter,NumPy,1,6.7
+Jupyter,Pandas,1,6.7
+Jupyter,Regression,1,6.7
+Jupyter,Scikit-learn,1,6.7
+Machine Learning,Model Evaluation,1,6.7
+Machine Learning,Python,1,6.7
+Machine Learning,Scikit-learn,1,6.7
+Matplotlib,NumPy,1,6.7
+Matplotlib,Pandas,1,6.7
+Matplotlib,Python,1,6.7
+Matplotlib,Regression,1,6.7
+Model Evaluation,NLP,1,6.7
+Model Evaluation,PyTorch,1,6.7
+Model Evaluation,Scikit-learn,1,6.7
+NLP,PyTorch,1,6.7
+NLP,Python,1,6.7
+NumPy,Pandas,1,6.7
+NumPy,Python,1,6.7
+NumPy,Regression,1,6.7
+Pandas,Presentation,1,6.7
+Pandas,Regression,1,6.7
+Pandas,SQL,1,6.7
+Pandas,Statistics,1,6.7
+Plotly,Presentation,1,6.7
+Plotly,Probability,1,6.7
+Plotly,Statistics,1,6.7
+Plotly,Tableau,1,6.7
+Power BI,Presentation,1,6.7
+Power BI,Tableau,1,6.7
+Presentation,Statistics,1,6.7
+Probability,Python,1,6.7
+Probability,SQL,1,6.7
+Probability,Statistics,1,6.7
+Problem Solving,Python,1,6.7
+Problem Solving,SQL,1,6.7
+PyTorch,Python,1,6.7
+Python,R,1,6.7
+Python,Scikit-learn,1,6.7
+Python,Tableau,1,6.7
+R,Regression,1,6.7
+R,Statistics,1,6.7
+Regression,Statistics,1,6.7
