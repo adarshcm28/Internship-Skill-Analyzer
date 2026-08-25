@@ -1,7 +1,7 @@
 category,posting_count,skill_mentions,unique_skills,percentage_of_postings
-Programming Languages,14,22,3,93.3
-Data Tools,11,21,8,73.3
-Soft Skills,10,12,5,66.7
-Statistics and Math,7,9,4,46.7
-Engineering and Cloud,6,11,4,40.0
-Machine Learning,3,8,7,20.0
+Programming Languages,15,31,3,100.0
+Soft Skills,14,30,4,93.3
+Engineering and Cloud,11,19,7,73.3
+Data Tools,9,17,9,60.0
+Statistics and Math,8,9,3,53.3
+Machine Learning,7,20,9,46.7

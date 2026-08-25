@@ -1,16 +1,16 @@
 posting_id,job_title,company,advanced_skills,advanced_skill_count,experience_level,classification_rule
-1,Data Science Intern,Northstar Analytics,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-2,Data Analyst Intern,Desert Bloom Health,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-3,Machine Learning Intern,Juniper AI,Feature Engineering|Machine Learning|Model Evaluation|Scikit-learn,4,Advanced,Advanced when 2+ advanced skills are mentioned
-4,Business Intelligence Intern,Copper State Retail,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-5,Data Engineering Intern,MesaWorks,ETL,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-6,Product Analytics Intern,Orbit Learning,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-7,Research Data Intern,Sonoran Research Institute,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-8,Marketing Analytics Intern,Cactus Creative,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-9,Operations Data Intern,Sunline Logistics,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-10,AI Engineering Intern,Prism Robotics,Model Evaluation|NLP|PyTorch,3,Advanced,Advanced when 2+ advanced skills are mentioned
-11,Financial Data Analyst Intern,Summit FinTech,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-12,People Analytics Intern,Evergreen People Labs,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-13,Data Visualization Intern,Blue Mesa Energy,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-14,Junior Data Science Intern,Red Rock Insights,Clustering,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-15,Cloud Analytics Intern,Saguaro Systems,AWS|ETL,2,Advanced,Advanced when 2+ advanced skills are mentioned
+1,Data Science Intern (Winter 2027),Notion,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+2,"Data Science Intern/Graduate, NZ",Partly,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+3,Data Science Intern,Calibrax AI,Classification|Clustering|Feature Engineering|Machine Learning|Model Evaluation|Scikit-learn,6,Advanced,Advanced when 2+ advanced skills are mentioned
+4,Data Science Intern (FT Potential),finmid,MLOps|Machine Learning,2,Advanced,Advanced when 2+ advanced skills are mentioned
+5,Data Science Internship (Summer 2026),Mine,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+6,Data Science Intern,Meshy,Forecasting|Machine Learning|Model Evaluation|NLP|Scikit-learn,5,Advanced,Advanced when 2+ advanced skills are mentioned
+7,Sustainability Science Intern (Summer 2026),Worldly,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+8,Data Science Intern,QuantCo,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+9,"Intern, Data Analytics",EV Realty,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+10,Data Analyst Intern,Portcast,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+11,Data Analyst Intern — Ops Excellence,Bigblue,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+12,BAP - Data Analyst,Binance,Hive|Spark,2,Advanced,Advanced when 2+ advanced skills are mentioned
+13,Data Analyst Intern,Thndr,Classification|Clustering|Machine Learning|NLP,4,Advanced,Advanced when 2+ advanced skills are mentioned
+14,Data Analyst Intern,Simular,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+15,Data Analyst Summer Intern,M13,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
