@@ -25,8 +25,13 @@ ADVANCED_SKILLS = {
     "Feature Engineering",
     "Model Evaluation",
     "Clustering",
+    "Classification",
+    "Forecasting",
+    "MLOps",
     "AWS",
     "ETL",
+    "Spark",
+    "Hive",
 }
 ADVANCED_THRESHOLD = 2
 

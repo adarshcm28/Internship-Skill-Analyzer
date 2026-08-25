@@ -23,6 +23,7 @@ SKILL_CATALOG: dict[str, dict[str, tuple[str, ...]]] = {
     },
     "Data Tools": {
         "Excel": ("excel",),
+        "Google Sheets": ("google sheets",),
         "Tableau": ("tableau",),
         "Power BI": ("power bi",),
         "Jupyter": ("jupyter", "jupyter notebook", "jupyter notebooks"),
@@ -30,6 +31,11 @@ SKILL_CATALOG: dict[str, dict[str, tuple[str, ...]]] = {
         "NumPy": ("numpy",),
         "Matplotlib": ("matplotlib",),
         "Plotly": ("plotly",),
+        "dbt": ("dbt",),
+        "BigQuery": ("bigquery",),
+        "Snowflake": ("snowflake",),
+        "Databricks": ("databricks",),
+        "GIS": ("gis", "arcgis", "qgis"),
     },
     "Machine Learning": {
         "Machine Learning": ("machine learning",),
@@ -41,6 +47,9 @@ SKILL_CATALOG: dict[str, dict[str, tuple[str, ...]]] = {
         "Feature Engineering": ("feature engineering",),
         "Model Evaluation": ("model evaluation", "evaluating models"),
         "Clustering": ("clustering",),
+        "Classification": ("classification",),
+        "Forecasting": ("forecasting",),
+        "MLOps": ("mlops",),
     },
     "Statistics and Math": {
         "Statistics": ("statistics", "statistical analysis", "descriptive statistics"),
@@ -52,6 +61,11 @@ SKILL_CATALOG: dict[str, dict[str, tuple[str, ...]]] = {
         "Git": ("git", "github"),
         "AWS": ("aws",),
         "ETL": ("etl",),
+        "Data Pipelines": ("data pipeline", "data pipelines"),
+        "Data Modeling": ("data modeling", "data models"),
+        "APIs": ("api", "apis"),
+        "Spark": ("spark", "spark sql"),
+        "Hive": ("hive", "hive sql"),
         "Data Quality": ("data quality", "data validation"),
     },
     "Soft Skills": {
