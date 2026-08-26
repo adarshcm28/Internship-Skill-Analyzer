@@ -1,36 +1,41 @@
 rank,skill,category,posting_count,percentage
-1,SQL,Programming Languages,15,100.0
-2,Python,Programming Languages,14,93.3
-3,Communication,Soft Skills,13,86.7
-4,Data Quality,Engineering and Cloud,8,53.3
-5,Collaboration,Soft Skills,7,46.7
-6,Machine Learning,Machine Learning,7,46.7
-7,Statistics,Statistics and Math,7,46.7
-8,Problem Solving,Soft Skills,6,40.0
-9,Data Pipelines,Engineering and Cloud,5,33.3
-10,Attention to Detail,Soft Skills,4,26.7
-11,Excel,Data Tools,3,20.0
-12,Pandas,Data Tools,3,20.0
-13,dbt,Data Tools,3,20.0
-14,APIs,Engineering and Cloud,2,13.3
-15,BigQuery,Data Tools,2,13.3
-16,Classification,Machine Learning,2,13.3
-17,Clustering,Machine Learning,2,13.3
-18,Model Evaluation,Machine Learning,2,13.3
-19,NLP,Machine Learning,2,13.3
-20,NumPy,Data Tools,2,13.3
-21,R,Programming Languages,2,13.3
-22,Scikit-learn,Machine Learning,2,13.3
-23,A/B Testing,Statistics and Math,1,6.7
-24,Data Modeling,Engineering and Cloud,1,6.7
-25,Databricks,Data Tools,1,6.7
-26,Feature Engineering,Machine Learning,1,6.7
-27,Forecasting,Machine Learning,1,6.7
-28,GIS,Data Tools,1,6.7
-29,Git,Engineering and Cloud,1,6.7
-30,Google Sheets,Data Tools,1,6.7
-31,Hive,Engineering and Cloud,1,6.7
-32,MLOps,Machine Learning,1,6.7
-33,Regression,Statistics and Math,1,6.7
-34,Snowflake,Data Tools,1,6.7
-35,Spark,Engineering and Cloud,1,6.7
+1,Python,Programming Languages,30,73.2
+2,Communication,Soft Skills,21,51.2
+3,SQL,Programming Languages,19,46.3
+4,Statistics,Statistics and Math,18,43.9
+5,Collaboration,Soft Skills,14,34.1
+6,Machine Learning,Machine Learning,14,34.1
+7,Git,Engineering and Cloud,12,29.3
+8,Problem Solving,Soft Skills,10,24.4
+9,APIs,Engineering and Cloud,9,22.0
+10,Data Pipelines,Engineering and Cloud,7,17.1
+11,Data Quality,Engineering and Cloud,6,14.6
+12,Forecasting,Machine Learning,5,12.2
+13,Pandas,Data Tools,4,9.8
+14,A/B Testing,Statistics and Math,3,7.3
+15,Attention to Detail,Soft Skills,3,7.3
+16,Data Modeling,Engineering and Cloud,3,7.3
+17,Deep Learning,Machine Learning,3,7.3
+18,Model Evaluation,Machine Learning,3,7.3
+19,NLP,Machine Learning,3,7.3
+20,Power BI,Data Tools,3,7.3
+21,PyTorch,Machine Learning,3,7.3
+22,R,Programming Languages,3,7.3
+23,Spark,Engineering and Cloud,3,7.3
+24,dbt,Data Tools,3,7.3
+25,BigQuery,Data Tools,2,4.9
+26,Classification,Machine Learning,2,4.9
+27,Computer Vision,Machine Learning,2,4.9
+28,ETL,Engineering and Cloud,2,4.9
+29,Excel,Data Tools,2,4.9
+30,Hive,Engineering and Cloud,2,4.9
+31,MLOps,Machine Learning,2,4.9
+32,NumPy,Data Tools,2,4.9
+33,Regression,Statistics and Math,2,4.9
+34,Scikit-learn,Machine Learning,2,4.9
+35,Clustering,Machine Learning,1,2.4
+36,Databricks,Data Tools,1,2.4
+37,GIS,Data Tools,1,2.4
+38,Google Sheets,Data Tools,1,2.4
+39,Snowflake,Data Tools,1,2.4
+40,Tableau,Data Tools,1,2.4
