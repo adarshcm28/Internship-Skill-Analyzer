@@ -137,19 +137,31 @@ pip install -r requirements.txt
 
 ### Step 2: Collect Job Posting Data
 
-Create a CSV file at:
+Company job boards are configured in:
 
 ```text
-data/raw/internship_postings.csv
+config/job_boards.json
 ```
 
-Start with columns like:
+The collector queries the configured companies through the public Ashby and
+Lever job-posting APIs. Test the live collection without changing the current
+dataset:
 
-```text
-job_title, company, location, description, source, date_collected
+```bash
+python -m src.collect_postings --dry-run
 ```
 
-For a first version, manually collect 10-20 postings. Once the code works, expand the dataset to 50-200 postings.
+After a successful dry run, create the raw dataset:
+
+```bash
+python -m src.collect_postings
+```
+
+The generated `data/raw/internship_postings.csv` records the title, company,
+location, full public description, source URL, collection date, provider,
+external posting ID, publication time, employment type, and workplace type.
+See `docs/data-collection.md` for API details, filtering rules, validation, and
+configuration instructions.
 
 ### Step 3: Clean the Text
 

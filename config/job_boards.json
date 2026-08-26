@@ -1,0 +1,16 @@
+[
+  {"company": "Notion", "provider": "ashby", "board": "notion"},
+  {"company": "Partly", "provider": "ashby", "board": "partly.com"},
+  {"company": "Calibrax AI", "provider": "ashby", "board": "calibrax"},
+  {"company": "finmid", "provider": "ashby", "board": "finmid.com"},
+  {"company": "Meshy", "provider": "ashby", "board": "meshy"},
+  {"company": "Worldly", "provider": "ashby", "board": "worldly"},
+  {"company": "Thndr", "provider": "ashby", "board": "thndr"},
+  {"company": "Simular", "provider": "ashby", "board": "simular"},
+  {"company": "M13", "provider": "ashby", "board": "m13"},
+  {"company": "QuantCo", "provider": "lever", "board": "quantco-"},
+  {"company": "EV Realty", "provider": "lever", "board": "evrealty-us"},
+  {"company": "Portcast", "provider": "lever", "board": "portcast"},
+  {"company": "Bigblue", "provider": "lever", "board": "bigblue"},
+  {"company": "Binance", "provider": "lever", "board": "binance"}
+]

@@ -1,272 +1,306 @@
 skill_1,skill_2,posting_count,percentage
-Python,SQL,14,93.3
-Communication,SQL,13,86.7
-Communication,Python,12,80.0
-Data Quality,SQL,8,53.3
-Collaboration,Communication,7,46.7
-Collaboration,SQL,7,46.7
-Communication,Statistics,7,46.7
-Data Quality,Python,7,46.7
-Machine Learning,Python,7,46.7
-Machine Learning,SQL,7,46.7
-SQL,Statistics,7,46.7
-Collaboration,Data Quality,6,40.0
-Collaboration,Python,6,40.0
-Communication,Data Quality,6,40.0
-Communication,Machine Learning,6,40.0
-Communication,Problem Solving,6,40.0
-Problem Solving,Python,6,40.0
-Problem Solving,SQL,6,40.0
-Python,Statistics,6,40.0
-Data Pipelines,Python,5,33.3
-Data Pipelines,SQL,5,33.3
-Attention to Detail,SQL,4,26.7
-Collaboration,Statistics,4,26.7
-Communication,Data Pipelines,4,26.7
-Data Pipelines,Data Quality,4,26.7
-Problem Solving,Statistics,4,26.7
-Attention to Detail,Communication,3,20.0
-Attention to Detail,Data Quality,3,20.0
-Attention to Detail,Python,3,20.0
-Collaboration,Data Pipelines,3,20.0
-Collaboration,Problem Solving,3,20.0
-Communication,Excel,3,20.0
-Data Quality,Statistics,3,20.0
-Excel,SQL,3,20.0
-Machine Learning,Pandas,3,20.0
-Machine Learning,Statistics,3,20.0
-Pandas,Python,3,20.0
-Pandas,SQL,3,20.0
-Python,dbt,3,20.0
-SQL,dbt,3,20.0
-APIs,Communication,2,13.3
-APIs,Python,2,13.3
-APIs,SQL,2,13.3
-Attention to Detail,Collaboration,2,13.3
-BigQuery,Data Pipelines,2,13.3
-BigQuery,Data Quality,2,13.3
-BigQuery,Python,2,13.3
-BigQuery,SQL,2,13.3
-BigQuery,dbt,2,13.3
-Classification,Clustering,2,13.3
-Classification,Machine Learning,2,13.3
-Classification,Python,2,13.3
-Classification,SQL,2,13.3
-Clustering,Machine Learning,2,13.3
-Clustering,Python,2,13.3
-Clustering,SQL,2,13.3
-Collaboration,Excel,2,13.3
-Collaboration,Machine Learning,2,13.3
-Communication,NLP,2,13.3
-Communication,Pandas,2,13.3
-Communication,R,2,13.3
-Communication,dbt,2,13.3
-Data Pipelines,Problem Solving,2,13.3
-Data Pipelines,dbt,2,13.3
-Data Quality,Excel,2,13.3
-Data Quality,Machine Learning,2,13.3
-Data Quality,Problem Solving,2,13.3
-Data Quality,dbt,2,13.3
-Excel,Python,2,13.3
-Machine Learning,Model Evaluation,2,13.3
-Machine Learning,NLP,2,13.3
-Machine Learning,NumPy,2,13.3
-Machine Learning,Problem Solving,2,13.3
-Machine Learning,Scikit-learn,2,13.3
-Model Evaluation,NumPy,2,13.3
-Model Evaluation,Pandas,2,13.3
-Model Evaluation,Python,2,13.3
-Model Evaluation,SQL,2,13.3
-Model Evaluation,Scikit-learn,2,13.3
-NLP,Python,2,13.3
-NLP,SQL,2,13.3
-NumPy,Pandas,2,13.3
-NumPy,Python,2,13.3
-NumPy,SQL,2,13.3
-NumPy,Scikit-learn,2,13.3
-Pandas,Scikit-learn,2,13.3
-Pandas,Statistics,2,13.3
-Problem Solving,R,2,13.3
-Python,R,2,13.3
-Python,Scikit-learn,2,13.3
-R,SQL,2,13.3
-R,Statistics,2,13.3
-SQL,Scikit-learn,2,13.3
-A/B Testing,Communication,1,6.7
-A/B Testing,Problem Solving,1,6.7
-A/B Testing,Python,1,6.7
-A/B Testing,R,1,6.7
-A/B Testing,SQL,1,6.7
-A/B Testing,Statistics,1,6.7
-A/B Testing,dbt,1,6.7
-APIs,Classification,1,6.7
-APIs,Clustering,1,6.7
-APIs,Data Modeling,1,6.7
-APIs,Data Pipelines,1,6.7
-APIs,Excel,1,6.7
-APIs,Google Sheets,1,6.7
-APIs,Machine Learning,1,6.7
-APIs,NLP,1,6.7
-APIs,Problem Solving,1,6.7
-Attention to Detail,BigQuery,1,6.7
-Attention to Detail,Data Pipelines,1,6.7
-Attention to Detail,Excel,1,6.7
-Attention to Detail,MLOps,1,6.7
-Attention to Detail,Machine Learning,1,6.7
-Attention to Detail,Statistics,1,6.7
-Attention to Detail,dbt,1,6.7
-BigQuery,Collaboration,1,6.7
-BigQuery,Communication,1,6.7
-BigQuery,Machine Learning,1,6.7
-Classification,Communication,1,6.7
-Classification,Data Quality,1,6.7
-Classification,Excel,1,6.7
-Classification,Feature Engineering,1,6.7
-Classification,Google Sheets,1,6.7
-Classification,Model Evaluation,1,6.7
-Classification,NLP,1,6.7
-Classification,NumPy,1,6.7
-Classification,Pandas,1,6.7
-Classification,Regression,1,6.7
-Classification,Scikit-learn,1,6.7
-Clustering,Communication,1,6.7
-Clustering,Data Quality,1,6.7
-Clustering,Excel,1,6.7
-Clustering,Feature Engineering,1,6.7
-Clustering,Google Sheets,1,6.7
-Clustering,Model Evaluation,1,6.7
-Clustering,NLP,1,6.7
-Clustering,NumPy,1,6.7
-Clustering,Pandas,1,6.7
-Clustering,Regression,1,6.7
-Clustering,Scikit-learn,1,6.7
-Collaboration,Databricks,1,6.7
-Collaboration,Forecasting,1,6.7
-Collaboration,GIS,1,6.7
-Collaboration,Hive,1,6.7
-Collaboration,Model Evaluation,1,6.7
-Collaboration,NLP,1,6.7
-Collaboration,NumPy,1,6.7
-Collaboration,Pandas,1,6.7
-Collaboration,Scikit-learn,1,6.7
-Collaboration,Snowflake,1,6.7
-Collaboration,Spark,1,6.7
-Collaboration,dbt,1,6.7
-Communication,Data Modeling,1,6.7
-Communication,Databricks,1,6.7
-Communication,Forecasting,1,6.7
-Communication,GIS,1,6.7
-Communication,Git,1,6.7
-Communication,Google Sheets,1,6.7
-Communication,Hive,1,6.7
-Communication,MLOps,1,6.7
-Communication,Model Evaluation,1,6.7
-Communication,NumPy,1,6.7
-Communication,Scikit-learn,1,6.7
-Communication,Snowflake,1,6.7
-Communication,Spark,1,6.7
-Data Modeling,Data Pipelines,1,6.7
-Data Modeling,Problem Solving,1,6.7
-Data Modeling,Python,1,6.7
-Data Modeling,SQL,1,6.7
-Data Pipelines,Databricks,1,6.7
-Data Pipelines,Excel,1,6.7
-Data Pipelines,GIS,1,6.7
-Data Pipelines,Hive,1,6.7
-Data Pipelines,Machine Learning,1,6.7
-Data Pipelines,Snowflake,1,6.7
-Data Pipelines,Spark,1,6.7
-Data Pipelines,Statistics,1,6.7
-Data Quality,Databricks,1,6.7
-Data Quality,Feature Engineering,1,6.7
-Data Quality,GIS,1,6.7
-Data Quality,Hive,1,6.7
-Data Quality,Model Evaluation,1,6.7
-Data Quality,NumPy,1,6.7
-Data Quality,Pandas,1,6.7
-Data Quality,Regression,1,6.7
-Data Quality,Scikit-learn,1,6.7
-Data Quality,Snowflake,1,6.7
-Data Quality,Spark,1,6.7
-Databricks,Excel,1,6.7
-Databricks,GIS,1,6.7
-Databricks,Problem Solving,1,6.7
-Databricks,Python,1,6.7
-Databricks,SQL,1,6.7
-Databricks,Snowflake,1,6.7
-Excel,GIS,1,6.7
-Excel,Google Sheets,1,6.7
-Excel,Machine Learning,1,6.7
-Excel,NLP,1,6.7
-Excel,Problem Solving,1,6.7
-Excel,Snowflake,1,6.7
-Excel,Statistics,1,6.7
-Feature Engineering,Machine Learning,1,6.7
-Feature Engineering,Model Evaluation,1,6.7
-Feature Engineering,NumPy,1,6.7
-Feature Engineering,Pandas,1,6.7
-Feature Engineering,Python,1,6.7
-Feature Engineering,Regression,1,6.7
-Feature Engineering,SQL,1,6.7
-Feature Engineering,Scikit-learn,1,6.7
-Forecasting,Machine Learning,1,6.7
-Forecasting,Model Evaluation,1,6.7
-Forecasting,NLP,1,6.7
-Forecasting,NumPy,1,6.7
-Forecasting,Pandas,1,6.7
-Forecasting,Problem Solving,1,6.7
-Forecasting,Python,1,6.7
-Forecasting,SQL,1,6.7
-Forecasting,Scikit-learn,1,6.7
-Forecasting,Statistics,1,6.7
-GIS,Problem Solving,1,6.7
-GIS,Python,1,6.7
-GIS,SQL,1,6.7
-GIS,Snowflake,1,6.7
-Git,Machine Learning,1,6.7
-Git,Pandas,1,6.7
-Git,Python,1,6.7
-Git,SQL,1,6.7
-Git,Statistics,1,6.7
-Google Sheets,Machine Learning,1,6.7
-Google Sheets,NLP,1,6.7
-Google Sheets,Python,1,6.7
-Google Sheets,SQL,1,6.7
-Hive,Python,1,6.7
-Hive,SQL,1,6.7
-Hive,Spark,1,6.7
-Hive,Statistics,1,6.7
-MLOps,Machine Learning,1,6.7
-MLOps,Python,1,6.7
-MLOps,SQL,1,6.7
-Machine Learning,R,1,6.7
-Machine Learning,Regression,1,6.7
-Machine Learning,dbt,1,6.7
-Model Evaluation,NLP,1,6.7
-Model Evaluation,Problem Solving,1,6.7
-Model Evaluation,Regression,1,6.7
-Model Evaluation,Statistics,1,6.7
-NLP,NumPy,1,6.7
-NLP,Pandas,1,6.7
-NLP,Problem Solving,1,6.7
-NLP,Scikit-learn,1,6.7
-NLP,Statistics,1,6.7
-NumPy,Problem Solving,1,6.7
-NumPy,Regression,1,6.7
-NumPy,Statistics,1,6.7
-Pandas,Problem Solving,1,6.7
-Pandas,Regression,1,6.7
-Problem Solving,Scikit-learn,1,6.7
-Problem Solving,Snowflake,1,6.7
-Problem Solving,dbt,1,6.7
-Python,Regression,1,6.7
-Python,Snowflake,1,6.7
-Python,Spark,1,6.7
-R,dbt,1,6.7
-Regression,SQL,1,6.7
-Regression,Scikit-learn,1,6.7
-SQL,Snowflake,1,6.7
-SQL,Spark,1,6.7
-Scikit-learn,Statistics,1,6.7
-Spark,Statistics,1,6.7
-Statistics,dbt,1,6.7
+Python,SQL,16,39.0
+Python,Statistics,15,36.6
+SQL,Statistics,15,36.6
+Machine Learning,Python,12,29.3
+Collaboration,Communication,10,24.4
+Communication,Python,10,24.4
+Communication,SQL,10,24.4
+APIs,Python,9,22.0
+Communication,Statistics,9,22.0
+Collaboration,Python,8,19.5
+Communication,Machine Learning,8,19.5
+Problem Solving,Python,8,19.5
+Communication,Git,7,17.1
+Data Pipelines,Python,7,17.1
+Git,Python,7,17.1
+Machine Learning,Statistics,7,17.1
+Data Pipelines,SQL,6,14.6
+Data Pipelines,Statistics,6,14.6
+Data Quality,Python,6,14.6
+Data Quality,SQL,6,14.6
+Machine Learning,SQL,6,14.6
+Collaboration,SQL,5,12.2
+Collaboration,Statistics,5,12.2
+Communication,Problem Solving,5,12.2
+Data Quality,Statistics,5,12.2
+Forecasting,Machine Learning,5,12.2
+Git,Machine Learning,5,12.2
+Git,Problem Solving,5,12.2
+Git,Statistics,5,12.2
+APIs,Git,4,9.8
+APIs,Problem Solving,4,9.8
+Collaboration,Problem Solving,4,9.8
+Data Pipelines,Data Quality,4,9.8
+Forecasting,Git,4,9.8
+Forecasting,Statistics,4,9.8
+Pandas,Python,4,9.8
+Pandas,SQL,4,9.8
+Pandas,Statistics,4,9.8
+A/B Testing,Python,3,7.3
+A/B Testing,SQL,3,7.3
+A/B Testing,Statistics,3,7.3
+APIs,Machine Learning,3,7.3
+APIs,Statistics,3,7.3
+Attention to Detail,SQL,3,7.3
+Collaboration,Data Pipelines,3,7.3
+Collaboration,Machine Learning,3,7.3
+Communication,Forecasting,3,7.3
+Data Modeling,Data Pipelines,3,7.3
+Data Modeling,Data Quality,3,7.3
+Data Modeling,Python,3,7.3
+Data Modeling,SQL,3,7.3
+Forecasting,Python,3,7.3
+Forecasting,SQL,3,7.3
+Git,SQL,3,7.3
+Machine Learning,NLP,3,7.3
+Machine Learning,Pandas,3,7.3
+Model Evaluation,Python,3,7.3
+NLP,Python,3,7.3
+Power BI,SQL,3,7.3
+Problem Solving,Statistics,3,7.3
+Python,R,3,7.3
+Python,Spark,3,7.3
+Python,dbt,3,7.3
+R,SQL,3,7.3
+R,Statistics,3,7.3
+SQL,Spark,3,7.3
+SQL,dbt,3,7.3
+Spark,Statistics,3,7.3
+A/B Testing,Machine Learning,2,4.9
+A/B Testing,Pandas,2,4.9
+A/B Testing,Spark,2,4.9
+APIs,Computer Vision,2,4.9
+APIs,Deep Learning,2,4.9
+APIs,Forecasting,2,4.9
+APIs,NLP,2,4.9
+APIs,Regression,2,4.9
+APIs,SQL,2,4.9
+Attention to Detail,Communication,2,4.9
+Attention to Detail,Power BI,2,4.9
+Attention to Detail,Python,2,4.9
+BigQuery,Data Modeling,2,4.9
+BigQuery,Data Pipelines,2,4.9
+BigQuery,Data Quality,2,4.9
+BigQuery,Python,2,4.9
+BigQuery,SQL,2,4.9
+BigQuery,dbt,2,4.9
+Classification,Data Quality,2,4.9
+Classification,Python,2,4.9
+Classification,SQL,2,4.9
+Classification,Statistics,2,4.9
+Collaboration,Data Quality,2,4.9
+Collaboration,Excel,2,4.9
+Collaboration,Git,2,4.9
+Communication,Data Pipelines,2,4.9
+Communication,Excel,2,4.9
+Communication,Pandas,2,4.9
+Communication,Spark,2,4.9
+Computer Vision,Deep Learning,2,4.9
+Computer Vision,Forecasting,2,4.9
+Computer Vision,Machine Learning,2,4.9
+Computer Vision,NLP,2,4.9
+Computer Vision,Python,2,4.9
+Data Modeling,Statistics,2,4.9
+Data Modeling,dbt,2,4.9
+Data Pipelines,Hive,2,4.9
+Data Pipelines,Power BI,2,4.9
+Data Pipelines,Problem Solving,2,4.9
+Data Pipelines,Spark,2,4.9
+Data Pipelines,dbt,2,4.9
+Data Quality,Hive,2,4.9
+Data Quality,Power BI,2,4.9
+Data Quality,Spark,2,4.9
+Data Quality,dbt,2,4.9
+Deep Learning,Forecasting,2,4.9
+Deep Learning,Machine Learning,2,4.9
+Deep Learning,NLP,2,4.9
+Deep Learning,Python,2,4.9
+ETL,Python,2,4.9
+ETL,SQL,2,4.9
+ETL,Statistics,2,4.9
+Excel,Problem Solving,2,4.9
+Forecasting,NLP,2,4.9
+Git,NLP,2,4.9
+Hive,Python,2,4.9
+Hive,SQL,2,4.9
+Hive,Spark,2,4.9
+Hive,Statistics,2,4.9
+MLOps,Python,2,4.9
+MLOps,SQL,2,4.9
+Machine Learning,Model Evaluation,2,4.9
+Machine Learning,PyTorch,2,4.9
+Model Evaluation,PyTorch,2,4.9
+NumPy,Pandas,2,4.9
+NumPy,Python,2,4.9
+NumPy,SQL,2,4.9
+NumPy,Scikit-learn,2,4.9
+NumPy,Statistics,2,4.9
+Pandas,Scikit-learn,2,4.9
+Power BI,Python,2,4.9
+Power BI,Statistics,2,4.9
+Problem Solving,SQL,2,4.9
+PyTorch,Python,2,4.9
+Python,Regression,2,4.9
+Python,Scikit-learn,2,4.9
+SQL,Scikit-learn,2,4.9
+Scikit-learn,Statistics,2,4.9
+Statistics,dbt,2,4.9
+A/B Testing,Attention to Detail,1,2.4
+A/B Testing,Communication,1,2.4
+A/B Testing,Data Pipelines,1,2.4
+A/B Testing,Data Quality,1,2.4
+A/B Testing,Hive,1,2.4
+A/B Testing,NumPy,1,2.4
+A/B Testing,Power BI,1,2.4
+A/B Testing,R,1,2.4
+A/B Testing,Scikit-learn,1,2.4
+A/B Testing,Tableau,1,2.4
+APIs,Classification,1,2.4
+APIs,Clustering,1,2.4
+APIs,Collaboration,1,2.4
+APIs,Communication,1,2.4
+APIs,Data Quality,1,2.4
+APIs,ETL,1,2.4
+APIs,NumPy,1,2.4
+APIs,Pandas,1,2.4
+APIs,Scikit-learn,1,2.4
+Attention to Detail,Data Pipelines,1,2.4
+Attention to Detail,Data Quality,1,2.4
+Attention to Detail,Hive,1,2.4
+Attention to Detail,MLOps,1,2.4
+Attention to Detail,R,1,2.4
+Attention to Detail,Spark,1,2.4
+Attention to Detail,Statistics,1,2.4
+Attention to Detail,Tableau,1,2.4
+BigQuery,Collaboration,1,2.4
+BigQuery,ETL,1,2.4
+BigQuery,Power BI,1,2.4
+BigQuery,Statistics,1,2.4
+Classification,Clustering,1,2.4
+Classification,Collaboration,1,2.4
+Classification,NumPy,1,2.4
+Classification,Pandas,1,2.4
+Classification,Regression,1,2.4
+Classification,Scikit-learn,1,2.4
+Clustering,Data Quality,1,2.4
+Clustering,NumPy,1,2.4
+Clustering,Pandas,1,2.4
+Clustering,Python,1,2.4
+Clustering,Regression,1,2.4
+Clustering,SQL,1,2.4
+Clustering,Scikit-learn,1,2.4
+Clustering,Statistics,1,2.4
+Collaboration,Computer Vision,1,2.4
+Collaboration,Data Modeling,1,2.4
+Collaboration,Databricks,1,2.4
+Collaboration,Deep Learning,1,2.4
+Collaboration,Forecasting,1,2.4
+Collaboration,GIS,1,2.4
+Collaboration,Google Sheets,1,2.4
+Collaboration,NLP,1,2.4
+Collaboration,R,1,2.4
+Collaboration,Snowflake,1,2.4
+Collaboration,dbt,1,2.4
+Communication,Data Modeling,1,2.4
+Communication,Data Quality,1,2.4
+Communication,Databricks,1,2.4
+Communication,Deep Learning,1,2.4
+Communication,ETL,1,2.4
+Communication,GIS,1,2.4
+Communication,Google Sheets,1,2.4
+Communication,Hive,1,2.4
+Communication,MLOps,1,2.4
+Communication,NLP,1,2.4
+Communication,NumPy,1,2.4
+Communication,Power BI,1,2.4
+Communication,PyTorch,1,2.4
+Communication,R,1,2.4
+Communication,Scikit-learn,1,2.4
+Communication,Snowflake,1,2.4
+Computer Vision,Git,1,2.4
+Computer Vision,Statistics,1,2.4
+Data Modeling,ETL,1,2.4
+Data Modeling,Hive,1,2.4
+Data Modeling,Power BI,1,2.4
+Data Modeling,Spark,1,2.4
+Data Pipelines,Databricks,1,2.4
+Data Pipelines,ETL,1,2.4
+Data Pipelines,Excel,1,2.4
+Data Pipelines,GIS,1,2.4
+Data Pipelines,Git,1,2.4
+Data Pipelines,Model Evaluation,1,2.4
+Data Pipelines,R,1,2.4
+Data Pipelines,Snowflake,1,2.4
+Data Pipelines,Tableau,1,2.4
+Data Quality,ETL,1,2.4
+Data Quality,NumPy,1,2.4
+Data Quality,Pandas,1,2.4
+Data Quality,R,1,2.4
+Data Quality,Regression,1,2.4
+Data Quality,Scikit-learn,1,2.4
+Data Quality,Tableau,1,2.4
+Databricks,Excel,1,2.4
+Databricks,GIS,1,2.4
+Databricks,Problem Solving,1,2.4
+Databricks,Python,1,2.4
+Databricks,SQL,1,2.4
+Databricks,Snowflake,1,2.4
+Databricks,Statistics,1,2.4
+Deep Learning,Git,1,2.4
+Deep Learning,PyTorch,1,2.4
+Deep Learning,Statistics,1,2.4
+ETL,Machine Learning,1,2.4
+ETL,Power BI,1,2.4
+ETL,dbt,1,2.4
+Excel,GIS,1,2.4
+Excel,Google Sheets,1,2.4
+Excel,Python,1,2.4
+Excel,SQL,1,2.4
+Excel,Snowflake,1,2.4
+Excel,Statistics,1,2.4
+Forecasting,Pandas,1,2.4
+GIS,Problem Solving,1,2.4
+GIS,Python,1,2.4
+GIS,SQL,1,2.4
+GIS,Snowflake,1,2.4
+GIS,Statistics,1,2.4
+Git,Model Evaluation,1,2.4
+Git,Pandas,1,2.4
+Google Sheets,Problem Solving,1,2.4
+Hive,Power BI,1,2.4
+Hive,R,1,2.4
+Hive,Tableau,1,2.4
+Machine Learning,NumPy,1,2.4
+Machine Learning,Problem Solving,1,2.4
+Machine Learning,Scikit-learn,1,2.4
+Machine Learning,Spark,1,2.4
+Model Evaluation,Problem Solving,1,2.4
+Model Evaluation,Statistics,1,2.4
+NLP,Problem Solving,1,2.4
+NLP,Statistics,1,2.4
+NumPy,Regression,1,2.4
+NumPy,Spark,1,2.4
+Pandas,Regression,1,2.4
+Pandas,Spark,1,2.4
+Power BI,R,1,2.4
+Power BI,Spark,1,2.4
+Power BI,Tableau,1,2.4
+Power BI,dbt,1,2.4
+Problem Solving,R,1,2.4
+Problem Solving,Regression,1,2.4
+Problem Solving,Snowflake,1,2.4
+Python,Snowflake,1,2.4
+Python,Tableau,1,2.4
+R,Spark,1,2.4
+R,Tableau,1,2.4
+R,dbt,1,2.4
+Regression,SQL,1,2.4
+Regression,Scikit-learn,1,2.4
+Regression,Statistics,1,2.4
+SQL,Snowflake,1,2.4
+SQL,Tableau,1,2.4
+Scikit-learn,Spark,1,2.4
+Snowflake,Statistics,1,2.4
+Spark,Tableau,1,2.4
+Statistics,Tableau,1,2.4
