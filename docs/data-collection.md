@@ -29,6 +29,15 @@ The filter is deliberately defined in code so that collection is consistent
 and reviewable. It can still produce false positives or miss unusual titles,
 so generated data should be reviewed before drawing conclusions.
 
+After filtering and URL deduplication, the collector retains at most five
+postings per company by default. When publication timestamps are available,
+newer postings are preferred. This prevents one large employer from dominating
+the market percentages. Change the cap when needed:
+
+```bash
+python -m src.collect_postings --max-per-company 10
+```
+
 ## Run the collector
 
 Activate the project environment and test the live endpoints without changing
@@ -44,9 +53,10 @@ Replace the raw dataset after a successful collection:
 python -m src.collect_postings
 ```
 
-The collector requires at least five valid postings by default. If too few are
-found, it exits without replacing the existing CSV. Individual company errors
-are reported while the remaining boards continue.
+The collector requires at least five valid postings by default and retains no
+more than five per company. If too few are found, it exits without replacing
+the existing CSV. Individual company errors are reported while the remaining
+boards continue.
 
 ## Rebuild Steps 3–6
 

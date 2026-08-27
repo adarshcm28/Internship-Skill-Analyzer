@@ -160,6 +160,8 @@ python -m src.collect_postings
 The generated `data/raw/internship_postings.csv` records the title, company,
 location, full public description, source URL, collection date, provider,
 external posting ID, publication time, employment type, and workplace type.
+To keep the analysis balanced, the collector retains at most five postings per
+company by default; use `--max-per-company` to change that limit.
 See `docs/data-collection.md` for API details, filtering rules, validation, and
 configuration instructions.
 
