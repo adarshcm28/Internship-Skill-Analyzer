@@ -246,8 +246,10 @@ def collect_from_boards(
     return postings, errors
 
 
-def postings_frame(postings: Iterable[Posting]) -> pd.DataFrame:
-    """Create a deterministic, deduplicated dataframe for the raw CSV."""
+def postings_frame(
+    postings: Iterable[Posting], max_per_company: int
+) -> pd.DataFrame:
+    """Create a validated, deduplicated, and company-balanced dataframe."""
     columns = list(Posting.__dataclass_fields__)
     frame = pd.DataFrame((asdict(posting) for posting in postings), columns=columns)
     if frame.empty:
@@ -260,9 +262,16 @@ def postings_frame(postings: Iterable[Posting]) -> pd.DataFrame:
         & frame["source_url"].str.startswith("https://")
     ].copy()
     frame = frame.drop_duplicates(subset=["source_url"], keep="first")
-    return frame.sort_values(
-        ["company", "job_title", "source_url"], key=lambda values: values.str.lower()
-    ).reset_index(drop=True)
+    frame["_published_sort"] = pd.to_datetime(
+        frame["published_at"], errors="coerce", utc=True
+    )
+    frame = frame.sort_values(
+        ["company", "_published_sort", "job_title", "source_url"],
+        ascending=[True, False, True, True],
+        na_position="last",
+    )
+    frame = frame.groupby("company", sort=False, as_index=False).head(max_per_company)
+    return frame.drop(columns="_published_sort").reset_index(drop=True)
 
 
 def write_postings(frame: pd.DataFrame, output_path: Path) -> None:
@@ -286,6 +295,12 @@ def parse_args() -> argparse.Namespace:
         help="Do not replace the CSV unless at least this many matches are found.",
     )
     parser.add_argument(
+        "--max-per-company",
+        type=int,
+        default=5,
+        help="Maximum postings retained per company after deduplication (default: 5).",
+    )
+    parser.add_argument(
         "--collected-on",
         default=date.today().isoformat(),
         help="Collection date written to the CSV (default: today).",
@@ -302,10 +317,12 @@ def main() -> None:
     args = parse_args()
     if args.minimum_postings < 1:
         raise ValueError("--minimum-postings must be at least 1")
+    if args.max_per_company < 1:
+        raise ValueError("--max-per-company must be at least 1")
 
     boards = load_boards(args.config)
     postings, errors = collect_from_boards(boards, args.collected_on)
-    frame = postings_frame(postings)
+    frame = postings_frame(postings, args.max_per_company)
     if len(frame) < args.minimum_postings:
         raise RuntimeError(
             f"Found {len(frame)} valid postings; minimum is {args.minimum_postings}. "
