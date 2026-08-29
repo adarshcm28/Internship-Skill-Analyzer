@@ -137,14 +137,21 @@ pip install -r requirements.txt
 
 ### Step 2: Collect Job Posting Data
 
+The collector now retains only postings with confirmed US location evidence.
+Unspecified remote and worldwide roles are excluded; see the collection guide
+for multi-location handling and limitations.
+
 Company job boards are configured in:
 
 ```text
 config/job_boards.json
 ```
 
-The collector queries the configured companies through the public Ashby and
-Lever job-posting APIs. Test the live collection without changing the current
+The collector checks 30 configured company boards through public Ashby, Lever,
+and Greenhouse APIs for US data and software internships. The August 28, 2026
+run retained 17 postings from 11 companies, capped at five per company.
+Updated US charts are in `reports/figures/us/`; the earlier worldwide charts
+remain separate. Test the live collection without changing the current
 dataset:
 
 ```bash
@@ -157,7 +164,7 @@ After a successful dry run, create the raw dataset:
 python -m src.collect_postings
 ```
 
-The generated `data/raw/internship_postings.csv` records the title, company,
+The generated `data/raw/us_internship_postings.csv` records the title, company,
 location, full public description, source URL, collection date, provider,
 external posting ID, publication time, employment type, and workplace type.
 To keep the analysis balanced, the collector retains at most five postings per

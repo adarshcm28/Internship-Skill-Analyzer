@@ -12,5 +12,21 @@
   {"company": "EV Realty", "provider": "lever", "board": "evrealty-us"},
   {"company": "Portcast", "provider": "lever", "board": "portcast"},
   {"company": "Bigblue", "provider": "lever", "board": "bigblue"},
-  {"company": "Binance", "provider": "lever", "board": "binance"}
+  {"company": "Binance", "provider": "lever", "board": "binance"},
+  {"company": "Databricks", "provider": "greenhouse", "board": "databricks"},
+  {"company": "Roblox", "provider": "greenhouse", "board": "roblox"},
+  {"company": "Cloudflare", "provider": "greenhouse", "board": "cloudflare"},
+  {"company": "Figma", "provider": "greenhouse", "board": "figma"},
+  {"company": "Stripe", "provider": "greenhouse", "board": "stripe"},
+  {"company": "Datadog", "provider": "greenhouse", "board": "datadog"},
+  {"company": "Duolingo", "provider": "greenhouse", "board": "duolingo"},
+  {"company": "Reddit", "provider": "greenhouse", "board": "reddit"},
+  {"company": "Dropbox", "provider": "greenhouse", "board": "dropbox"},
+  {"company": "Robinhood", "provider": "greenhouse", "board": "robinhood"},
+  {"company": "Ramp", "provider": "ashby", "board": "ramp"},
+  {"company": "Vercel", "provider": "ashby", "board": "vercel"},
+  {"company": "Palantir", "provider": "lever", "board": "palantir"},
+  {"company": "Anduril", "provider": "greenhouse", "board": "andurilindustries"},
+  {"company": "MongoDB", "provider": "greenhouse", "board": "mongodb"},
+  {"company": "Coinbase", "provider": "greenhouse", "board": "coinbase"}
 ]

@@ -1,6 +1,6 @@
-"""Collect current data-related internships from public company job-board APIs.
+"""Collect current data and software internships from public company job-board APIs.
 
-The collector uses the public JSON endpoints provided by Ashby and Lever. It
+The collector uses public JSON endpoints provided by Ashby, Lever, and Greenhouse. It
 does not submit applications, access private postings, or scrape arbitrary HTML.
 """
 
@@ -23,17 +23,18 @@ import requests
 
 
 DEFAULT_CONFIG = Path("config/job_boards.json")
-DEFAULT_OUTPUT = Path("data/raw/internship_postings.csv")
+DEFAULT_OUTPUT = Path("data/raw/us_internship_postings.csv")
 REQUEST_TIMEOUT_SECONDS = 30
 USER_AGENT = "Internship-Skill-Analyzer/1.0 (educational project)"
 
 DATA_ROLE_PATTERN = re.compile(
     r"\b(data|analytics?|machine learning|artificial intelligence|ai|"
-    r"business intelligence|applied scientist|research scientist)\b",
+    r"business intelligence|applied scientist|research scientist|software|"
+    r"computer science|developer|front[ -]?end|back[ -]?end|full[ -]?stack)\b",
     re.IGNORECASE,
 )
 EARLY_CAREER_PATTERN = re.compile(
-    r"\b(intern|internship|co[ -]?op|graduate)\b", re.IGNORECASE
+    r"\b(interns?|internships?|co[ -]?ops?)\b", re.IGNORECASE
 )
 WHITESPACE_PATTERN = re.compile(r"\s+")
 
@@ -59,6 +60,7 @@ class Posting:
     published_at: str
     employment_type: str
     workplace_type: str
+    country: str = "US"
 
 
 class _HTMLTextExtractor(HTMLParser):
@@ -84,6 +86,55 @@ def normalize_text(value: object) -> str:
     return WHITESPACE_PATTERN.sub(" ", str(value or "")).strip()
 
 
+def is_us_location(location: object, country: object = "") -> bool:
+    """Prefer country metadata; otherwise require a US label or city/state pair.
+
+    Remote/worldwide and ambiguous city names are not evidence of a US role.
+    A supplied non-US country always overrides the free-text location.
+    """
+    country_name = normalize_text(country).casefold().rstrip(".")
+    us_names = {"us", "usa", "u.s", "u.s.a", "united states", "united states of america"}
+    if country_name:
+        return country_name in us_names
+    explicit_country = bool(re.search(
+        r"(?<!\w)(?:United States(?: of America)?|USA|US|U\.S\.(?:A\.)?)(?!\w)",
+        normalize_text(location), re.IGNORECASE,
+    ))
+    # Require a city followed by an uppercase US postal state, not bare "CA".
+    city_state = re.search(
+        r"\b[A-Za-z][A-Za-z .'-]+,\s*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|"
+        r"ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|"
+        r"NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)"
+        r"(?=$|[\s;|/)])", normalize_text(location),
+    )
+    return explicit_country or city_state is not None
+
+
+def ashby_us_locations(job: dict) -> list[str]:
+    """Keep only locations with US evidence, including secondary locations."""
+    locations = []
+    for entry in [job, *(job.get("secondaryLocations") or [])]:
+        address = entry.get("address") or {}
+        postal = address.get("postalAddress") or address
+        location = normalize_text(entry.get("location"))
+        if is_us_location(location, postal.get("addressCountry")):
+            locations.append(location or "United States")
+    return list(dict.fromkeys(locations))
+
+
+def lever_us_locations(job: dict) -> list[str]:
+    """The country field describes the primary location, not every location."""
+    categories = job.get("categories") or {}
+    primary = normalize_text(categories.get("location"))
+    locations = []
+    if is_us_location(primary, job.get("country")):
+        locations.append(primary or "United States")
+    for location in categories.get("allLocations") or []:
+        if location != primary and is_us_location(location):
+            locations.append(normalize_text(location))
+    return list(dict.fromkeys(locations))
+
+
 def load_boards(config_path: Path) -> list[JobBoard]:
     """Read and validate the company job-board configuration."""
     raw_boards = json.loads(config_path.read_text(encoding="utf-8"))
@@ -100,7 +151,7 @@ def load_boards(config_path: Path) -> list[JobBoard]:
         )
         if not all((board.company, board.provider, board.board)):
             raise ValueError(f"Incomplete job-board entry: {item}")
-        if board.provider not in {"ashby", "lever"}:
+        if board.provider not in {"ashby", "lever", "greenhouse"}:
             raise ValueError(f"Unsupported provider: {board.provider}")
         key = (board.provider, board.board)
         if key in seen:
@@ -111,13 +162,15 @@ def load_boards(config_path: Path) -> list[JobBoard]:
 
 
 def is_target_posting(title: str, description: str, employment_type: str) -> bool:
-    """Keep data-related roles that are explicitly early-career or internships."""
+    """Require a target title and internship evidence in the title or job type.
+
+    Description-only mentions (mentoring interns, graduate degrees) are not enough.
+    """
     if not DATA_ROLE_PATTERN.search(title):
         return False
-    early_career_text = f"{title} {description[:2500]}"
     return (
-        employment_type.lower() == "intern"
-        or EARLY_CAREER_PATTERN.search(early_career_text) is not None
+        EARLY_CAREER_PATTERN.search(employment_type) is not None
+        or EARLY_CAREER_PATTERN.search(title) is not None
     )
 
 
@@ -139,6 +192,9 @@ def collect_ashby(
     for job in payload.get("jobs", []):
         if not job.get("isListed", True):
             continue
+        us_locations = ashby_us_locations(job)
+        if not us_locations:
+            continue
         title = normalize_text(job.get("title"))
         description = normalize_text(job.get("descriptionPlain"))
         employment_type = normalize_text(job.get("employmentType"))
@@ -151,7 +207,7 @@ def collect_ashby(
             Posting(
                 job_title=title,
                 company=board.company,
-                location=normalize_text(job.get("location")) or "Not specified",
+                location=" | ".join(us_locations),
                 description=description,
                 source="Ashby public Job Postings API",
                 source_url=source_url,
@@ -175,6 +231,9 @@ def collect_lever(
     postings: list[Posting] = []
 
     for job in jobs:
+        us_locations = lever_us_locations(job)
+        if not us_locations:
+            continue
         title = normalize_text(job.get("text"))
         list_sections = [
             " ".join(
@@ -207,7 +266,7 @@ def collect_lever(
             Posting(
                 job_title=title,
                 company=board.company,
-                location=normalize_text(categories.get("location")) or "Not specified",
+                location=" | ".join(us_locations),
                 description=description,
                 source="Lever public Postings API",
                 source_url=normalize_text(job.get("hostedUrl")),
@@ -219,6 +278,38 @@ def collect_lever(
                 workplace_type=normalize_text(job.get("workplaceType")),
             )
         )
+    return postings
+
+
+def collect_greenhouse(
+    board: JobBoard, session: requests.Session, collected_on: str
+) -> list[Posting]:
+    """Read published jobs and descriptions from Greenhouse's public board API."""
+    payload = fetch_json(
+        session,
+        f"https://boards-api.greenhouse.io/v1/boards/{board.board}/jobs?content=true",
+    )
+    postings = []
+    for job in payload.get("jobs", []):
+        title = normalize_text(job.get("title"))
+        description = html_to_text(job.get("content"))
+        if not is_target_posting(title, description, ""):
+            continue
+        candidates = [normalize_text((job.get("location") or {}).get("name"))]
+        candidates.extend(normalize_text(office.get("location"))
+                          for office in job.get("offices") or [])
+        locations = list(dict.fromkeys(loc for loc in candidates if is_us_location(loc)))
+        if not locations:
+            continue
+        postings.append(Posting(
+            job_title=title, company=board.company, location=" | ".join(locations),
+            description=description, source="Greenhouse public Job Board API",
+            source_url=normalize_text(job.get("absolute_url")),
+            date_collected=collected_on, provider="greenhouse",
+            external_posting_id=normalize_text(job.get("id")),
+            # updated_at is not a publication date; do not mislabel it.
+            published_at="", employment_type="", workplace_type="",
+        ))
     return postings
 
 
@@ -235,8 +326,10 @@ def collect_from_boards(
         try:
             if board.provider == "ashby":
                 found = collect_ashby(board, session, collected_on)
-            else:
+            elif board.provider == "lever":
                 found = collect_lever(board, session, collected_on)
+            else:
+                found = collect_greenhouse(board, session, collected_on)
             postings.extend(found)
             print(f"{board.company}: found {len(found)} matching posting(s)")
         except (requests.RequestException, ValueError, TypeError) as exc:
@@ -284,7 +377,7 @@ def write_postings(frame: pd.DataFrame, output_path: Path) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Collect current data internships from public job-board APIs."
+        description="Collect US data and software internships from public job-board APIs."
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
