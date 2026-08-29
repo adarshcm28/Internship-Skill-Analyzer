@@ -1,0 +1,74 @@
+posting_id,job_title,company,skill,category
+1,2027 Software Engineer Intern,Anduril,Python,Programming Languages
+1,2027 Software Engineer Intern,Anduril,Computer Vision,Machine Learning
+1,2027 Software Engineer Intern,Anduril,Communication,Soft Skills
+2,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,Python,Programming Languages
+2,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,Statistics,Statistics and Math
+2,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,APIs,Engineering and Cloud
+3,Software Engineering Intern (Winter),Datadog,Data Modeling,Engineering and Cloud
+3,Software Engineering Intern (Winter),Datadog,Collaboration,Soft Skills
+3,Software Engineering Intern (Winter),Datadog,Problem Solving,Soft Skills
+4,"Intern, Data Analytics",EV Realty,Python,Programming Languages
+4,"Intern, Data Analytics",EV Realty,SQL,Programming Languages
+4,"Intern, Data Analytics",EV Realty,Excel,Data Tools
+4,"Intern, Data Analytics",EV Realty,Snowflake,Data Tools
+4,"Intern, Data Analytics",EV Realty,Databricks,Data Tools
+4,"Intern, Data Analytics",EV Realty,GIS,Data Tools
+4,"Intern, Data Analytics",EV Realty,Statistics,Statistics and Math
+4,"Intern, Data Analytics",EV Realty,Data Pipelines,Engineering and Cloud
+4,"Intern, Data Analytics",EV Realty,Communication,Soft Skills
+4,"Intern, Data Analytics",EV Realty,Collaboration,Soft Skills
+4,"Intern, Data Analytics",EV Realty,Problem Solving,Soft Skills
+5,Software Engineer Intern (Winter 2027),Figma,Python,Programming Languages
+5,Software Engineer Intern (Winter 2027),Figma,Git,Engineering and Cloud
+5,Software Engineer Intern (Winter 2027),Figma,Communication,Soft Skills
+5,Software Engineer Intern (Winter 2027),Figma,Collaboration,Soft Skills
+6,Data Science Intern (Winter 2027),Notion,Python,Programming Languages
+6,Data Science Intern (Winter 2027),Notion,R,Programming Languages
+6,Data Science Intern (Winter 2027),Notion,SQL,Programming Languages
+6,Data Science Intern (Winter 2027),Notion,Statistics,Statistics and Math
+6,Data Science Intern (Winter 2027),Notion,Communication,Soft Skills
+6,Data Science Intern (Winter 2027),Notion,Collaboration,Soft Skills
+6,Data Science Intern (Winter 2027),Notion,Problem Solving,Soft Skills
+7,Software Engineer Intern (Summer 2027),Notion,Python,Programming Languages
+7,Software Engineer Intern (Summer 2027),Notion,Communication,Soft Skills
+7,Software Engineer Intern (Summer 2027),Notion,Collaboration,Soft Skills
+7,Software Engineer Intern (Summer 2027),Notion,Problem Solving,Soft Skills
+8,Software Engineer Intern (Winter 2027),Notion,Python,Programming Languages
+8,Software Engineer Intern (Winter 2027),Notion,Communication,Soft Skills
+8,Software Engineer Intern (Winter 2027),Notion,Collaboration,Soft Skills
+8,Software Engineer Intern (Winter 2027),Notion,Problem Solving,Soft Skills
+9,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Python,Programming Languages
+9,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Communication,Soft Skills
+9,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Problem Solving,Soft Skills
+10,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Python,Programming Languages
+10,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Communication,Soft Skills
+10,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,Problem Solving,Soft Skills
+11,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,Python,Programming Languages
+11,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,Communication,Soft Skills
+11,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,Collaboration,Soft Skills
+12,"Forward Deployed Software Engineer, Internship - France",Palantir,Python,Programming Languages
+12,"Forward Deployed Software Engineer, Internship - France",Palantir,Collaboration,Soft Skills
+12,"Forward Deployed Software Engineer, Internship - France",Palantir,Problem Solving,Soft Skills
+13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,Python,Programming Languages
+13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,Communication,Soft Skills
+13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,Collaboration,Soft Skills
+13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,Problem Solving,Soft Skills
+14,Data Science Intern,QuantCo,Python,Programming Languages
+14,Data Science Intern,QuantCo,SQL,Programming Languages
+14,Data Science Intern,QuantCo,Pandas,Data Tools
+14,Data Science Intern,QuantCo,Machine Learning,Machine Learning
+14,Data Science Intern,QuantCo,Forecasting,Machine Learning
+14,Data Science Intern,QuantCo,Statistics,Statistics and Math
+14,Data Science Intern,QuantCo,Git,Engineering and Cloud
+14,Data Science Intern,QuantCo,Communication,Soft Skills
+15,"Software Engineer Internship, Android",Ramp,Python,Programming Languages
+15,"Software Engineer Internship, Android",Ramp,SQL,Programming Languages
+16,[Summer 2027] Software Engineer Intern,Roblox,Python,Programming Languages
+16,[Summer 2027] Software Engineer Intern,Roblox,Machine Learning,Machine Learning
+16,[Summer 2027] Software Engineer Intern,Roblox,Communication,Soft Skills
+16,[Summer 2027] Software Engineer Intern,Roblox,Presentation,Soft Skills
+17,Software Engineer Intern,Simular,Python,Programming Languages
+17,Software Engineer Intern,Simular,Communication,Soft Skills
+17,Software Engineer Intern,Simular,Collaboration,Soft Skills
+17,Software Engineer Intern,Simular,Problem Solving,Soft Skills

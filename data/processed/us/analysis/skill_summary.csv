@@ -1,0 +1,21 @@
+rank,skill,category,posting_count,percentage
+1,Python,Programming Languages,16,94.1
+2,Communication,Soft Skills,13,76.5
+3,Collaboration,Soft Skills,10,58.8
+4,Problem Solving,Soft Skills,10,58.8
+5,SQL,Programming Languages,4,23.5
+6,Statistics,Statistics and Math,4,23.5
+7,Git,Engineering and Cloud,2,11.8
+8,Machine Learning,Machine Learning,2,11.8
+9,APIs,Engineering and Cloud,1,5.9
+10,Computer Vision,Machine Learning,1,5.9
+11,Data Modeling,Engineering and Cloud,1,5.9
+12,Data Pipelines,Engineering and Cloud,1,5.9
+13,Databricks,Data Tools,1,5.9
+14,Excel,Data Tools,1,5.9
+15,Forecasting,Machine Learning,1,5.9
+16,GIS,Data Tools,1,5.9
+17,Pandas,Data Tools,1,5.9
+18,Presentation,Soft Skills,1,5.9
+19,R,Programming Languages,1,5.9
+20,Snowflake,Data Tools,1,5.9

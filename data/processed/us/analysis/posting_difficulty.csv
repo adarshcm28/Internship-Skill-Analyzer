@@ -1,0 +1,18 @@
+posting_id,job_title,company,advanced_skills,advanced_skill_count,experience_level,classification_rule
+1,2027 Software Engineer Intern,Anduril,Computer Vision,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+2,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+3,Software Engineering Intern (Winter),Datadog,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+4,"Intern, Data Analytics",EV Realty,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+5,Software Engineer Intern (Winter 2027),Figma,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+6,Data Science Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+7,Software Engineer Intern (Summer 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+8,Software Engineer Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+9,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+10,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+11,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+12,"Forward Deployed Software Engineer, Internship - France",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+14,Data Science Intern,QuantCo,Forecasting|Machine Learning,2,Advanced,Advanced when 2+ advanced skills are mentioned
+15,"Software Engineer Internship, Android",Ramp,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+16,[Summer 2027] Software Engineer Intern,Roblox,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+17,Software Engineer Intern,Simular,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
