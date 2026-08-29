@@ -1,18 +1,24 @@
 posting_id,job_title,company,advanced_skills,advanced_skill_count,experience_level,classification_rule
-1,2027 Software Engineer Intern,Anduril,Computer Vision,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-2,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-3,Software Engineering Intern (Winter),Datadog,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-4,"Intern, Data Analytics",EV Realty,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-5,Software Engineer Intern (Winter 2027),Figma,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-6,Data Science Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-7,Software Engineer Intern (Summer 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-8,Software Engineer Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-9,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-10,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-11,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-12,"Forward Deployed Software Engineer, Internship - France",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-13,"Forward Deployed Software Engineer, Internship - Intel",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-14,Data Science Intern,QuantCo,Forecasting|Machine Learning,2,Advanced,Advanced when 2+ advanced skills are mentioned
-15,"Software Engineer Internship, Android",Ramp,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-16,[Summer 2027] Software Engineer Intern,Roblox,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
-17,Software Engineer Intern,Simular,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+1,"2026 Applied Science Internship - United States, PhD Student Science Recruiting, Frontier AI & Robotics",Amazon,Computer Vision|Deep Learning|Machine Learning|PyTorch,4,Advanced,Advanced when 2+ advanced skills are mentioned
+2,"2026 Applied Science Internship - United States, PhD Student Science Recruiting, Frontier AI & Robotics",Amazon,Computer Vision|Deep Learning|Machine Learning|PyTorch,4,Advanced,Advanced when 2+ advanced skills are mentioned
+3,"2026 Applied Science Internship - United States, Undergrad Student Science Recruiting, Frontier AI & Robotics",Amazon,Computer Vision|Deep Learning|Machine Learning|PyTorch,4,Advanced,Advanced when 2+ advanced skills are mentioned
+4,"2026 Applied Science Internship - United States, Undergrad Student Science Recruiting, Frontier AI & Robotics",Amazon,Computer Vision|Deep Learning|Machine Learning|PyTorch,4,Advanced,Advanced when 2+ advanced skills are mentioned
+5,"2026 Fall Applied Science Internship - Gen AI & Large Language Models - United States, PhD Student Science Recruiting",Amazon,Computer Vision|Deep Learning|NLP,3,Advanced,Advanced when 2+ advanced skills are mentioned
+6,2027 Software Engineer Intern,Anduril,Computer Vision,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+7,"Software Engineer Intern (Fall 2026) - Austin, TX",Cloudflare,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+8,Software Engineering Intern (Winter),Datadog,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+9,"Intern, Data Analytics",EV Realty,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+10,Software Engineer Intern (Winter 2027),Figma,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+11,AI Software Engineering Intern,Intel,Computer Vision|Deep Learning|Machine Learning|PyTorch,4,Advanced,Advanced when 2+ advanced skills are mentioned
+12,Data Science Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+13,Software Engineer Intern (Summer 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+14,Software Engineer Intern (Winter 2027),Notion,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+15,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+16,"Forward Deployed Software Engineer, Internship - Commercial",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+17,"Forward Deployed Software Engineer, Internship - Defense Tech",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+18,"Forward Deployed Software Engineer, Internship - France",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+19,"Forward Deployed Software Engineer, Internship - Intel",Palantir,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+20,Data Science Intern,QuantCo,Forecasting|Machine Learning,2,Advanced,Advanced when 2+ advanced skills are mentioned
+21,"Software Engineer Internship, Android",Ramp,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+22,[Summer 2027] Software Engineer Intern,Roblox,Machine Learning,1,Beginner-friendly,Advanced when 2+ advanced skills are mentioned
+23,Software Engineer Intern,Simular,,0,Beginner-friendly,Advanced when 2+ advanced skills are mentioned

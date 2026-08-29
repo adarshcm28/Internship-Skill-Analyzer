@@ -1,6 +1,7 @@
 """Collect current data and software internships from public company job-board APIs.
 
-The collector uses public JSON endpoints provided by Ashby, Lever, and Greenhouse. It
+The collector uses structured career feeds from Ashby, Lever, Greenhouse,
+Amazon Jobs, and Workday. It
 does not submit applications, access private postings, or scrape arbitrary HTML.
 """
 
@@ -151,7 +152,7 @@ def load_boards(config_path: Path) -> list[JobBoard]:
         )
         if not all((board.company, board.provider, board.board)):
             raise ValueError(f"Incomplete job-board entry: {item}")
-        if board.provider not in {"ashby", "lever", "greenhouse"}:
+        if board.provider not in {"ashby", "lever", "greenhouse", "amazon", "workday"}:
             raise ValueError(f"Unsupported provider: {board.provider}")
         key = (board.provider, board.board)
         if key in seen:
@@ -177,6 +178,13 @@ def is_target_posting(title: str, description: str, employment_type: str) -> boo
 def fetch_json(session: requests.Session, url: str) -> Any:
     """Fetch one public JSON endpoint with a finite timeout."""
     response = session.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
+    response.raise_for_status()
+    return response.json()
+
+
+def post_json(session: requests.Session, url: str, payload: dict) -> Any:
+    """POST a JSON search request to a public career feed."""
+    response = session.post(url, json=payload, timeout=REQUEST_TIMEOUT_SECONDS)
     response.raise_for_status()
     return response.json()
 
@@ -313,6 +321,69 @@ def collect_greenhouse(
     return postings
 
 
+def collect_amazon(board: JobBoard, session: requests.Session, collected_on: str) -> list[Posting]:
+    """Collect matching jobs from Amazon Jobs' structured search feed."""
+    postings = []
+    offset = 0
+    while True:
+        payload = fetch_json(session, "https://www.amazon.jobs/en/search.json?base_query=intern"
+                             f"&offset={offset}&result_limit=100")
+        jobs = payload.get("jobs") or []
+        for job in jobs:
+            title = normalize_text(job.get("title"))
+            description = html_to_text(" ".join(filter(None, (job.get("description"),
+                job.get("basic_qualifications"), job.get("preferred_qualifications")))))
+            if normalize_text(job.get("country_code")).upper() != "USA" or not is_target_posting(title, description, ""):
+                continue
+            postings.append(Posting(
+                job_title=title, company=board.company,
+                location=normalize_text(job.get("location")) or "United States",
+                description=description, source="Amazon Jobs structured search feed",
+                source_url=f"https://www.amazon.jobs{normalize_text(job.get('job_path'))}",
+                date_collected=collected_on, provider="amazon",
+                external_posting_id=normalize_text(job.get("id_icims") or job.get("id")),
+                published_at="", employment_type=normalize_text(job.get("job_schedule_type")),
+                workplace_type=""))
+        offset += len(jobs)
+        if not jobs or offset >= int(payload.get("hits") or 0):
+            break
+    return postings
+
+
+def collect_workday(board: JobBoard, session: requests.Session, collected_on: str) -> list[Posting]:
+    """Collect and hydrate jobs from one configured public Workday career site."""
+    host, tenant, site = board.board.split("|", 2)
+    root = f"https://{host}/wday/cxs/{tenant}/{site}"
+    summaries, offset = [], 0
+    while True:
+        payload = post_json(session, f"{root}/jobs", {"appliedFacets": {}, "limit": 20,
+                            "offset": offset, "searchText": "intern"})
+        page = payload.get("jobPostings") or []
+        summaries.extend(page)
+        offset += len(page)
+        if not page or offset >= int(payload.get("total") or 0):
+            break
+    postings = []
+    for summary in summaries:
+        title, path = normalize_text(summary.get("title")), normalize_text(summary.get("externalPath"))
+        if not is_target_posting(title, "", ""):
+            continue
+        detail = (fetch_json(session, f"{root}{path}").get("jobPostingInfo") or {})
+        location, country = normalize_text(detail.get("location")), (detail.get("country") or {}).get("descriptor")
+        description = html_to_text(detail.get("jobDescription"))
+        if not is_us_location(location, country) or not description:
+            continue
+        postings.append(Posting(
+            job_title=title, company=board.company, location=location, description=description,
+            source="Workday structured career feed",
+            source_url=normalize_text(detail.get("externalUrl")) or f"{root}{path}",
+            date_collected=collected_on, provider="workday",
+            external_posting_id=normalize_text(detail.get("jobReqId") or detail.get("id")),
+            published_at=normalize_text(detail.get("startDate")),
+            employment_type=normalize_text(detail.get("timeType")), workplace_type=""))
+    return postings
+
+
 def collect_from_boards(
     boards: Iterable[JobBoard], collected_on: str
 ) -> tuple[list[Posting], list[str]]:
@@ -328,8 +399,12 @@ def collect_from_boards(
                 found = collect_ashby(board, session, collected_on)
             elif board.provider == "lever":
                 found = collect_lever(board, session, collected_on)
-            else:
+            elif board.provider == "greenhouse":
                 found = collect_greenhouse(board, session, collected_on)
+            elif board.provider == "amazon":
+                found = collect_amazon(board, session, collected_on)
+            else:
+                found = collect_workday(board, session, collected_on)
             postings.extend(found)
             print(f"{board.company}: found {len(found)} matching posting(s)")
         except (requests.RequestException, ValueError, TypeError) as exc:

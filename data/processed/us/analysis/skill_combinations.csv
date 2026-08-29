@@ -1,94 +1,115 @@
 skill_1,skill_2,posting_count,percentage
-Communication,Python,13,76.5
-Collaboration,Python,9,52.9
-Problem Solving,Python,9,52.9
-Collaboration,Communication,8,47.1
-Collaboration,Problem Solving,8,47.1
-Communication,Problem Solving,8,47.1
-Python,SQL,4,23.5
-Python,Statistics,4,23.5
-Communication,SQL,3,17.6
-Communication,Statistics,3,17.6
-SQL,Statistics,3,17.6
-Collaboration,SQL,2,11.8
-Collaboration,Statistics,2,11.8
-Communication,Git,2,11.8
-Communication,Machine Learning,2,11.8
-Git,Python,2,11.8
-Machine Learning,Python,2,11.8
-Problem Solving,SQL,2,11.8
-Problem Solving,Statistics,2,11.8
-APIs,Python,1,5.9
-APIs,Statistics,1,5.9
-Collaboration,Data Modeling,1,5.9
-Collaboration,Data Pipelines,1,5.9
-Collaboration,Databricks,1,5.9
-Collaboration,Excel,1,5.9
-Collaboration,GIS,1,5.9
-Collaboration,Git,1,5.9
-Collaboration,R,1,5.9
-Collaboration,Snowflake,1,5.9
-Communication,Computer Vision,1,5.9
-Communication,Data Pipelines,1,5.9
-Communication,Databricks,1,5.9
-Communication,Excel,1,5.9
-Communication,Forecasting,1,5.9
-Communication,GIS,1,5.9
-Communication,Pandas,1,5.9
-Communication,Presentation,1,5.9
-Communication,R,1,5.9
-Communication,Snowflake,1,5.9
-Computer Vision,Python,1,5.9
-Data Modeling,Problem Solving,1,5.9
-Data Pipelines,Databricks,1,5.9
-Data Pipelines,Excel,1,5.9
-Data Pipelines,GIS,1,5.9
-Data Pipelines,Problem Solving,1,5.9
-Data Pipelines,Python,1,5.9
-Data Pipelines,SQL,1,5.9
-Data Pipelines,Snowflake,1,5.9
-Data Pipelines,Statistics,1,5.9
-Databricks,Excel,1,5.9
-Databricks,GIS,1,5.9
-Databricks,Problem Solving,1,5.9
-Databricks,Python,1,5.9
-Databricks,SQL,1,5.9
-Databricks,Snowflake,1,5.9
-Databricks,Statistics,1,5.9
-Excel,GIS,1,5.9
-Excel,Problem Solving,1,5.9
-Excel,Python,1,5.9
-Excel,SQL,1,5.9
-Excel,Snowflake,1,5.9
-Excel,Statistics,1,5.9
-Forecasting,Git,1,5.9
-Forecasting,Machine Learning,1,5.9
-Forecasting,Pandas,1,5.9
-Forecasting,Python,1,5.9
-Forecasting,SQL,1,5.9
-Forecasting,Statistics,1,5.9
-GIS,Problem Solving,1,5.9
-GIS,Python,1,5.9
-GIS,SQL,1,5.9
-GIS,Snowflake,1,5.9
-GIS,Statistics,1,5.9
-Git,Machine Learning,1,5.9
-Git,Pandas,1,5.9
-Git,SQL,1,5.9
-Git,Statistics,1,5.9
-Machine Learning,Pandas,1,5.9
-Machine Learning,Presentation,1,5.9
-Machine Learning,SQL,1,5.9
-Machine Learning,Statistics,1,5.9
-Pandas,Python,1,5.9
-Pandas,SQL,1,5.9
-Pandas,Statistics,1,5.9
-Presentation,Python,1,5.9
-Problem Solving,R,1,5.9
-Problem Solving,Snowflake,1,5.9
-Python,R,1,5.9
-Python,Snowflake,1,5.9
-R,SQL,1,5.9
-R,Statistics,1,5.9
-SQL,Snowflake,1,5.9
-Snowflake,Statistics,1,5.9
+Communication,Python,17,73.9
+Problem Solving,Python,13,56.5
+Communication,Problem Solving,12,52.2
+Collaboration,Python,10,43.5
+Python,Statistics,9,39.1
+Collaboration,Communication,8,34.8
+Collaboration,Problem Solving,8,34.8
+Communication,Statistics,7,30.4
+Computer Vision,Python,7,30.4
+Machine Learning,Python,7,30.4
+Communication,Computer Vision,6,26.1
+Computer Vision,Deep Learning,6,26.1
+Deep Learning,Python,6,26.1
+Problem Solving,Statistics,6,26.1
+Attention to Detail,Communication,5,21.7
+Attention to Detail,Computer Vision,5,21.7
+Attention to Detail,Deep Learning,5,21.7
+Attention to Detail,Python,5,21.7
+Attention to Detail,Statistics,5,21.7
+Communication,Deep Learning,5,21.7
+Communication,Machine Learning,5,21.7
+Computer Vision,Machine Learning,5,21.7
+Computer Vision,PyTorch,5,21.7
+Computer Vision,Statistics,5,21.7
+Deep Learning,Machine Learning,5,21.7
+Deep Learning,PyTorch,5,21.7
+Deep Learning,Statistics,5,21.7
+Machine Learning,PyTorch,5,21.7
+Machine Learning,Statistics,5,21.7
+PyTorch,Python,5,21.7
+Attention to Detail,Machine Learning,4,17.4
+Attention to Detail,Problem Solving,4,17.4
+Attention to Detail,PyTorch,4,17.4
+Communication,PyTorch,4,17.4
+Computer Vision,Problem Solving,4,17.4
+Deep Learning,Problem Solving,4,17.4
+Machine Learning,Problem Solving,4,17.4
+Problem Solving,PyTorch,4,17.4
+PyTorch,Statistics,4,17.4
+Python,SQL,3,13.0
+Collaboration,SQL,2,8.7
+Collaboration,Statistics,2,8.7
+Communication,SQL,2,8.7
+Problem Solving,SQL,2,8.7
+SQL,Statistics,2,8.7
+APIs,Python,1,4.3
+APIs,Statistics,1,4.3
+Attention to Detail,NLP,1,4.3
+Collaboration,Computer Vision,1,4.3
+Collaboration,Data Modeling,1,4.3
+Collaboration,Data Pipelines,1,4.3
+Collaboration,Databricks,1,4.3
+Collaboration,Deep Learning,1,4.3
+Collaboration,Excel,1,4.3
+Collaboration,GIS,1,4.3
+Collaboration,Git,1,4.3
+Collaboration,Machine Learning,1,4.3
+Collaboration,PyTorch,1,4.3
+Collaboration,R,1,4.3
+Collaboration,Snowflake,1,4.3
+Communication,Data Pipelines,1,4.3
+Communication,Databricks,1,4.3
+Communication,Excel,1,4.3
+Communication,GIS,1,4.3
+Communication,Git,1,4.3
+Communication,NLP,1,4.3
+Communication,Presentation,1,4.3
+Communication,R,1,4.3
+Communication,Snowflake,1,4.3
+Computer Vision,NLP,1,4.3
+Data Modeling,Problem Solving,1,4.3
+Data Pipelines,Databricks,1,4.3
+Data Pipelines,Excel,1,4.3
+Data Pipelines,GIS,1,4.3
+Data Pipelines,Problem Solving,1,4.3
+Data Pipelines,Python,1,4.3
+Data Pipelines,SQL,1,4.3
+Data Pipelines,Snowflake,1,4.3
+Data Pipelines,Statistics,1,4.3
+Databricks,Excel,1,4.3
+Databricks,GIS,1,4.3
+Databricks,Problem Solving,1,4.3
+Databricks,Python,1,4.3
+Databricks,SQL,1,4.3
+Databricks,Snowflake,1,4.3
+Databricks,Statistics,1,4.3
+Deep Learning,NLP,1,4.3
+Excel,GIS,1,4.3
+Excel,Problem Solving,1,4.3
+Excel,Python,1,4.3
+Excel,SQL,1,4.3
+Excel,Snowflake,1,4.3
+Excel,Statistics,1,4.3
+Forecasting,Machine Learning,1,4.3
+Forecasting,Python,1,4.3
+Forecasting,Statistics,1,4.3
+GIS,Problem Solving,1,4.3
+GIS,Python,1,4.3
+GIS,SQL,1,4.3
+GIS,Snowflake,1,4.3
+GIS,Statistics,1,4.3
+Git,Python,1,4.3
+Machine Learning,Presentation,1,4.3
+NLP,Python,1,4.3
+NLP,Statistics,1,4.3
+Presentation,Python,1,4.3
+Problem Solving,R,1,4.3
+Problem Solving,Snowflake,1,4.3
+Python,R,1,4.3
+Python,Snowflake,1,4.3
+R,SQL,1,4.3
+R,Statistics,1,4.3
+SQL,Snowflake,1,4.3
+Snowflake,Statistics,1,4.3

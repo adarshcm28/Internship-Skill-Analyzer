@@ -147,9 +147,12 @@ Company job boards are configured in:
 config/job_boards.json
 ```
 
-The collector checks 30 configured company boards through public Ashby, Lever,
-and Greenhouse APIs for US data and software internships. The August 28, 2026
-run retained 17 postings from 11 companies, capped at five per company.
+The collector checks 32 configured company boards through structured Ashby,
+Lever, Greenhouse, Amazon Jobs, and Workday career feeds for US data and
+software internships. Amazon and Intel are now included as large-company
+career-system connectors. Results are capped at five postings per company.
+The August 29, 2026 refresh retained 23 postings from 13 companies, including
+five Amazon postings and one Intel posting.
 Updated US charts are in `reports/figures/us/`; the earlier worldwide charts
 remain separate. Test the live collection without changing the current
 dataset:
