@@ -6,11 +6,36 @@ from unittest.mock import patch
 
 from src.collect_postings import (
     JobBoard, ashby_us_locations, lever_us_locations, is_us_location,
-    collect_ashby, collect_lever, collect_greenhouse, is_target_posting, postings_frame,
+    collect_ashby, collect_lever, collect_greenhouse, collect_amazon,
+    collect_workday, is_target_posting, postings_frame,
 )
 
 
 class USLocationTests(unittest.TestCase):
+    @patch("src.collect_postings.fetch_json")
+    def test_amazon_filters_country_and_role(self, fetch):
+        job = {"title": "Software Development Intern", "description": "Python",
+               "country_code": "USA", "location": "US, WA, Seattle",
+               "job_path": "/en/jobs/1/example", "id_icims": "1"}
+        fetch.return_value = {"jobs": [job, dict(job, country_code="CAN"),
+            dict(job, title="Sales Intern")], "hits": 3}
+        rows = collect_amazon(JobBoard("Amazon", "amazon", "amazon.jobs"), None, "2026-08-29")
+        self.assertEqual([row.external_posting_id for row in rows], ["1"])
+
+    @patch("src.collect_postings.fetch_json")
+    @patch("src.collect_postings.post_json")
+    def test_workday_hydrates_and_filters_country(self, post, fetch):
+        post.return_value = {"jobPostings": [
+            {"title": "AI Software Intern", "externalPath": "/job/us/1"},
+            {"title": "Sales Intern", "externalPath": "/job/us/2"}], "total": 2}
+        fetch.return_value = {"jobPostingInfo": {"jobDescription": "<p>Python</p>",
+            "location": "US, Arizona, Phoenix", "country": {"descriptor": "United States of America"},
+            "externalUrl": "https://example.com/1", "jobReqId": "1"}}
+        board = JobBoard("Intel", "workday", "host|tenant|site")
+        rows = collect_workday(board, None, "2026-08-29")
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].description, "Python")
+
     def test_city_state(self):
         for location in ("San Francisco, CA", "Boston, MA", "Washington, DC"):
             self.assertTrue(is_us_location(location))

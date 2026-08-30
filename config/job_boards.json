@@ -28,5 +28,7 @@
   {"company": "Palantir", "provider": "lever", "board": "palantir"},
   {"company": "Anduril", "provider": "greenhouse", "board": "andurilindustries"},
   {"company": "MongoDB", "provider": "greenhouse", "board": "mongodb"},
-  {"company": "Coinbase", "provider": "greenhouse", "board": "coinbase"}
+  {"company": "Coinbase", "provider": "greenhouse", "board": "coinbase"},
+  {"company": "Amazon", "provider": "amazon", "board": "amazon.jobs"},
+  {"company": "Intel", "provider": "workday", "board": "intel.wd1.myworkdayjobs.com|intel|External"}
 ]
