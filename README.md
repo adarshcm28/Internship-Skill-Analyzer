@@ -175,6 +175,18 @@ company by default; use `--max-per-company` to change that limit.
 See `docs/data-collection.md` for API details, filtering rules, validation, and
 configuration instructions.
 
+### Open the dashboard
+
+Launch the interactive user interface from the project folder:
+
+```bash
+streamlit run app.py
+```
+
+Then open `http://localhost:8501` in a browser. The dashboard reads the latest
+US processed data and provides company, skill, difficulty, and title filters,
+interactive charts, an opportunity table, and links to the original postings.
+
 ### Step 3: Clean the Text
 
 Job descriptions are messy. They may include bullet points, repeated spaces, inconsistent capitalization, and extra symbols.
