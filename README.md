@@ -10,6 +10,12 @@ Instead of working with a generic practice dataset, this project uses job postin
 
 This project is designed for a beginner data science student who wants to practice Python, data cleaning, visualization, basic natural language processing, and AI-assisted analysis while building something useful for their own career.
 
+## Architecture and Interview Documentation
+
+See the [project architecture guide](docs/project-architecture.md) for the
+end-to-end system map, provider architecture, data lineage, analysis logic,
+generated charts, engineering tradeoffs, and an interview-ready walkthrough.
+
 ## Problem Statement
 
 Data science students often ask:
