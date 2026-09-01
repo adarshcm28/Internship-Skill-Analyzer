@@ -18,6 +18,18 @@ st.markdown("""
 .stApp { background: #f7f8fc; }
 [data-testid="stSidebar"] { background: #111827; }
 [data-testid="stSidebar"] * { color: #f9fafb; }
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] [data-baseweb="input"] *,
+[data-testid="stSidebar"] [data-baseweb="select"] * {
+    color: #111827 !important;
+}
+[data-testid="stSidebar"] input::placeholder {
+    color: #6b7280 !important;
+    opacity: 1;
+}
+[data-testid="stSidebar"] [data-baseweb="tag"] * {
+    color: #1e3a8a !important;
+}
 [data-testid="stMetric"] { background:white; border:1px solid #e5e7eb; border-radius:14px;
 padding:16px 18px; box-shadow:0 4px 14px rgba(15,23,42,.05); }
 .hero { padding:28px 30px; border-radius:20px; color:white; margin-bottom:20px;
