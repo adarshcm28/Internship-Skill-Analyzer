@@ -193,6 +193,25 @@ Then open `http://localhost:8501` in a browser. The dashboard reads the latest
 US processed data and provides company, skill, difficulty, and title filters,
 interactive charts, an opportunity table, and links to the original postings.
 
+### Internship Assistant setup
+
+The dashboard includes an **Internship Assistant** chat panel. To enable replies,
+add `OPENAI_API_KEY` to the local `.env` file (already excluded from Git):
+
+```dotenv
+OPENAI_API_KEY=your_actual_key
+OPENAI_MODEL=gpt-5.6
+```
+
+Refresh the dashboard after saving. Do not share or commit the actual key.
+The model is configurable with `OPENAI_MODEL`; access and API billing are required.
+Chat sends the question, recent conversation, and filtered job data to OpenAI only
+when submitted. Descriptions are excerpted, chat history is bounded, and changing
+filters resets the conversation. The bot does not browse or submit applications.
+Without a key, the panel remains visible but AI replies are disabled.
+The API logic lives in `src/chatbot.py` and uses the
+[Responses API](https://developers.openai.com/api/docs/quickstart).
+
 ### Step 3: Clean the Text
 
 Job descriptions are messy. They may include bullet points, repeated spaces, inconsistent capitalization, and extra symbols.
