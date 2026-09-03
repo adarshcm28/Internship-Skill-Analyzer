@@ -1,11 +1,15 @@
 """Interactive Streamlit dashboard for the Internship Skill Analyzer."""
 
 import html
+import hashlib
 from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from openai import OpenAIError
+
+from src.chatbot import BOT_NAME, answer_question, chat_settings, dataset_context
 
 
 ROOT = Path(__file__).resolve().parent
@@ -98,6 +102,42 @@ US INTERNSHIP INTELLIGENCE</div><h1>Build the skills employers want.</h1>
 """, unsafe_allow_html=True)
 
 skill_counts = skill_frequency(filtered)
+with st.expander(f"💬 {BOT_NAME}", expanded=True):
+    st.markdown(f"### {BOT_NAME}")
+    st.caption("Ask about the internships shown by your current filters. Changing filters starts a new chat.")
+    context = dataset_context(filtered)
+    context_id = hashlib.sha256(context.encode()).hexdigest()
+    if st.session_state.get("chat_context_id") != context_id:
+        st.session_state.chat_context_id = context_id
+        st.session_state.chat_messages = []
+    key, model = chat_settings(ROOT)
+    if not key:
+        st.info("AI replies are not enabled yet. Add OPENAI_API_KEY to the project's local .env file. "
+                "Do not paste your key into chat or commit it to GitHub.")
+    st.caption('Try: “Which internships mention Python?” or “Explain the difficulty labels.”')
+    st.caption("When you send a message, your question, recent chat history, and selected job data "
+               "are sent to OpenAI. API usage may incur charges; avoid entering personal information.")
+    if st.button("Clear chat", key="clear_chat"):
+        st.session_state.chat_messages = []
+    for message in st.session_state.chat_messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+    question = st.chat_input("Ask Internship Assistant…", disabled=not key, max_chars=2000)
+    if question and question.strip():
+        with st.chat_message("user"):
+            st.write(question)
+        try:
+            with st.spinner("Internship Assistant is checking the dataset…"):
+                answer = answer_question(key, model, context, st.session_state.chat_messages, question)
+            st.session_state.chat_messages.extend([
+                {"role": "user", "content": question}, {"role": "assistant", "content": answer}])
+            st.session_state.chat_messages = st.session_state.chat_messages[-8:]
+            with st.chat_message("assistant"):
+                st.write(answer)
+        except OpenAIError:
+            st.error("Could not get an AI reply. Check your API key, model access, billing, and connection. "
+                     "Your dashboard still works; you can try again.")
+
 advanced_count = int(filtered["experience_level"].eq("Advanced").sum())
 metrics = st.columns(4)
 metrics[0].metric("Matching internships", len(filtered), f"of {len(data)} collected")
