@@ -16,6 +16,20 @@ See the [project architecture guide](docs/project-architecture.md) for the
 end-to-end system map, provider architecture, data lineage, analysis logic,
 generated charts, engineering tradeoffs, and an interview-ready walkthrough.
 
+The [personal skill-gap analyzer specification](docs/skill-gap-analyzer.md)
+documents the matching formula, edge cases, result contract, interpretation,
+and limitations for that planned feature.
+
+## Current
+
+- **Current phase:** Phase 1 — Personal Skill-Gap Analyzer
+- **Completed:** Milestone 1 — Define and document matching rules
+- **Working on next:** Milestone 2 — Build the skill-selection interface
+- **Two-week plan:** [Open the feature roadmap](docs/roadmap/README.md)
+
+The roadmap contains fourteen daily milestones across four additional feature
+phases. Update this section and the roadmap after completing each milestone.
+
 ## Problem Statement
 
 Data science students often ask:
