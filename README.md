@@ -23,8 +23,8 @@ and limitations for that planned feature.
 ## Current
 
 - **Current phase:** Phase 1 — Personal Skill-Gap Analyzer
-- **Completed:** Milestone 1 — Define and document matching rules
-- **Working on next:** Milestone 2 — Build the skill-selection interface
+- **Completed:** Milestones 1–2 — Matching rules and skill-selection interface
+- **Working on next:** Milestone 3 — Implement and test matching logic
 - **Two-week plan:** [Open the feature roadmap](docs/roadmap/README.md)
 
 The roadmap contains fourteen daily milestones across four additional feature
