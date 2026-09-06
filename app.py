@@ -10,6 +10,7 @@ import streamlit as st
 from openai import OpenAIError
 
 from src.chatbot import BOT_NAME, answer_question, chat_settings, dataset_context
+from src.extract_skills import SKILL_CATALOG
 
 
 ROOT = Path(__file__).resolve().parent
@@ -101,6 +102,32 @@ US INTERNSHIP INTELLIGENCE</div><h1>Build the skills employers want.</h1>
 <p>Explore current data and software internships, compare demand, and find your next application.</p></div>
 """, unsafe_allow_html=True)
 
+catalog_skills = sorted(
+    skill for category in SKILL_CATALOG.values() for skill in category
+)
+with st.expander("🧭 My Skills", expanded=True):
+    st.markdown("### My Skills")
+    st.caption("Select skills you already have. These choices stay in this browser session and do not change the CSV files.")
+    profile_skills = st.multiselect(
+        "Skills I already have",
+        options=catalog_skills,
+        key="profile_skills",
+        placeholder="Search for Python, SQL, Tableau…",
+    )
+    profile_left, profile_right = st.columns([3, 1])
+    with profile_left:
+        if profile_skills:
+            st.success(f"{len(profile_skills)} skill{'s' if len(profile_skills) != 1 else ''} selected")
+        else:
+            st.info("Select at least one skill to create your profile. Match calculations arrive in Milestone 3.")
+    with profile_right:
+        st.button(
+            "Clear my skills",
+            disabled=not profile_skills,
+            on_click=lambda: st.session_state.update(profile_skills=[]),
+            width="stretch",
+        )
+
 skill_counts = skill_frequency(filtered)
 with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.markdown(f"### {BOT_NAME}")
@@ -158,7 +185,7 @@ with chart_left:
         figure.update_layout(title="Most requested skills", coloraxis_showscale=False,
                              plot_bgcolor="white", paper_bgcolor="white", height=420,
                              margin=dict(l=10, r=15, t=55, b=20))
-        st.plotly_chart(figure, use_container_width=True)
+        st.plotly_chart(figure, width="stretch")
 with chart_right:
     counts = filtered["experience_level"].value_counts().rename_axis("level").reset_index(name="postings")
     if counts.empty:
@@ -169,13 +196,13 @@ with chart_right:
         figure.update_traces(textposition="outside", textinfo="label+value")
         figure.update_layout(title="Posting difficulty", showlegend=False, height=420,
                              margin=dict(l=20, r=20, t=55, b=20), paper_bgcolor="white")
-        st.plotly_chart(figure, use_container_width=True)
+        st.plotly_chart(figure, width="stretch")
 
 st.markdown("### Internship opportunities")
 st.caption("Choose a row to inspect the full description and application link below.")
 display = filtered[["company", "job_title", "location", "experience_level", "skill_count", "source_url"]].copy()
 display.columns = ["Company", "Role", "Location", "Difficulty", "Skills", "Apply"]
-selection = st.dataframe(display, use_container_width=True, hide_index=True, on_select="rerun",
+selection = st.dataframe(display, width="stretch", hide_index=True, on_select="rerun",
     selection_mode="single-row", column_config={
         "Apply": st.column_config.LinkColumn("Apply", display_text="Open posting ↗"),
         "Skills": st.column_config.NumberColumn("Skills", format="%d")})

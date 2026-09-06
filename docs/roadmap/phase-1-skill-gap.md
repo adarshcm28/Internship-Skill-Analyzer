@@ -11,10 +11,22 @@ in [`../skill-gap-analyzer.md`](../skill-gap-analyzer.md).
 
 ### ✅ Milestone 1 — Define matching rules
 
-Completed: formula, normalization, empty-data behavior, output contract, UI
-terminology, and limitations.
+#### What was implemented
 
-### 🚧 Milestone 2 — Build the skill-selection interface — Day 1
+This milestone produced the written specification in
+[`../skill-gap-analyzer.md`](../skill-gap-analyzer.md). It defines the calculation
+as matched detected skills divided by the posting's total detected skills, along
+with case normalization, duplicate removal, canonical naming, rounding, and
+empty-data behavior. It also defines the future function's result fields:
+`matched_skills`, `missing_skills`, `matched_count`, `required_count`, and
+`match_percentage`.
+
+No runtime calculation code was added in this milestone. Its purpose was to make
+the upcoming implementation testable and prevent the result from being presented
+as a hiring prediction. The specification requires the UI to call it **skill
+overlap** and document what the score does not measure.
+
+### ✅ Milestone 2 — Build the skill-selection interface — Day 1
 
 - Add a searchable multiselect containing canonical catalog skills.
 - Store selections in Streamlit session state.
@@ -23,7 +35,28 @@ terminology, and limitations.
 
 Done when users can select, retain, and clear skills without changing source CSVs.
 
-### ⬜ Milestone 3 — Implement and test matching logic — Day 2
+#### What was implemented
+
+The `My Skills` section was added to [`../../app.py`](../../app.py). It imports
+`SKILL_CATALOG` from `src/extract_skills.py` and flattens that catalog into one
+alphabetically sorted list, ensuring profile choices use the same canonical names
+as the extraction pipeline.
+
+Streamlit's `st.multiselect` provides searchable selection and stores the result
+under the `profile_skills` session-state key, so selections remain available when
+the app reruns. The surrounding section:
+
+- Shows a singular or plural count as skills are selected.
+- Shows instructions when the profile is empty.
+- Disables `Clear my skills` when there is nothing to clear.
+- Clears the session-state list through the button callback.
+- Calculates everything in memory and never writes to the source CSV files.
+
+An automated Streamlit smoke test exercised catalog loading, selecting `Python`
+and `SQL`, persistence after rerun, count display, the clear action, and the empty
+state. The matching percentage is intentionally deferred to Milestone 3.
+
+### 🚧 Milestone 3 — Implement and test matching logic — Day 2
 
 - Create `src/skill_gap.py` with a pure matching function.
 - Normalize case, whitespace, duplicates, nulls, and empty values.

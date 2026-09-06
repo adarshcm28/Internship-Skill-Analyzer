@@ -8,9 +8,9 @@ day ends with a deliverable that can be tested, documented, and committed.
 | Item | Status |
 | --- | --- |
 | Current phase | Phase 1 — Personal Skill-Gap Analyzer |
-| Last completed milestone | Milestone 1 — Matching specification |
-| Current milestone | Milestone 2 — Skill-selection interface |
-| Next daily task | Day 1 |
+| Last completed milestone | Milestone 2 — Skill-selection interface |
+| Current milestone | Milestone 3 — Matching function and tests |
+| Next daily task | Day 2 |
 
 Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
@@ -27,8 +27,8 @@ Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
 | Day | Phase and milestone | Deliverable | Status |
 | ---: | --- | --- | :---: |
-| 1 | Phase 1, Milestone 2 | Searchable current-skills selector | 🚧 |
-| 2 | Phase 1, Milestone 3 | Tested matching function | ⬜ |
+| 1 | Phase 1, Milestone 2 | Searchable current-skills selector | ✅ |
+| 2 | Phase 1, Milestone 3 | Tested matching function | 🚧 |
 | 3 | Phase 1, Milestone 4 | Scores for every visible posting | ⬜ |
 | 4 | Phase 1, Milestone 5 | Match explanations in the UI | ⬜ |
 | 5 | Phase 1, Milestone 6 | Sorting, recommendations, and final tests | ⬜ |
@@ -48,7 +48,8 @@ Status: ✅ Complete · 🚧 Current · ⬜ Not started
 2. Implement the smallest complete deliverable.
 3. Run relevant unit tests and a Streamlit smoke test.
 4. Update the milestone status and both Current sections.
-5. Record decisions and limitations in the documentation.
+5. Under the completed milestone, add a **What was implemented** section that
+   names the files changed and briefly explains what the code does.
 6. Commit with a message naming the completed feature.
 
 ## Definition of done
@@ -56,3 +57,7 @@ Status: ✅ Complete · 🚧 Current · ⬜ Not started
 A milestone is complete when its behavior works, edge cases fail safely, tests
 cover its logic, UI language is accurate, and documentation is updated. The
 milestone should be independently demonstrable before moving to the next one.
+
+Only completed milestones receive implementation notes. Planned and current
+milestones keep their task lists until their code is finished, so the roadmap
+clearly distinguishes completed work from intended work.
