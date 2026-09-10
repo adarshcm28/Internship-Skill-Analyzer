@@ -56,7 +56,7 @@ An automated Streamlit smoke test exercised catalog loading, selecting `Python`
 and `SQL`, persistence after rerun, count display, the clear action, and the empty
 state. The matching percentage is intentionally deferred to Milestone 3.
 
-### 🚧 Milestone 3 — Implement and test matching logic — Day 2
+### ✅ Milestone 3 — Implement and test matching logic — Day 2
 
 - Create `src/skill_gap.py` with a pure matching function.
 - Normalize case, whitespace, duplicates, nulls, and empty values.
@@ -66,7 +66,24 @@ state. The matching percentage is intentionally deferred to Milestone 3.
 
 Done when matching works independently of Streamlit and all tests pass.
 
-### ⬜ Milestone 4 — Score visible postings — Day 3
+#### What was implemented
+
+[`../../src/skill_gap.py`](../../src/skill_gap.py) now contains a pure
+`calculate_skill_gap` function and a typed result contract. Its normalization
+helper trims whitespace, compares case-insensitively, removes duplicates, ignores
+null/blank/unknown skills, restores canonical catalog spelling, and sorts results
+deterministically. A plain string is rejected to prevent accidental character-by-
+character matching of serialized CSV data.
+
+The calculation returns matched and missing skills, both counts, and a percentage
+rounded to one decimal. When a posting has no detected catalog skills it returns
+`None`, preserving the documented distinction between unavailable data and 0%.
+
+[`../../tests/test_skill_gap.py`](../../tests/test_skill_gap.py) covers partial,
+full, zero, and unavailable overlap; empty inputs; capitalization; whitespace;
+duplicates; nulls; unknown skills; invalid string input; and input immutability.
+
+### ✅ Milestone 4 — Score visible postings — Day 3
 
 - Apply matching to the currently filtered dataframe.
 - Keep results in memory rather than changing processed CSVs.
@@ -75,7 +92,17 @@ Done when matching works independently of Streamlit and all tests pass.
 
 Done when every visible posting has a correct result or an explained unavailable state.
 
-### ⬜ Milestone 5 — Add results to the dashboard — Day 4
+#### What was implemented
+
+`score_postings` in [`../../src/skill_gap.py`](../../src/skill_gap.py) accepts a
+dataframe and the selected profile skills. It splits each pipe-delimited
+`skills_extracted` value, calls the tested single-posting matcher, and attaches
+five result columns to a deep copy. The source dataframe and CSV files remain
+unchanged. It validates the required input column and preserves `None` for jobs
+without detected skills. Tests cover multiple rows, unavailable results, missing
+columns, and input immutability.
+
+### ✅ Milestone 5 — Add results to the dashboard — Day 4
 
 - Add skill-overlap percentage to the opportunity table.
 - Show matched and missing skills in selected-job details.
@@ -85,7 +112,16 @@ Done when every visible posting has a correct result or an explained unavailable
 
 Done when users can understand both the score and its evidence.
 
-### ⬜ Milestone 6 — Prioritize opportunities and skills — Day 5
+#### What was implemented
+
+[`../../app.py`](../../app.py) scores the dataframe after normal dashboard filters
+run. When a profile exists, the My Skills section shows average overlap, strongest
+overlap, and the number visible at the selected threshold. The opportunity table
+adds a `Skill overlap` percentage. Selecting a row shows its matched skills,
+missing skills, and an explicit notice that the number is catalog overlap—not a
+qualification or interview prediction. Unavailable scores remain distinct from 0%.
+
+### ✅ Milestone 6 — Prioritize opportunities and skills — Day 5
 
 - Sort postings by highest overlap and add a minimum-overlap filter.
 - Rank missing skills by the number of relevant postings requesting them.
@@ -94,6 +130,18 @@ Done when users can understand both the score and its evidence.
 - Update the README, architecture guide, and Current trackers.
 
 Done when the full skill-gap workflow is interview-demo ready.
+
+#### What was implemented
+
+The My Skills panel now includes a minimum-overlap slider. Matching postings are
+sorted from highest overlap to lowest while jobs without enough detected data are
+kept and shown last. `rank_missing_skills` in `src/skill_gap.py` explodes the
+in-memory missing-skill lists, counts the number of visible postings requesting
+each skill, and returns a deterministic ranking for the `Learn next` table.
+
+The feature was validated with 14 focused skill-gap tests, the full 27-test project
+suite, and a Streamlit smoke test that selected profile skills and changed the
+minimum threshold. Phase 1 is complete; no later roadmap phase was implemented.
 
 ## Phase demonstration
 

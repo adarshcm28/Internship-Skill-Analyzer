@@ -1,7 +1,6 @@
 """Interactive Streamlit dashboard for the Internship Skill Analyzer."""
 
 import html
-import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -9,8 +8,19 @@ import plotly.express as px
 import streamlit as st
 from openai import OpenAIError
 
-from src.chatbot import BOT_NAME, answer_question, chat_settings, dataset_context
+from src.chatbot import (
+    BOT_NAME,
+    answer_question,
+    chat_settings,
+    check_agent_health,
+    classify_openai_error,
+    configured_health,
+    dataset_context,
+)
 from src.extract_skills import SKILL_CATALOG
+from src.personalization import build_personalization_context, profile_fingerprint
+from src.retrieval import selection_fingerprint
+from src.skill_gap import rank_missing_skills, score_postings
 
 
 ROOT = Path(__file__).resolve().parent
@@ -128,20 +138,90 @@ with st.expander("🧭 My Skills", expanded=True):
             width="stretch",
         )
 
+    minimum_overlap = st.slider(
+        "Minimum skill overlap",
+        min_value=0,
+        max_value=100,
+        value=0,
+        step=10,
+        disabled=not profile_skills,
+        help="Navigation aid only—not a qualification or interview prediction.",
+    )
+
+    filtered = score_postings(filtered, profile_skills)
+    if profile_skills:
+        filtered = filtered.loc[
+            filtered["match_percentage"].isna()
+            | filtered["match_percentage"].ge(minimum_overlap)
+        ].sort_values("match_percentage", ascending=False, na_position="last")
+        available_scores = filtered["match_percentage"].dropna()
+        gap_metrics = st.columns(3)
+        gap_metrics[0].metric(
+            "Average skill overlap",
+            f"{available_scores.mean():.0f}%" if not available_scores.empty else "Unavailable",
+        )
+        gap_metrics[1].metric(
+            "Strongest overlap",
+            f"{available_scores.max():.0f}%" if not available_scores.empty else "Unavailable",
+        )
+        gap_metrics[2].metric("Visible at threshold", len(filtered))
+
+        recommendations = rank_missing_skills(filtered).head(5)
+        st.markdown("#### Learn next")
+        if recommendations.empty:
+            st.success("You selected every detected skill in the visible postings.")
+        else:
+            st.caption("Prioritized by how many visible internships request a skill you did not select.")
+            st.dataframe(
+                recommendations.rename(columns={"skill": "Skill", "posting_count": "Visible postings"}),
+                hide_index=True,
+                width="stretch",
+            )
+    else:
+        st.caption("Skill-overlap scoring, sorting, and recommendations appear after you select a skill.")
+
 skill_counts = skill_frequency(filtered)
 with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.markdown(f"### {BOT_NAME}")
     st.caption("Ask about the internships shown by your current filters. Changing filters starts a new chat.")
-    context = dataset_context(filtered)
-    context_id = hashlib.sha256(context.encode()).hexdigest()
+    context_id = f"{selection_fingerprint(filtered)}:{profile_fingerprint(profile_skills)}"
     if st.session_state.get("chat_context_id") != context_id:
         st.session_state.chat_context_id = context_id
         st.session_state.chat_messages = []
     key, model = chat_settings(ROOT)
+    configuration_id = f"{bool(key)}:{model}"
+    if st.session_state.get("agent_configuration_id") != configuration_id:
+        st.session_state.agent_configuration_id = configuration_id
+        st.session_state.agent_health = configured_health(key, model).to_dict()
+
+    health = st.session_state.agent_health
+    health_left, health_right = st.columns([4, 1])
+    with health_left:
+        status_text = f"**{health['label']}** — {health['message']}"
+        if health["status"] == "ready":
+            st.success(status_text)
+        elif health["status"] == "not_checked":
+            st.warning(status_text)
+        else:
+            st.error(status_text)
+        st.caption(f"Configured model: `{model}`")
+    with health_right:
+        if st.button("Check connection", disabled=not key, width="stretch"):
+            with st.spinner("Checking API access…"):
+                st.session_state.agent_health = check_agent_health(key, model).to_dict()
+            st.rerun()
+
     if not key:
         st.info("AI replies are not enabled yet. Add OPENAI_API_KEY to the project's local .env file. "
                 "Do not paste your key into chat or commit it to GitHub.")
-    st.caption('Try: “Which internships mention Python?” or “Explain the difficulty labels.”')
+    if profile_skills:
+        st.caption(
+            f"Personalization active with {len(profile_skills)} selected skill"
+            f"{'s' if len(profile_skills) != 1 else ''}. Match values come from the app's calculations."
+        )
+    else:
+        st.caption("Select skills under My Skills to receive personalized match explanations.")
+    st.caption('Try: “Which internships mention Python?” or “Why do these roles match my skills?”')
     st.caption("When you send a message, your question, recent chat history, and selected job data "
                "are sent to OpenAI. API usage may incur charges; avoid entering personal information.")
     if st.button("Clear chat", key="clear_chat"):
@@ -151,19 +231,31 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
             st.write(message["content"])
     question = st.chat_input("Ask Internship Assistant…", disabled=not key, max_chars=2000)
     if question and question.strip():
+        context = dataset_context(filtered, question)
+        personalization = build_personalization_context(filtered, profile_skills)
         with st.chat_message("user"):
             st.write(question)
         try:
             with st.spinner("Internship Assistant is checking the dataset…"):
-                answer = answer_question(key, model, context, st.session_state.chat_messages, question)
+                answer = answer_question(
+                    key,
+                    model,
+                    context,
+                    st.session_state.chat_messages,
+                    question,
+                    personalization,
+                    filtered,
+                    profile_skills,
+                )
             st.session_state.chat_messages.extend([
                 {"role": "user", "content": question}, {"role": "assistant", "content": answer}])
             st.session_state.chat_messages = st.session_state.chat_messages[-8:]
             with st.chat_message("assistant"):
                 st.write(answer)
-        except OpenAIError:
-            st.error("Could not get an AI reply. Check your API key, model access, billing, and connection. "
-                     "Your dashboard still works; you can try again.")
+        except OpenAIError as error:
+            failure = classify_openai_error(error)
+            st.session_state.agent_health = failure.to_dict()
+            st.error(f"{failure.label}: {failure.message} Your dashboard still works.")
 
 advanced_count = int(filtered["experience_level"].eq("Advanced").sum())
 metrics = st.columns(4)
@@ -200,12 +292,20 @@ with chart_right:
 
 st.markdown("### Internship opportunities")
 st.caption("Choose a row to inspect the full description and application link below.")
-display = filtered[["company", "job_title", "location", "experience_level", "skill_count", "source_url"]].copy()
-display.columns = ["Company", "Role", "Location", "Difficulty", "Skills", "Apply"]
+display_columns = ["company", "job_title", "location", "experience_level", "skill_count"]
+display_names = ["Company", "Role", "Location", "Difficulty", "Skills"]
+if profile_skills:
+    display_columns.append("match_percentage")
+    display_names.append("Skill overlap")
+display_columns.append("source_url")
+display_names.append("Apply")
+display = filtered[display_columns].copy()
+display.columns = display_names
 selection = st.dataframe(display, width="stretch", hide_index=True, on_select="rerun",
     selection_mode="single-row", column_config={
         "Apply": st.column_config.LinkColumn("Apply", display_text="Open posting ↗"),
-        "Skills": st.column_config.NumberColumn("Skills", format="%d")})
+        "Skills": st.column_config.NumberColumn("Skills", format="%d"),
+        "Skill overlap": st.column_config.NumberColumn("Skill overlap", format="%.0f%%")})
 
 if selection.selection.rows:
     posting = filtered.iloc[selection.selection.rows[0]]
@@ -220,6 +320,16 @@ if selection.selection.rows:
     st.markdown(" ".join(f"<span class='pill'>{html.escape(skill)}</span>"
                          for skill in posting["skills_list"]),
                 unsafe_allow_html=True)
+    if profile_skills:
+        if pd.isna(posting["match_percentage"]):
+            st.info("Skill overlap: Not enough detected skill data")
+        else:
+            st.markdown(f"#### Skill overlap: {posting['match_percentage']:.0f}%")
+            matched = posting["matched_skills"]
+            missing = posting["missing_skills"]
+            st.write("**You selected:** " + (", ".join(matched) if matched else "None of the detected skills"))
+            st.write("**Not selected:** " + (", ".join(missing) if missing else "None"))
+            st.caption("This is catalog skill overlap, not a qualification or interview prediction.")
     st.write(posting["description"])
     st.link_button("Apply on company site ↗", posting["source_url"], type="primary")
 else:

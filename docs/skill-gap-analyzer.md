@@ -1,6 +1,7 @@
 # Personal Skill-Gap Analyzer — Matching Specification
 
-**Status:** Milestone 1 complete — rules defined; calculation code and UI are not yet implemented.
+**Status:** Phase 1 complete — specification, profile UI, scoring, explanations,
+prioritization, recommendations, and tests implemented.
 
 ## Purpose
 
@@ -86,7 +87,7 @@ that the user lacks skills when the extractor simply found no catalog skills.
 
 ## Output contract
 
-The future matching function will return one result with this structure:
+The matching function returns one result with this structure:
 
 ```python
 {
@@ -153,6 +154,8 @@ Milestone 1 is complete when this specification documents:
 - Limitations that prevent the score from being presented as an employment
   prediction.
 
-The next milestone is the Streamlit skill-selection interface. Matching logic will
-be implemented separately in Milestone 3 so UI state and calculation logic remain
-independently testable.
+The calculation is implemented independently of Streamlit in `src/skill_gap.py`.
+The dashboard applies the calculation in memory across currently visible postings,
+without modifying the source CSVs. It displays the score and evidence, supports a
+minimum-overlap threshold, sorts strongest results first, and ranks missing skills
+for the Learn next section.
