@@ -22,13 +22,16 @@ and limitations for that planned feature.
 
 ## Current
 
-- **Current phase:** Phase 1 — Personal Skill-Gap Analyzer
-- **Completed:** Milestones 1–2 — Matching rules and skill-selection interface
-- **Working on next:** Milestone 3 — Implement and test matching logic
-- **Two-week plan:** [Open the feature roadmap](docs/roadmap/README.md)
+- **Completed foundation:** Phase 1 — Personal Skill-Gap Analyzer
+- **Current phase:** Phase 3 — Personalized AI Career Coach
+- **Completed:** Phase 2 and Phase 3 Milestones 1–2 — Grounded personalization and skill-gap tool
+- **Current milestone:** Milestone 3 — Personalized learning plan
+- **Roadmap day:** Day 6 of 14
+- **AI roadmap:** [Open the Internship Assistant roadmap](docs/roadmap/README.md)
 
-The roadmap contains fourteen daily milestones across four additional feature
-phases. Update this section and the roadmap after completing each milestone.
+The roadmap contains fourteen daily milestones centered on improving the existing
+Internship Assistant. Update this section and the roadmap after completing each
+milestone.
 
 ## Problem Statement
 
@@ -214,11 +217,16 @@ add `OPENAI_API_KEY` to the local `.env` file (already excluded from Git):
 
 ```dotenv
 OPENAI_API_KEY=your_actual_key
-OPENAI_MODEL=gpt-5.6
+OPENAI_MODEL=gpt-5.6-luna
 ```
 
 Refresh the dashboard after saving. Do not share or commit the actual key.
 The model is configurable with `OPENAI_MODEL`; access and API billing are required.
+Open the assistant panel and select **Check connection**. Detecting a key only
+confirms that configuration exists; the check validates authentication and access
+to the configured model without generating a chat response. See the
+[Internship Assistant guide](docs/internship-assistant.md) for status meanings
+and security details.
 Chat sends the question, recent conversation, and filtered job data to OpenAI only
 when submitted. Descriptions are excerpted, chat history is bounded, and changing
 filters resets the conversation. The bot does not browse or submit applications.

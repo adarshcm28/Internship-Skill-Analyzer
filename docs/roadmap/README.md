@@ -1,63 +1,78 @@
-# Two-Week Feature Roadmap
+# Internship Assistant AI Roadmap
 
-This folder breaks additional features into daily, demonstrable milestones. Each
-day ends with a deliverable that can be tested, documented, and committed.
+This roadmap builds on the completed Personal Skill-Gap Analyzer and the
+existing Internship Assistant. The next fourteen milestones are sized as daily,
+independently demonstrable improvements to the assistant.
 
 ## Current
 
 | Item | Status |
 | --- | --- |
-| Current phase | Phase 1 — Personal Skill-Gap Analyzer |
-| Last completed milestone | Milestone 2 — Skill-selection interface |
-| Current milestone | Milestone 3 — Matching function and tests |
-| Next daily task | Day 2 |
+| Completed foundation | Phase 1 — Personal Skill-Gap Analyzer |
+| Current phase | Phase 3 — Personalized AI Career Coach |
+| Last completed milestone | Phase 3, Milestone 2 — Skill-gap analysis tool |
+| Current milestone | Phase 3, Milestone 3 — Personalized learning plan |
+| Roadmap day | Day 6 of 14 |
 
 Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
+## Existing agent baseline
+
+The project already has an Internship Assistant that:
+
+- reads the OpenAI API key from local configuration without placing it in the UI;
+- sends bounded, dataset-grounded context through the Responses API;
+- maintains a short conversation history and supports clearing the chat;
+- reports configuration and request errors in the Streamlit interface; and
+- uses mocked tests so routine testing does not make paid API calls.
+
+The milestones below improve this baseline instead of rebuilding it.
+
 ## Phases
 
-| Phase | Feature | Milestones | Days |
+| Phase | Focus | Milestones | Days |
 | --- | --- | ---: | ---: |
-| [Phase 1](phase-1-skill-gap.md) | Personal Skill-Gap Analyzer | 2–6 | 1–5 |
-| [Phase 2](phase-2-job-comparison.md) | Side-by-Side Job Comparison | 1–4 | 6–9 |
-| [Phase 3](phase-3-saved-internships.md) | Saved Internships | 1–2 | 10–11 |
-| [Phase 4](phase-4-data-quality.md) | Data Quality and Posting Freshness | 1–3 | 12–14 |
+| [Phase 1](phase-1-skill-gap.md) | Personal Skill-Gap Analyzer (foundation) | 1–6 | Complete |
+| [Phase 2](phase-2-agent-reliability.md) | Agent Reliability and Grounding | 1–3 | 1–3 |
+| [Phase 3](phase-3-career-coach.md) | Personalized AI Career Coach | 1–4 | 4–7 |
+| [Phase 4](phase-4-agent-tools.md) | Internship Agent Tools | 1–4 | 8–11 |
+| [Phase 5](phase-5-evaluation-production.md) | Evaluation and Production Readiness | 1–3 | 12–14 |
 
 ## Fourteen-day schedule
 
-| Day | Phase and milestone | Deliverable | Status |
+| Day | Phase and milestone | Daily deliverable | Status |
 | ---: | --- | --- | :---: |
-| 1 | Phase 1, Milestone 2 | Searchable current-skills selector | ✅ |
-| 2 | Phase 1, Milestone 3 | Tested matching function | 🚧 |
-| 3 | Phase 1, Milestone 4 | Scores for every visible posting | ⬜ |
-| 4 | Phase 1, Milestone 5 | Match explanations in the UI | ⬜ |
-| 5 | Phase 1, Milestone 6 | Sorting, recommendations, and final tests | ⬜ |
-| 6 | Phase 2, Milestone 1 | Comparison rules and selection state | ⬜ |
-| 7 | Phase 2, Milestone 2 | Tested comparison data model | ⬜ |
-| 8 | Phase 2, Milestone 3 | Side-by-side comparison UI | ⬜ |
-| 9 | Phase 2, Milestone 4 | Comparison UX and tests | ⬜ |
-| 10 | Phase 3, Milestone 1 | Save/remove controls and saved-jobs view | ⬜ |
-| 11 | Phase 3, Milestone 2 | Local persistence and privacy notes | ⬜ |
-| 12 | Phase 4, Milestone 1 | Collection diagnostics and exclusion counters | ⬜ |
-| 13 | Phase 4, Milestone 2 | First-seen, last-seen, and status tracking | ⬜ |
-| 14 | Phase 4, Milestone 3 | Data-health dashboard and final tests | ⬜ |
+| 1 | Phase 2, Milestone 1 | Safe configuration check and agent health status | ✅ |
+| 2 | Phase 2, Milestone 2 | Tested retrieval and citation context builder | ✅ |
+| 3 | Phase 2, Milestone 3 | Modular instructions and safer conversations | ✅ |
+| 4 | Phase 3, Milestone 1 | Skill profile and match data in agent context | ✅ |
+| 5 | Phase 3, Milestone 2 | Skill-gap analysis function tool | ✅ |
+| 6 | Phase 3, Milestone 3 | Structured personalized learning plan | 🚧 |
+| 7 | Phase 3, Milestone 4 | Job-specific coaching in the dashboard | ⬜ |
+| 8 | Phase 4, Milestone 1 | Internship search function tool | ⬜ |
+| 9 | Phase 4, Milestone 2 | Internship comparison function tool | ⬜ |
+| 10 | Phase 4, Milestone 3 | Market-insights function tool | ⬜ |
+| 11 | Phase 4, Milestone 4 | Safe multi-tool orchestration and traces | ⬜ |
+| 12 | Phase 5, Milestone 1 | Agent evaluation dataset and test harness | ⬜ |
+| 13 | Phase 5, Milestone 2 | Safety, privacy, reliability, and cost controls | ⬜ |
+| 14 | Phase 5, Milestone 3 | Observability, demo flow, and final documentation | ⬜ |
 
 ## Daily workflow
 
-1. Read the milestone scope and avoid starting the next milestone early.
-2. Implement the smallest complete deliverable.
-3. Run relevant unit tests and a Streamlit smoke test.
-4. Update the milestone status and both Current sections.
-5. Under the completed milestone, add a **What was implemented** section that
-   names the files changed and briefly explains what the code does.
-6. Commit with a message naming the completed feature.
+1. Read only the current milestone and keep the implementation within its scope.
+2. Build the smallest complete version of its daily deliverable.
+3. Test deterministic logic locally and mock OpenAI calls by default.
+4. Make a live API request only when the milestone specifically requires it.
+5. Update both Current sections and add **What was implemented** beneath the
+   completed milestone.
+6. Commit the milestone as one reviewable unit.
 
 ## Definition of done
 
-A milestone is complete when its behavior works, edge cases fail safely, tests
-cover its logic, UI language is accurate, and documentation is updated. The
-milestone should be independently demonstrable before moving to the next one.
+A milestone is complete when it has a visible or testable result, handles its
+expected failure cases, protects secrets and user data, includes proportionate
+tests, and updates the relevant documentation. Claims made by the assistant must
+be traceable to project data or clearly labeled as general guidance.
 
 Only completed milestones receive implementation notes. Planned and current
-milestones keep their task lists until their code is finished, so the roadmap
-clearly distinguishes completed work from intended work.
+milestones describe intended work and must not claim that code already exists.

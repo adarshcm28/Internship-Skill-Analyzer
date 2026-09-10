@@ -284,11 +284,17 @@ flowchart TD
     VIEW --> BAR[Plotly skill-demand chart]
     VIEW --> PIE[Plotly difficulty chart]
     VIEW --> TABLE[Selectable opportunity table]
+    PROFILE[User-selected canonical skills] --> GAP[In-memory skill-gap scoring]
+    VIEW --> GAP
+    GAP --> TABLE
+    GAP --> LEARN[Missing-skill priority ranking]
     TABLE --> DETAIL[Escaped job detail + skill tags]
     DETAIL --> LINK[Original company application URL]
 ```
 
-The interface performs read-only exploration. It does not edit the datasets or
+The interface performs read-only exploration. Skill-gap scores are calculated in
+memory from user-selected canonical skills, with matched and missing skills shown
+as evidence. It does not edit the datasets or
 submit job applications. Externally sourced title and location values are escaped
 before being inserted into custom HTML.
 
