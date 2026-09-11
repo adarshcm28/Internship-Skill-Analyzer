@@ -5,9 +5,11 @@ import unittest
 import pandas as pd
 
 from src.agent_tools import (
+    SEARCH_INTERNSHIPS_TOOL,
     SKILL_GAP_TOOL,
     analyze_skill_gap_tool,
     dispatch_tool_call,
+    search_internships_tool,
 )
 
 
@@ -72,6 +74,75 @@ class SkillGapToolTests(unittest.TestCase):
     def test_unknown_tool_is_not_executed(self):
         result = dispatch_tool_call("delete_posting", "{}", self.postings, ["Python"])
         self.assertEqual(result["error"]["code"], "unknown_tool")
+
+
+class InternshipSearchToolTests(unittest.TestCase):
+    def setUp(self):
+        self.postings = pd.DataFrame([
+            {"posting_id": "1", "company": "Alpha", "job_title": "Data Intern",
+             "location": "Phoenix, AZ, US", "experience_level": "Beginner-friendly",
+             "skills_extracted": "Python|SQL", "source_url": "https://example.com/1"},
+            {"posting_id": "2", "company": "Beta", "job_title": "ML Intern",
+             "location": "Seattle, WA, US", "experience_level": "Advanced",
+             "skills_extracted": "Python|Machine Learning", "source_url": "https://example.com/2"},
+            {"posting_id": "3", "company": "Alpha", "job_title": "Analytics Intern",
+             "location": "Remote - US", "experience_level": "Beginner-friendly",
+             "skills_extracted": "SQL|Tableau", "source_url": "not-a-url"},
+        ])
+
+    def test_search_schema_is_strict_and_capped(self):
+        self.assertTrue(SEARCH_INTERNSHIPS_TOOL["strict"])
+        self.assertFalse(SEARCH_INTERNSHIPS_TOOL["parameters"]["additionalProperties"])
+        self.assertEqual(SEARCH_INTERNSHIPS_TOOL["parameters"]["properties"]["limit"]["maximum"], 10)
+
+    def test_each_text_and_difficulty_filter(self):
+        company = search_internships_tool(self.postings, ["Python"], company="alpha")
+        self.assertEqual(company["total_matches"], 2)
+        title = search_internships_tool(self.postings, ["Python"], job_title="ML")
+        self.assertEqual(title["results"][0]["posting_id"], "2")
+        location = search_internships_tool(self.postings, ["Python"], location="Phoenix")
+        self.assertEqual(location["results"][0]["posting_id"], "1")
+        difficulty = search_internships_tool(
+            self.postings, ["Python"], difficulty="Advanced"
+        )
+        self.assertEqual(difficulty["results"][0]["posting_id"], "2")
+
+    def test_combined_skills_overlap_and_limit(self):
+        result = search_internships_tool(
+            self.postings, ["Python"], skills=["Python"],
+            minimum_skill_overlap=50, limit=1,
+        )
+        self.assertEqual(result["total_matches"], 2)
+        self.assertEqual(result["returned_count"], 1)
+        self.assertEqual(result["results"][0]["match_percentage"], 50.0)
+
+    def test_empty_result_is_success(self):
+        result = search_internships_tool(self.postings, ["Python"], company="Missing")
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["results"], [])
+
+    def test_invalid_values_are_safe_errors(self):
+        self.assertEqual(
+            search_internships_tool(self.postings, ["Python"], skills=["ImaginaryDB"])["error"]["code"],
+            "unknown_skills",
+        )
+        self.assertEqual(
+            search_internships_tool(self.postings, [], minimum_skill_overlap=20)["error"]["code"],
+            "no_user_skills",
+        )
+        self.assertEqual(
+            search_internships_tool(self.postings, ["Python"], limit=11)["error"]["code"],
+            "invalid_limit",
+        )
+
+    def test_dispatches_complete_search_arguments(self):
+        arguments = (
+            '{"company":null,"job_title":"Data","location":null,"skills":[],'
+            '"difficulty":null,"minimum_skill_overlap":null,"limit":5}'
+        )
+        result = dispatch_tool_call("search_internships", arguments, self.postings, ["Python"])
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["results"][0]["posting_id"], "1")
 
 
 if __name__ == "__main__":
