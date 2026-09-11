@@ -23,10 +23,10 @@ and limitations for that planned feature.
 ## Current
 
 - **Completed foundation:** Phase 1 — Personal Skill-Gap Analyzer
-- **Current phase:** Phase 3 — Personalized AI Career Coach
-- **Completed:** Phase 2 and Phase 3 Milestones 1–2 — Grounded personalization and skill-gap tool
-- **Current milestone:** Milestone 3 — Personalized learning plan
-- **Roadmap day:** Day 6 of 14
+- **Current phase:** Phase 4 — Internship Agent Tools
+- **Completed:** Phase 3 — Personalized AI Career Coach; Phase 4 Milestone 1 — Internship search tool
+- **Current milestone:** Phase 4, Milestone 2 — Internship comparison tool
+- **Roadmap day:** Day 9 of 14
 - **AI roadmap:** [Open the Internship Assistant roadmap](docs/roadmap/README.md)
 
 The roadmap contains fourteen daily milestones centered on improving the existing
@@ -209,6 +209,12 @@ streamlit run app.py
 Then open `http://localhost:8501` in a browser. The dashboard reads the latest
 US processed data and provides company, skill, difficulty, and title filters,
 interactive charts, an opportunity table, and links to the original postings.
+
+Select skills under **My Skills** to create a 2-, 4-, 8-, or 12-week structured
+learning plan. Select an internship row and choose **Ask Internship Assistant**
+for posting-specific preparation help. You can also ask the assistant to find
+visible internships by company, title, US location, skills, difficulty, or
+minimum skill overlap; searches remain limited to the current dashboard data.
 
 ### Internship Assistant setup
 

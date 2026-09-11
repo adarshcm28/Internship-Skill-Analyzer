@@ -17,7 +17,13 @@ from src.chatbot import (
     configured_health,
     dataset_context,
 )
+from src.coaching import build_coaching_question
 from src.extract_skills import SKILL_CATALOG
+from src.learning_plan import (
+    TIMEFRAME_OPTIONS,
+    build_learning_plan_evidence,
+    generate_learning_plan,
+)
 from src.personalization import build_personalization_context, profile_fingerprint
 from src.retrieval import selection_fingerprint
 from src.skill_gap import rank_missing_skills, score_postings
@@ -180,6 +186,64 @@ with st.expander("🧭 My Skills", expanded=True):
     else:
         st.caption("Skill-overlap scoring, sorting, and recommendations appear after you select a skill.")
 
+    st.markdown("#### Personalized learning plan")
+    plan_left, plan_right = st.columns([2, 1])
+    with plan_left:
+        timeframe_weeks = st.selectbox(
+            "Available time",
+            options=TIMEFRAME_OPTIONS,
+            format_func=lambda weeks: f"{weeks} weeks",
+            help="Choose a planning horizon. This does not predict when you will be job-ready.",
+        )
+    with plan_right:
+        st.write("")
+        create_plan = st.button(
+            "Create learning plan",
+            disabled=not profile_skills,
+            width="stretch",
+        )
+    if create_plan:
+        key, model = chat_settings(ROOT)
+        if not key:
+            st.error("Add OPENAI_API_KEY to the local .env file before creating a plan.")
+        else:
+            evidence = build_learning_plan_evidence(filtered, profile_skills, timeframe_weeks)
+            try:
+                with st.spinner("Building your evidence-based plan…"):
+                    plan, used_fallback = generate_learning_plan(key, model, evidence)
+                st.session_state.learning_plan = plan
+                st.session_state.learning_plan_fallback = used_fallback
+                st.session_state.learning_plan_context = (
+                    f"{profile_fingerprint(profile_skills)}:{selection_fingerprint(filtered)}:{timeframe_weeks}"
+                )
+            except OpenAIError as error:
+                failure = classify_openai_error(error)
+                st.error(f"{failure.label}: {failure.message}")
+    plan_context = f"{profile_fingerprint(profile_skills)}:{selection_fingerprint(filtered)}:{timeframe_weeks}"
+    if st.session_state.get("learning_plan_context") == plan_context:
+        plan = st.session_state.get("learning_plan")
+        if plan:
+            if st.session_state.get("learning_plan_fallback"):
+                st.warning("The AI response could not be validated, so the app displayed a safe fallback plan.")
+            st.markdown(f"##### {plan['title']}")
+            st.caption(plan["limitations"])
+            st.markdown("**Data-backed priorities**")
+            priorities = pd.DataFrame(plan["data_backed_priorities"])
+            if priorities.empty:
+                st.success("No missing catalog skills were detected in the visible postings.")
+            else:
+                st.dataframe(priorities, hide_index=True, width="stretch")
+            st.markdown("**Weekly practice steps**")
+            for step in plan["weekly_steps"]:
+                st.write(
+                    f"Weeks {step['week_start']}–{step['week_end']}: **{step['focus']}** — "
+                    f"{step['practice_task']}"
+                )
+            project = plan["portfolio_project"]
+            st.markdown(f"**Portfolio project: {project['title']}**")
+            st.write(project["description"])
+            st.caption("General coaching guidance: " + " ".join(plan["general_guidance"]))
+
 skill_counts = skill_frequency(filtered)
 with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.markdown(f"### {BOT_NAME}")
@@ -229,7 +293,9 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
     for message in st.session_state.chat_messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
-    question = st.chat_input("Ask Internship Assistant…", disabled=not key, max_chars=2000)
+    typed_question = st.chat_input("Ask Internship Assistant…", disabled=not key, max_chars=2000)
+    pending_question = st.session_state.pop("pending_coaching_question", None)
+    question = pending_question or typed_question
     if question and question.strip():
         context = dataset_context(filtered, question)
         personalization = build_personalization_context(filtered, profile_skills)
@@ -331,7 +397,13 @@ if selection.selection.rows:
             st.write("**Not selected:** " + (", ".join(missing) if missing else "None"))
             st.caption("This is catalog skill overlap, not a qualification or interview prediction.")
     st.write(posting["description"])
-    st.link_button("Apply on company site ↗", posting["source_url"], type="primary")
+    action_left, action_right = st.columns(2)
+    with action_left:
+        st.link_button("Apply on company site ↗", posting["source_url"], type="primary", width="stretch")
+    with action_right:
+        if st.button("Ask Internship Assistant", type="secondary", width="stretch"):
+            st.session_state.pending_coaching_question = build_coaching_question(posting)
+            st.rerun()
 else:
     st.info("Select an internship row to view its skills and full description.")
 

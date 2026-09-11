@@ -67,7 +67,7 @@ skill-gap calculations.
   schema, dispatcher, calculations, errors, call limit, and two-request API loop
   entirely with mocks.
 
-## Milestone 3 — Personalized learning plan 🚧
+## Milestone 3 — Personalized learning plan ✅
 
 **Day 6 deliverable:** A structured, evidence-based learning plan.
 
@@ -80,7 +80,23 @@ skill-gap calculations.
   coaching suggestions.
 - Test empty gaps, short timelines, malformed model output, and fallback display.
 
-## Milestone 4 — Job-specific coaching experience ⬜
+### What was implemented
+
+- `src/learning_plan.py` converts deterministic missing-skill frequencies into a
+  bounded evidence packet and asks the Responses API for a strict JSON-schema
+  plan covering priorities, weekly practice, a portfolio project, guidance, and
+  limitations.
+- `app.py` adds 2-, 4-, 8-, and 12-week choices and renders data-backed
+  priorities separately from general coaching guidance. Plans are tied to the
+  active profile and dashboard selection so stale plans are not displayed.
+- Invalid structured output is rejected before display and replaced with a
+  deterministic fallback that keeps the verified skill counts and makes no
+  readiness or hiring promise.
+- `tests/test_learning_plan.py` covers short and invalid timelines, empty gaps,
+  strict structured-output settings, malformed output, and fallback behavior
+  without making live API calls.
+
+## Milestone 4 — Job-specific coaching experience ✅
 
 **Day 7 deliverable:** A user can select a posting and receive an actionable
 preparation plan in the dashboard.
@@ -91,6 +107,21 @@ preparation plan in the dashboard.
   to research before applying.
 - Preserve chat state when dashboard filters rerun the Streamlit app.
 - Add an end-to-end mocked test and update the user guide.
+
+### What was implemented
+
+- `app.py` adds an **Ask Internship Assistant** action beside the application
+  link for the selected table row. It keeps the request in Streamlit session
+  state across the required rerun and submits it through the existing grounded
+  chat path.
+- `src/coaching.py` builds a bounded request from the stable posting ID, role,
+  and company. The request asks for the verified skill-gap calculation,
+  preparation steps, research questions, and an exact source citation.
+- The assistant receives the selected profile, current scored postings, retrieved
+  source evidence, and the existing conversation history. It cannot submit an
+  application or claim that a posting is still open.
+- `tests/test_coaching.py` verifies the complete coaching request contract, while
+  the existing mocked chat tests cover tool execution and result submission.
 
 ## Phase exit criteria
 

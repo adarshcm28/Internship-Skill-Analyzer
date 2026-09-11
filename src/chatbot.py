@@ -21,7 +21,7 @@ from openai import (
 )
 
 from src.retrieval import build_retrieval_context
-from src.agent_tools import SKILL_GAP_TOOL, dispatch_tool_call
+from src.agent_tools import SEARCH_INTERNSHIPS_TOOL, SKILL_GAP_TOOL, dispatch_tool_call
 
 BOT_NAME = "Internship Assistant"
 DEFAULT_MODEL = "gpt-5.6-luna"
@@ -70,11 +70,15 @@ STYLE_INSTRUCTIONS = """# Response style
 Answer directly and concisely. Use plain language. Describe beginner-friendly and
 advanced as skill-count heuristics, not judgments about a person's eligibility.
 """
-TOOL_INSTRUCTIONS = """# Skill-gap tool
+TOOL_INSTRUCTIONS = """# Read-only tools
 Use analyze_skill_gap when the user asks about their match, matched skills, or
 missing skills for a specific visible posting. Pass its exact posting ID. The tool
 uses the trusted session profile; never estimate, replace, or recalculate its
 result. Explain tool errors plainly and do not retry with invented identifiers.
+Use search_internships when the user asks to find or filter visible internships.
+Pass null for unused text, difficulty, and overlap filters; pass an empty array for
+unused skills. Report the total match count, return no more than the supplied tool
+results, and cite their exact source URLs. An empty result is valid—do not invent jobs.
 """
 INSTRUCTIONS = "\n".join([
     IDENTITY_INSTRUCTIONS,
@@ -247,12 +251,13 @@ def answer_question(
     tool_postings: pd.DataFrame | None = None,
     user_skills: list[str] | None = None,
 ) -> str:
-    """Request an answer and resolve at most one read-only skill-gap tool call."""
+    """Request an answer and resolve at most one allowlisted read-only tool call."""
     messages = build_response_input(context, history, question, personalization)
     with OpenAI(api_key=key, timeout=30.0, max_retries=1) as client:
         response = client.responses.create(
             model=model, instructions=INSTRUCTIONS, input=messages,
-            tools=[SKILL_GAP_TOOL], tool_choice="auto", parallel_tool_calls=False,
+            tools=[SKILL_GAP_TOOL, SEARCH_INTERNSHIPS_TOOL],
+            tool_choice="auto", parallel_tool_calls=False,
             max_output_tokens=1600, store=False,
         )
         calls = [item for item in response.output if getattr(item, "type", "") == "function_call"]
@@ -284,7 +289,7 @@ def answer_question(
                 model=model,
                 instructions=INSTRUCTIONS,
                 input=[*messages, *response.output, *tool_outputs],
-                tools=[SKILL_GAP_TOOL],
+                tools=[SKILL_GAP_TOOL, SEARCH_INTERNSHIPS_TOOL],
                 tool_choice="none",
                 parallel_tool_calls=False,
                 max_output_tokens=1600,

@@ -9,10 +9,10 @@ independently demonstrable improvements to the assistant.
 | Item | Status |
 | --- | --- |
 | Completed foundation | Phase 1 — Personal Skill-Gap Analyzer |
-| Current phase | Phase 3 — Personalized AI Career Coach |
-| Last completed milestone | Phase 3, Milestone 2 — Skill-gap analysis tool |
-| Current milestone | Phase 3, Milestone 3 — Personalized learning plan |
-| Roadmap day | Day 6 of 14 |
+| Current phase | Phase 4 — Internship Agent Tools |
+| Last completed milestone | Phase 4, Milestone 1 — Internship search tool |
+| Current milestone | Phase 4, Milestone 2 — Internship comparison tool |
+| Roadmap day | Day 9 of 14 |
 
 Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
@@ -47,10 +47,10 @@ The milestones below improve this baseline instead of rebuilding it.
 | 3 | Phase 2, Milestone 3 | Modular instructions and safer conversations | ✅ |
 | 4 | Phase 3, Milestone 1 | Skill profile and match data in agent context | ✅ |
 | 5 | Phase 3, Milestone 2 | Skill-gap analysis function tool | ✅ |
-| 6 | Phase 3, Milestone 3 | Structured personalized learning plan | 🚧 |
-| 7 | Phase 3, Milestone 4 | Job-specific coaching in the dashboard | ⬜ |
-| 8 | Phase 4, Milestone 1 | Internship search function tool | ⬜ |
-| 9 | Phase 4, Milestone 2 | Internship comparison function tool | ⬜ |
+| 6 | Phase 3, Milestone 3 | Structured personalized learning plan | ✅ |
+| 7 | Phase 3, Milestone 4 | Job-specific coaching in the dashboard | ✅ |
+| 8 | Phase 4, Milestone 1 | Internship search function tool | ✅ |
+| 9 | Phase 4, Milestone 2 | Internship comparison function tool | 🚧 |
 | 10 | Phase 4, Milestone 3 | Market-insights function tool | ⬜ |
 | 11 | Phase 4, Milestone 4 | Safe multi-tool orchestration and traces | ⬜ |
 | 12 | Phase 5, Milestone 1 | Agent evaluation dataset and test harness | ⬜ |

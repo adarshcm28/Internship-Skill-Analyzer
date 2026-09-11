@@ -6,7 +6,7 @@ Give the Internship Assistant a small set of typed, read-only tools so it can
 answer richer questions while the application—not the model—performs searching,
 comparison, and aggregation.
 
-## Milestone 1 — Internship search tool ⬜
+## Milestone 1 — Internship search tool ✅
 
 **Day 8 deliverable:** A validated function tool for searching collected jobs.
 
@@ -16,6 +16,22 @@ comparison, and aggregation.
 - Return a capped list with stable identifiers, match evidence, and source URLs.
 - Validate values and return a useful empty-result response.
 - Test each filter, combined filters, result limits, and malformed arguments.
+
+### What was implemented
+
+- `src/agent_tools.py` defines a strict `search_internships` function tool with
+  nullable company, title, US location, difficulty, and overlap filters, a
+  catalog-backed skills list, and a 1–10 result limit.
+- The handler searches only the scored postings supplied from the active
+  dashboard selection. Filtering and overlap calculations happen in pandas and
+  the deterministic skill-gap module—not in model-generated prose.
+- Results include stable posting IDs, roles, companies, locations, detected and
+  matched skills, difficulty, overlap, and validated source URLs. Empty searches
+  return a successful zero-result contract; invalid inputs return safe errors.
+- `src/chatbot.py` exposes both read-only tools through strict schemas and keeps
+  the current one-tool-per-answer limit until the multi-tool milestone.
+- `tests/test_agent_tools.py` covers individual and combined filters, overlap,
+  limits, empty results, malformed values, strict schema rules, and dispatch.
 
 ## Milestone 2 — Internship comparison tool ⬜
 
