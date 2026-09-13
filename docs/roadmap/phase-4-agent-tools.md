@@ -33,7 +33,7 @@ comparison, and aggregation.
 - `tests/test_agent_tools.py` covers individual and combined filters, overlap,
   limits, empty results, malformed values, strict schema rules, and dispatch.
 
-## Milestone 2 — Internship comparison tool ⬜
+## Milestone 2 — Internship comparison tool ✅
 
 **Day 9 deliverable:** A function tool that compares up to three postings.
 
@@ -43,7 +43,20 @@ comparison, and aggregation.
 - Prevent comparison of missing or duplicate identifiers.
 - Test ordering, incomplete records, and two- and three-posting comparisons.
 
-## Milestone 3 — Market-insights tool ⬜
+### What was implemented
+
+- `src/agent_tools.py` adds a strict `compare_internships` tool accepting only
+  two or three unique posting IDs from the active dashboard selection.
+- The handler preserves the requested order and calculates shared skills, skills
+  unique to each role, and each role's matched and missing profile skills with
+  the existing deterministic skill-gap functions.
+- Results include the company, role, location, validated source link, and the
+  catalog-overlap limitation. Missing IDs, duplicate request IDs, and duplicate
+  dataset IDs return structured errors instead of partial comparisons.
+- `tests/test_agent_tools.py` covers two- and three-role comparisons, ordering,
+  optional missing fields, deterministic calculations, and invalid identifiers.
+
+## Milestone 3 — Market-insights tool ✅
 
 **Day 10 deliverable:** A function tool for trustworthy dataset summaries.
 
@@ -54,7 +67,19 @@ comparison, and aggregation.
   calculate from prose.
 - Test filtered totals, ties, missing categories, and empty datasets.
 
-## Milestone 4 — Multi-tool orchestration and traces ⬜
+### What was implemented
+
+- `src/agent_tools.py` adds a strict `market_insights` tool supporting selection
+  counts, top skills, skill-category distribution, and difficulty distribution.
+- Every calculation runs over the DataFrame supplied by the current Streamlit
+  filters. Results report the supporting selection size, use unique posting
+  counts, and sort ties alphabetically for repeatable output.
+- Skill categories come from the project's canonical `SKILL_CATALOG`; no model
+  arithmetic or invented category mapping is used.
+- Tests cover filtered counts, deterministic ties, both distributions, schema
+  validation, and a successful empty-dataset result.
+
+## Milestone 4 — Multi-tool orchestration and traces ✅
 
 **Day 11 deliverable:** A bounded tool loop that visibly explains which tools
 supported an answer.
@@ -65,6 +90,21 @@ supported an answer.
 - Show a compact “How this answer was produced” trace without exposing hidden
   instructions or sensitive data.
 - Test single-tool, multi-tool, repeated-tool, and tool-failure conversations.
+
+### What was implemented
+
+- `src/chatbot.py` now advertises the skill-gap, search, comparison, and market
+  tools through one allowlist and supports a maximum of four calls over three
+  rounds before requiring a final answer.
+- Identical calls are blocked, malformed and unknown requests receive safe tool
+  results, parallel calls remain disabled, and all tools remain read-only.
+- `answer_question_with_trace` returns the answer with a sanitized trace that
+  contains only tool name, completion status, and a short result summary. It
+  excludes tool arguments, hidden instructions, credentials, and profile skills.
+- `app.py` stores the trace with each assistant message and displays it inside a
+  **How this answer was produced** section that survives normal Streamlit reruns.
+- Mocked tests cover existing single-tool behavior, multiple tools, repeated-call
+  blocking, result submission, and secret-free trace content without live API use.
 
 ## Phase exit criteria
 

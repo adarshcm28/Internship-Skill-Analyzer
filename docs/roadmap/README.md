@@ -1,7 +1,7 @@
 # Internship Assistant AI Roadmap
 
 This roadmap builds on the completed Personal Skill-Gap Analyzer and the
-existing Internship Assistant. The next fourteen milestones are sized as daily,
+existing Internship Assistant. The milestones are sized as daily,
 independently demonstrable improvements to the assistant.
 
 ## Current
@@ -9,10 +9,10 @@ independently demonstrable improvements to the assistant.
 | Item | Status |
 | --- | --- |
 | Completed foundation | Phase 1 — Personal Skill-Gap Analyzer |
-| Current phase | Phase 4 — Internship Agent Tools |
-| Last completed milestone | Phase 4, Milestone 1 — Internship search tool |
-| Current milestone | Phase 4, Milestone 2 — Internship comparison tool |
-| Roadmap day | Day 9 of 14 |
+| Current phase | Phase 6 — Evaluation and Production Readiness |
+| Last completed milestone | Phase 5, Milestone 5 — Privacy controls and testing |
+| Current milestone | Phase 6, Milestone 1 — Evaluation dataset and test harness |
+| Roadmap day | Day 17 of 19 |
 
 Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
@@ -36,9 +36,10 @@ The milestones below improve this baseline instead of rebuilding it.
 | [Phase 2](phase-2-agent-reliability.md) | Agent Reliability and Grounding | 1–3 | 1–3 |
 | [Phase 3](phase-3-career-coach.md) | Personalized AI Career Coach | 1–4 | 4–7 |
 | [Phase 4](phase-4-agent-tools.md) | Internship Agent Tools | 1–4 | 8–11 |
-| [Phase 5](phase-5-evaluation-production.md) | Evaluation and Production Readiness | 1–3 | 12–14 |
+| [Phase 5](phase-5-candidate-profile.md) | Private Candidate Profile | 1–5 | 12–16 |
+| [Phase 6](phase-6-evaluation-production.md) | Evaluation and Production Readiness | 1–3 | 17–19 |
 
-## Fourteen-day schedule
+## Nineteen-day schedule
 
 | Day | Phase and milestone | Daily deliverable | Status |
 | ---: | --- | --- | :---: |
@@ -50,12 +51,17 @@ The milestones below improve this baseline instead of rebuilding it.
 | 6 | Phase 3, Milestone 3 | Structured personalized learning plan | ✅ |
 | 7 | Phase 3, Milestone 4 | Job-specific coaching in the dashboard | ✅ |
 | 8 | Phase 4, Milestone 1 | Internship search function tool | ✅ |
-| 9 | Phase 4, Milestone 2 | Internship comparison function tool | 🚧 |
-| 10 | Phase 4, Milestone 3 | Market-insights function tool | ⬜ |
-| 11 | Phase 4, Milestone 4 | Safe multi-tool orchestration and traces | ⬜ |
-| 12 | Phase 5, Milestone 1 | Agent evaluation dataset and test harness | ⬜ |
-| 13 | Phase 5, Milestone 2 | Safety, privacy, reliability, and cost controls | ⬜ |
-| 14 | Phase 5, Milestone 3 | Observability, demo flow, and final documentation | ⬜ |
+| 9 | Phase 4, Milestone 2 | Internship comparison function tool | ✅ |
+| 10 | Phase 4, Milestone 3 | Market-insights function tool | ✅ |
+| 11 | Phase 4, Milestone 4 | Safe multi-tool orchestration and traces | ✅ |
+| 12 | Phase 5, Milestone 1 | Secure resume upload and local extraction | ✅ |
+| 13 | Phase 5, Milestone 2 | Candidate profile review and editing | ✅ |
+| 14 | Phase 5, Milestone 3 | Resume-to-internship matching | ✅ |
+| 15 | Phase 5, Milestone 4 | Tailored resume and cover-letter guidance | ✅ |
+| 16 | Phase 5, Milestone 5 | Privacy controls and testing | ✅ |
+| 17 | Phase 6, Milestone 1 | Agent evaluation dataset and test harness | 🚧 |
+| 18 | Phase 6, Milestone 2 | Safety, privacy, reliability, and cost controls | ⬜ |
+| 19 | Phase 6, Milestone 3 | Observability, demo flow, and final documentation | ⬜ |
 
 ## Daily workflow
 
