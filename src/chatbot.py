@@ -21,7 +21,7 @@ from openai import (
 )
 
 from src.retrieval import build_retrieval_context
-from src.agent_tools import SEARCH_INTERNSHIPS_TOOL, SKILL_GAP_TOOL, dispatch_tool_call
+from src.agent_tools import AGENT_TOOLS, dispatch_tool_call
 
 BOT_NAME = "Internship Assistant"
 DEFAULT_MODEL = "gpt-5.6-luna"
@@ -29,6 +29,8 @@ MAX_HISTORY_MESSAGES = 6
 MAX_HISTORY_ITEM_CHARS = 2_000
 MAX_HISTORY_TOTAL_CHARS = 8_000
 MAX_QUESTION_CHARS = 2_000
+MAX_TOOL_CALLS = 4
+MAX_TOOL_ROUNDS = 3
 
 IDENTITY_INSTRUCTIONS = """# Identity
 You are Internship Assistant, a guide to internships represented in this project's
@@ -79,6 +81,10 @@ Use search_internships when the user asks to find or filter visible internships.
 Pass null for unused text, difficulty, and overlap filters; pass an empty array for
 unused skills. Report the total match count, return no more than the supplied tool
 results, and cite their exact source URLs. An empty result is valid—do not invent jobs.
+Use compare_internships for deterministic comparisons of two or three exact
+posting IDs. Use market_insights for counts, top skills, skill categories, or
+difficulty summaries over the current selection. You may combine tools when the
+question requires it, but do not repeat an identical tool call.
 """
 INSTRUCTIONS = "\n".join([
     IDENTITY_INSTRUCTIONS,
@@ -102,6 +108,14 @@ class AgentHealth:
 
     def to_dict(self) -> dict[str, str | bool]:
         return asdict(self)
+
+
+@dataclass(frozen=True)
+class AgentAnswer:
+    """Final answer plus a safe, user-visible account of tool use."""
+
+    text: str
+    trace: list[dict[str, str]]
 
 
 def configured_health(key: str, model: str) -> AgentHealth:
@@ -251,48 +265,105 @@ def answer_question(
     tool_postings: pd.DataFrame | None = None,
     user_skills: list[str] | None = None,
 ) -> str:
-    """Request an answer and resolve at most one allowlisted read-only tool call."""
+    """Compatibility wrapper returning only answer text."""
+    return answer_question_with_trace(
+        key, model, context, history, question, personalization,
+        tool_postings, user_skills,
+    ).text
+
+
+def _trace_summary(result: dict) -> str:
+    if not result.get("ok"):
+        return str(result.get("error", {}).get("message", "Tool request failed."))
+    tool = str(result.get("tool", ""))
+    if tool == "search_internships":
+        return f"Found {result.get('total_matches', 0)} matching posting(s)."
+    if tool == "compare_internships":
+        return f"Compared {result.get('posting_count', 0)} posting(s)."
+    if tool == "market_insights":
+        return f"Calculated {result.get('insight', 'market')} over {result.get('selection_posting_count', 0)} posting(s)."
+    return "Calculated a verified skill-gap result."
+
+
+def answer_question_with_trace(
+    key: str,
+    model: str,
+    context: str,
+    history: list[dict],
+    question: str,
+    personalization: str = "",
+    tool_postings: pd.DataFrame | None = None,
+    user_skills: list[str] | None = None,
+) -> AgentAnswer:
+    """Run a bounded read-only tool loop and return a public execution trace."""
     messages = build_response_input(context, history, question, personalization)
+    trace: list[dict[str, str]] = []
+    seen_calls: set[str] = set()
+    call_count = 0
     with OpenAI(api_key=key, timeout=30.0, max_retries=1) as client:
         response = client.responses.create(
             model=model, instructions=INSTRUCTIONS, input=messages,
-            tools=[SKILL_GAP_TOOL, SEARCH_INTERNSHIPS_TOOL],
+            tools=AGENT_TOOLS,
             tool_choice="auto", parallel_tool_calls=False,
             max_output_tokens=1600, store=False,
         )
-        calls = [item for item in response.output if getattr(item, "type", "") == "function_call"]
-        if calls:
+        conversation = list(messages)
+        for round_index in range(MAX_TOOL_ROUNDS):
+            calls = [item for item in response.output if getattr(item, "type", "") == "function_call"]
+            if not calls:
+                break
             tool_outputs = []
-            for index, call in enumerate(calls):
-                if index == 0 and tool_postings is not None:
+            for call in calls:
+                name = getattr(call, "name", "")
+                arguments = getattr(call, "arguments", "")
+                signature = f"{name}:{arguments}"
+                if tool_postings is None:
+                    result = {
+                        "ok": False, "tool": name,
+                        "error": {"code": "tool_data_unavailable", "message": "Dashboard data is unavailable."},
+                    }
+                elif signature in seen_calls:
+                    result = {
+                        "ok": False, "tool": name,
+                        "error": {"code": "repeated_tool_call", "message": "An identical tool call was blocked."},
+                    }
+                elif call_count >= MAX_TOOL_CALLS:
+                    result = {
+                        "ok": False, "tool": name,
+                        "error": {"code": "tool_limit_reached", "message": "The maximum of four tool calls was reached."},
+                    }
+                else:
+                    seen_calls.add(signature)
+                    call_count += 1
                     result = dispatch_tool_call(
-                        getattr(call, "name", ""),
-                        getattr(call, "arguments", ""),
+                        name,
+                        arguments,
                         tool_postings,
                         user_skills,
                     )
-                else:
-                    result = {
-                        "ok": False,
-                        "tool": getattr(call, "name", ""),
-                        "error": {
-                            "code": "tool_limit_reached" if index else "tool_data_unavailable",
-                            "message": "Only one tool call can be completed for this response.",
-                        },
-                    }
+                trace.append({
+                    "tool": name or "unknown_tool",
+                    "status": "completed" if result.get("ok") else "blocked",
+                    "summary": _trace_summary(result),
+                })
                 tool_outputs.append({
                     "type": "function_call_output",
                     "call_id": getattr(call, "call_id", ""),
                     "output": json.dumps(result, ensure_ascii=False),
                 })
+            conversation = [*conversation, *response.output, *tool_outputs]
+            must_finish = round_index == MAX_TOOL_ROUNDS - 1 or call_count >= MAX_TOOL_CALLS
             response = client.responses.create(
                 model=model,
                 instructions=INSTRUCTIONS,
-                input=[*messages, *response.output, *tool_outputs],
-                tools=[SKILL_GAP_TOOL, SEARCH_INTERNSHIPS_TOOL],
-                tool_choice="none",
+                input=conversation,
+                tools=AGENT_TOOLS,
+                tool_choice="none" if must_finish else "auto",
                 parallel_tool_calls=False,
                 max_output_tokens=1600,
                 store=False,
             )
-    return response.output_text.strip() or "No answer was returned. Please try a shorter question."
+            if must_finish:
+                break
+    text = response.output_text.strip() or "No answer was returned. Please try a shorter question."
+    return AgentAnswer(text, trace)

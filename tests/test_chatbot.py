@@ -17,6 +17,7 @@ from openai import (
 from src.chatbot import (
     INSTRUCTIONS,
     answer_question,
+    answer_question_with_trace,
     bounded_history,
     build_response_input,
     check_agent_health,
@@ -185,7 +186,57 @@ class ChatbotTests(unittest.TestCase):
         self.assertTrue(output["ok"])
         self.assertEqual(output["calculation"]["match_percentage"], 50.0)
         self.assertEqual(output["calculation"]["missing_skills"], ["SQL"])
-        self.assertEqual(follow_up["tool_choice"], "none")
+        self.assertEqual(follow_up["tool_choice"], "auto")
+
+    @patch("src.chatbot.OpenAI")
+    def test_multiple_tools_produce_safe_trace(self, client_type):
+        client = MagicMock()
+        client_type.return_value.__enter__.return_value = client
+        calls = [
+            SimpleNamespace(type="function_call", name="market_insights",
+                            arguments='{"insight":"counts","limit":5}', call_id="a"),
+            SimpleNamespace(type="function_call", name="search_internships",
+                            arguments='{"company":null,"job_title":"Data","location":null,'
+                                      '"skills":[],"difficulty":null,'
+                                      '"minimum_skill_overlap":null,"limit":5}', call_id="b"),
+        ]
+        client.responses.create.side_effect = [
+            SimpleNamespace(output=calls, output_text=""),
+            SimpleNamespace(output=[], output_text="I found the matching roles."),
+        ]
+        postings = pd.DataFrame([{
+            "posting_id": "1", "company": "Example", "job_title": "Data Intern",
+            "location": "Phoenix", "skills_extracted": "Python", "source_url": "",
+        }])
+        result = answer_question_with_trace(
+            "key", "model", "{}", [], "Find and summarize data roles", "{}", postings, ["Python"]
+        )
+        self.assertEqual(result.text, "I found the matching roles.")
+        self.assertEqual([item["tool"] for item in result.trace],
+                         ["market_insights", "search_internships"])
+        self.assertTrue(all(item["status"] == "completed" for item in result.trace))
+        self.assertNotIn("Python", json.dumps(result.trace))
+
+    @patch("src.chatbot.OpenAI")
+    def test_repeated_tool_call_is_blocked(self, client_type):
+        client = MagicMock()
+        client_type.return_value.__enter__.return_value = client
+        call = lambda call_id: SimpleNamespace(
+            type="function_call", name="market_insights",
+            arguments='{"insight":"counts","limit":5}', call_id=call_id,
+        )
+        client.responses.create.side_effect = [
+            SimpleNamespace(output=[call("a"), call("b")], output_text=""),
+            SimpleNamespace(output=[], output_text="Done."),
+        ]
+        postings = pd.DataFrame([{
+            "posting_id": "1", "company": "Example", "location": "Phoenix",
+            "skills_extracted": "Python",
+        }])
+        result = answer_question_with_trace("key", "model", "{}", [], "Counts", "{}", postings, [])
+        self.assertEqual(result.trace[0]["status"], "completed")
+        self.assertEqual(result.trace[1]["status"], "blocked")
+        self.assertIn("identical", result.trace[1]["summary"])
 
 
 if __name__ == "__main__":

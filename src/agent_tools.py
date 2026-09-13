@@ -9,6 +9,7 @@ from typing import Any, TypedDict
 
 import pandas as pd
 
+from src.extract_skills import SKILL_CATALOG
 from src.skill_gap import calculate_skill_gap, normalize_skills, score_postings
 
 SKILL_GAP_TOOL_NAME = "analyze_skill_gap"
@@ -72,6 +73,56 @@ SEARCH_INTERNSHIPS_TOOL = {
     },
 }
 
+COMPARE_INTERNSHIPS_TOOL_NAME = "compare_internships"
+COMPARE_INTERNSHIPS_TOOL = {
+    "type": "function",
+    "name": COMPARE_INTERNSHIPS_TOOL_NAME,
+    "description": "Compare two or three visible internships using exact posting IDs.",
+    "strict": True,
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "posting_ids": {
+                "type": "array", "items": {"type": "string"},
+                "minItems": 2, "maxItems": 3,
+                "description": "Two or three unique exact posting IDs from supplied evidence.",
+            },
+        },
+        "required": ["posting_ids"],
+        "additionalProperties": False,
+    },
+}
+
+MARKET_INSIGHTS_TOOL_NAME = "market_insights"
+MARKET_INSIGHTS_TOOL = {
+    "type": "function",
+    "name": MARKET_INSIGHTS_TOOL_NAME,
+    "description": (
+        "Calculate a trustworthy summary of the current dashboard selection: "
+        "counts, top skills, skill categories, or difficulty distribution."
+    ),
+    "strict": True,
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "insight": {
+                "type": "string",
+                "enum": ["counts", "top_skills", "category_distribution", "difficulty_distribution"],
+            },
+            "limit": {"type": "integer", "minimum": 1, "maximum": 10},
+        },
+        "required": ["insight", "limit"],
+        "additionalProperties": False,
+    },
+}
+
+AGENT_TOOLS = [
+    SKILL_GAP_TOOL,
+    SEARCH_INTERNSHIPS_TOOL,
+    COMPARE_INTERNSHIPS_TOOL,
+    MARKET_INSIGHTS_TOOL,
+]
+
 
 class AgentToolResult(TypedDict, total=False):
     """Serializable result contract for all outcomes of this milestone's tool."""
@@ -103,6 +154,10 @@ def _search_error(code: str, message: str) -> AgentToolResult:
         "tool": SEARCH_INTERNSHIPS_TOOL_NAME,
         "error": {"code": code, "message": message},
     }
+
+
+def _tool_error(tool: str, code: str, message: str) -> AgentToolResult:
+    return {"ok": False, "tool": tool, "error": {"code": code, "message": message}}
 
 
 def _validated_user_skills(skills: Iterable[object] | None) -> tuple[list[str], list[str]]:
@@ -258,6 +313,122 @@ def search_internships_tool(
     }
 
 
+def compare_internships_tool(
+    postings: pd.DataFrame,
+    posting_ids: object,
+    user_skills: Iterable[object] | None,
+) -> AgentToolResult:
+    """Compare two or three postings in caller-supplied order."""
+    tool = COMPARE_INTERNSHIPS_TOOL_NAME
+    required = {"posting_id", "company", "job_title", "skills_extracted"}
+    if required.difference(postings.columns):
+        return _tool_error(tool, "invalid_dataset", "Required posting data is unavailable.")
+    if (not isinstance(posting_ids, list) or not 2 <= len(posting_ids) <= 3
+            or not all(isinstance(value, str) and value.strip() for value in posting_ids)):
+        return _tool_error(tool, "invalid_posting_ids", "Provide two or three non-empty posting IDs.")
+    identifiers = [value.strip() for value in posting_ids]
+    if len(set(identifiers)) != len(identifiers):
+        return _tool_error(tool, "duplicate_posting_ids", "Posting IDs must be unique.")
+    dataset_ids = postings["posting_id"].astype(str)
+    duplicates = [identifier for identifier in identifiers if dataset_ids.eq(identifier).sum() > 1]
+    if duplicates:
+        return _tool_error(tool, "duplicate_dataset_id", "A requested posting ID is not unique in the dataset.")
+    missing = [identifier for identifier in identifiers if not dataset_ids.eq(identifier).any()]
+    if missing:
+        return _tool_error(tool, "posting_not_found", "Not found in the current selection: " + ", ".join(missing))
+
+    selected, unknown = _validated_user_skills(user_skills)
+    if unknown:
+        return _tool_error(tool, "unknown_user_skills", "The current profile contains unsupported skills.")
+    records = []
+    skill_sets: list[set[str]] = []
+    for identifier in identifiers:
+        row = postings.loc[dataset_ids.eq(identifier)].iloc[0]
+        skills = normalize_skills(str(row.get("skills_extracted", "") or "").split("|"))
+        skill_sets.append(set(skills))
+        calculation = calculate_skill_gap(skills, selected)
+        source_url = str(row.get("source_url", "") or "")
+        if source_url and not source_url.startswith(("http://", "https://")):
+            source_url = ""
+        records.append({
+            "posting_id": identifier,
+            "company": str(row.get("company", "") or ""),
+            "job_title": str(row.get("job_title", "") or ""),
+            "location": str(row.get("location", "") or ""),
+            "source_url": source_url,
+            "skills": skills,
+            **calculation,
+        })
+    shared = sorted(set.intersection(*skill_sets), key=str.casefold)
+    for index, record in enumerate(records):
+        other_skills = set().union(*(skills for i, skills in enumerate(skill_sets) if i != index))
+        record["unique_skills"] = sorted(skill_sets[index] - other_skills, key=str.casefold)
+    return {
+        "ok": True,
+        "tool": tool,
+        "posting_count": len(records),
+        "shared_skills": shared,
+        "postings": records,
+        "interpretation": "Catalog-skill comparison only; not an eligibility or hiring prediction.",
+    }
+
+
+def market_insights_tool(
+    postings: pd.DataFrame,
+    insight: object,
+    limit: object,
+) -> AgentToolResult:
+    """Calculate one aggregate over the active dashboard selection."""
+    tool = MARKET_INSIGHTS_TOOL_NAME
+    allowed = {"counts", "top_skills", "category_distribution", "difficulty_distribution"}
+    if insight not in allowed:
+        return _tool_error(tool, "invalid_insight", "That market insight is not supported.")
+    if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 10:
+        return _tool_error(tool, "invalid_limit", "The limit must be an integer from 1 to 10.")
+    required = {"posting_id", "company", "skills_extracted"}
+    if required.difference(postings.columns):
+        return _tool_error(tool, "invalid_dataset", "Required posting data is unavailable.")
+    posting_count = len(postings)
+    if insight == "counts":
+        values = {
+            "postings": posting_count,
+            "companies": int(postings["company"].fillna("").replace("", pd.NA).nunique()),
+            "locations": int(postings.get("location", pd.Series(dtype=str)).replace("", pd.NA).nunique()),
+        }
+    elif insight == "difficulty_distribution":
+        if "experience_level" not in postings.columns:
+            return _tool_error(tool, "invalid_dataset", "Difficulty data is unavailable.")
+        counts = postings["experience_level"].fillna("Unknown").replace("", "Unknown").value_counts()
+        values = [{"difficulty": str(name), "posting_count": int(count)}
+                  for name, count in sorted(counts.items(), key=lambda item: (-item[1], str(item[0])))]
+    else:
+        exploded = postings[["posting_id", "skills_extracted"]].copy()
+        exploded["skill"] = exploded["skills_extracted"].fillna("").map(
+            lambda value: normalize_skills(str(value).split("|"))
+        )
+        exploded = exploded.explode("skill").loc[lambda frame: frame["skill"].notna()]
+        if insight == "top_skills":
+            counts = exploded.groupby("skill")["posting_id"].nunique()
+            ordered = sorted(counts.items(), key=lambda item: (-item[1], str(item[0]).casefold()))[:limit]
+            values = [{"skill": skill, "posting_count": int(count)} for skill, count in ordered]
+        else:
+            category_for = {
+                skill: category for category, skills in SKILL_CATALOG.items() for skill in skills
+            }
+            exploded["category"] = exploded["skill"].map(category_for)
+            counts = exploded.groupby("category")["posting_id"].nunique()
+            ordered = sorted(counts.items(), key=lambda item: (-item[1], str(item[0]).casefold()))[:limit]
+            values = [{"category": category, "posting_count": int(count)}
+                      for category, count in ordered]
+    return {
+        "ok": True,
+        "tool": tool,
+        "insight": insight,
+        "selection_posting_count": posting_count,
+        "values": values,
+    }
+
+
 def dispatch_tool_call(
     name: str,
     arguments: str,
@@ -265,7 +436,10 @@ def dispatch_tool_call(
     user_skills: Iterable[object] | None,
 ) -> AgentToolResult:
     """Validate and execute an allowlisted tool call without raising to the UI."""
-    if name not in {SKILL_GAP_TOOL_NAME, SEARCH_INTERNSHIPS_TOOL_NAME}:
+    if name not in {
+        SKILL_GAP_TOOL_NAME, SEARCH_INTERNSHIPS_TOOL_NAME,
+        COMPARE_INTERNSHIPS_TOOL_NAME, MARKET_INSIGHTS_TOOL_NAME,
+    }:
         return _error("", "unknown_tool", "The requested tool is not available.")
     try:
         parsed: Any = json.loads(arguments)
@@ -277,6 +451,14 @@ def dispatch_tool_call(
         if set(parsed) != {"posting_id"}:
             return _error("", "invalid_arguments", "The tool requires only a posting_id.")
         return analyze_skill_gap_tool(postings, parsed["posting_id"], user_skills)
+    if name == COMPARE_INTERNSHIPS_TOOL_NAME:
+        if set(parsed) != {"posting_ids"}:
+            return _tool_error(name, "invalid_arguments", "The comparison tool requires only posting_ids.")
+        return compare_internships_tool(postings, parsed["posting_ids"], user_skills)
+    if name == MARKET_INSIGHTS_TOOL_NAME:
+        if set(parsed) != {"insight", "limit"}:
+            return _tool_error(name, "invalid_arguments", "The market tool requires insight and limit.")
+        return market_insights_tool(postings, parsed["insight"], parsed["limit"])
     expected = {
         "company", "job_title", "location", "skills", "difficulty",
         "minimum_skill_overlap", "limit",

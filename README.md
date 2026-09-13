@@ -23,13 +23,13 @@ and limitations for that planned feature.
 ## Current
 
 - **Completed foundation:** Phase 1 — Personal Skill-Gap Analyzer
-- **Current phase:** Phase 4 — Internship Agent Tools
-- **Completed:** Phase 3 — Personalized AI Career Coach; Phase 4 Milestone 1 — Internship search tool
-- **Current milestone:** Phase 4, Milestone 2 — Internship comparison tool
-- **Roadmap day:** Day 9 of 14
+- **Current phase:** Phase 6 — Evaluation and Production Readiness
+- **Completed:** Phase 5 — Private Candidate Profile
+- **Current milestone:** Phase 6, Milestone 1 — Evaluation dataset and test harness
+- **Roadmap day:** Day 17 of 19
 - **AI roadmap:** [Open the Internship Assistant roadmap](docs/roadmap/README.md)
 
-The roadmap contains fourteen daily milestones centered on improving the existing
+The roadmap contains nineteen daily milestones centered on improving the existing
 Internship Assistant. Update this section and the roadmap after completing each
 milestone.
 
@@ -215,6 +215,21 @@ learning plan. Select an internship row and choose **Ask Internship Assistant**
 for posting-specific preparation help. You can also ask the assistant to find
 visible internships by company, title, US location, skills, difficulty, or
 minimum skill overlap; searches remain limited to the current dashboard data.
+The assistant can compare two or three posting IDs and calculate selection-wide
+skill and difficulty insights. When tools support a response, expand **How this
+answer was produced** below that message to see the safe execution summary.
+
+### Candidate Profile
+
+Open **Candidate Profile** in the dashboard to upload a PDF, DOCX, or TXT resume
+up to 5 MB. Text extraction and resume-to-job matching run locally. Review every
+field before use; uploaded files and extracted data remain in the current browser
+session and are not written to the repository or a database.
+
+AI resume suggestions and cover-letter drafts are optional. The app sends only
+the reviewed fields and selected posting after you select the consent checkbox
+and press **Generate application guidance**. Use **Delete uploaded data** to clear
+the extracted document, profile, consent, target, and generated guidance.
 
 ### Internship Assistant setup
 

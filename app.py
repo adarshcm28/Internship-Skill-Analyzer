@@ -1,6 +1,7 @@
 """Interactive Streamlit dashboard for the Internship Skill Analyzer."""
 
 import html
+import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -10,12 +11,20 @@ from openai import OpenAIError
 
 from src.chatbot import (
     BOT_NAME,
-    answer_question,
+    answer_question_with_trace,
     chat_settings,
     check_agent_health,
     classify_openai_error,
     configured_health,
     dataset_context,
+)
+from src.candidate_profile import (
+    CandidateUploadError,
+    build_candidate_profile,
+    clear_candidate_session,
+    extract_candidate_document,
+    generate_application_guidance,
+    rank_candidate_matches,
 )
 from src.coaching import build_coaching_question
 from src.extract_skills import SKILL_CATALOG
@@ -244,6 +253,171 @@ with st.expander("🧭 My Skills", expanded=True):
             st.write(project["description"])
             st.caption("General coaching guidance: " + " ".join(plan["general_guidance"]))
 
+with st.expander("📄 Candidate Profile", expanded=False):
+    st.markdown("### Candidate Profile")
+    st.caption(
+        "Upload a PDF, DOCX, or TXT resume up to 5 MB. Extraction happens locally and "
+        "only reviewed fields are used. Uploaded data stays in this browser session."
+    )
+    privacy_left, privacy_right = st.columns([4, 1])
+    with privacy_left:
+        st.info(
+            "Private by default: the original file is not saved to the repository or a database. "
+            "Nothing is sent to OpenAI unless you explicitly request AI guidance below."
+        )
+    with privacy_right:
+        if st.button(
+            "Delete uploaded data",
+            disabled="candidate_document" not in st.session_state,
+            width="stretch",
+        ):
+            clear_candidate_session(st.session_state)
+            st.rerun()
+
+    upload_version = st.session_state.get("candidate_upload_version", 0)
+    uploaded_resume = st.file_uploader(
+        "Resume or application document",
+        type=["pdf", "docx", "txt"],
+        key=f"candidate_upload_{upload_version}",
+        help="Password-protected PDFs and image-only scans are not supported.",
+    )
+    if uploaded_resume is not None:
+        upload_bytes = uploaded_resume.getvalue()
+        upload_fingerprint = hashlib.sha256(upload_bytes).hexdigest()
+        current_document = st.session_state.get("candidate_document", {})
+        if current_document.get("fingerprint") != upload_fingerprint:
+            try:
+                document = extract_candidate_document(uploaded_resume.name, upload_bytes)
+                document["fingerprint"] = upload_fingerprint
+                st.session_state.candidate_document = document
+                st.session_state.candidate_skills = document["detected_skills"]
+                st.session_state.candidate_summary = ""
+                st.session_state.candidate_education = ""
+                st.session_state.candidate_experience = document["text"][:4000]
+                st.session_state.candidate_projects = ""
+                st.session_state.candidate_portfolio_urls = ""
+                st.session_state.candidate_preferred_roles = ""
+                st.session_state.candidate_preferred_locations = ""
+                st.session_state.candidate_work_authorization = "Prefer not to say"
+                st.session_state.pop("candidate_guidance", None)
+            except CandidateUploadError as error:
+                st.error(str(error))
+
+    document = st.session_state.get("candidate_document")
+    if document:
+        st.success(
+            f"Extracted {document['character_count']:,} characters locally from "
+            f"{document['filename']}. Review and correct everything below."
+        )
+        st.multiselect(
+            "Verified skills",
+            options=catalog_skills,
+            key="candidate_skills",
+            help="Only selected catalog skills are used for deterministic matching.",
+        )
+        review_left, review_right = st.columns(2)
+        with review_left:
+            st.text_area("Professional summary", key="candidate_summary", height=120)
+            st.text_area("Education", key="candidate_education", height=120)
+            st.text_area(
+                "Experience and reviewed document text",
+                key="candidate_experience",
+                height=220,
+                help="Correct extraction mistakes and remove anything you do not want used.",
+            )
+            st.text_area("Projects", key="candidate_projects", height=140)
+        with review_right:
+            st.text_area("Portfolio or GitHub URLs", key="candidate_portfolio_urls", height=100)
+            st.text_area("Preferred roles", key="candidate_preferred_roles", height=100)
+            st.text_area("Preferred US locations", key="candidate_preferred_locations", height=100)
+            st.selectbox(
+                "Work authorization",
+                ["Prefer not to say", "Authorized to work in the US", "Requires sponsorship", "Other"],
+                key="candidate_work_authorization",
+            )
+
+        candidate_profile = build_candidate_profile(
+            skills=st.session_state.candidate_skills,
+            summary=st.session_state.candidate_summary,
+            education=st.session_state.candidate_education,
+            experience=st.session_state.candidate_experience,
+            projects=st.session_state.candidate_projects,
+            portfolio_urls=st.session_state.candidate_portfolio_urls,
+            preferred_roles=st.session_state.candidate_preferred_roles,
+            preferred_locations=st.session_state.candidate_preferred_locations,
+            work_authorization=st.session_state.candidate_work_authorization,
+        )
+
+        st.markdown("#### Resume-to-internship matches")
+        if not candidate_profile["skills"]:
+            st.warning("Confirm at least one skill above to calculate matches.")
+        else:
+            candidate_matches = rank_candidate_matches(candidate_profile, filtered)
+            match_display = candidate_matches[
+                ["company", "job_title", "match_percentage", "matched_skills", "missing_skills"]
+            ].head(10).copy()
+            match_display.columns = ["Company", "Role", "Skill overlap", "Matched skills", "Missing skills"]
+            st.dataframe(
+                match_display,
+                hide_index=True,
+                width="stretch",
+                column_config={
+                    "Skill overlap": st.column_config.NumberColumn(format="%.0f%%"),
+                },
+            )
+            st.caption("Catalog-skill overlap is a navigation aid—not an eligibility or hiring prediction.")
+
+        st.markdown("#### Tailored application guidance")
+        if filtered.empty:
+            st.info("No internship is available under the current dashboard filters.")
+        else:
+            target_rows = {str(row["posting_id"]): row for _, row in filtered.iterrows()}
+            if st.session_state.get("candidate_target_id") not in target_rows:
+                st.session_state.candidate_target_id = next(iter(target_rows))
+            target_id = st.selectbox(
+                "Target internship",
+                options=list(target_rows),
+                format_func=lambda identifier: (
+                    f"{target_rows[identifier]['company']} — {target_rows[identifier]['job_title']}"
+                ),
+                key="candidate_target_id",
+            )
+            guidance_type = st.radio(
+                "Guidance type",
+                options=["resume", "cover_letter"],
+                format_func=lambda value: "Resume suggestions" if value == "resume" else "Cover-letter draft",
+                horizontal=True,
+                key="candidate_guidance_type",
+            )
+            st.checkbox(
+                "I understand that the reviewed fields above and selected job data will be sent to OpenAI for this request.",
+                key="candidate_ai_consent",
+            )
+            if st.button(
+                "Generate application guidance",
+                disabled=not st.session_state.candidate_ai_consent,
+                type="primary",
+            ):
+                key, model = chat_settings(ROOT)
+                if not key:
+                    st.error("Add OPENAI_API_KEY to the local .env file before requesting AI guidance.")
+                else:
+                    try:
+                        with st.spinner("Creating guidance from your reviewed profile…"):
+                            st.session_state.candidate_guidance = generate_application_guidance(
+                                key,
+                                model,
+                                candidate_profile,
+                                target_rows[target_id],
+                                guidance_type,
+                            )
+                    except OpenAIError as error:
+                        failure = classify_openai_error(error)
+                        st.error(f"{failure.label}: {failure.message}")
+            if st.session_state.get("candidate_guidance"):
+                st.markdown("##### Generated guidance")
+                st.write(st.session_state.candidate_guidance)
+
 skill_counts = skill_frequency(filtered)
 with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.markdown(f"### {BOT_NAME}")
@@ -268,6 +442,7 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
             st.warning(status_text)
         else:
             st.error(status_text)
+        st.caption(f"API key: {'configured securely (hidden)' if key else 'not configured'}")
         st.caption(f"Configured model: `{model}`")
     with health_right:
         if st.button("Check connection", disabled=not key, width="stretch"):
@@ -288,11 +463,28 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.caption('Try: “Which internships mention Python?” or “Why do these roles match my skills?”')
     st.caption("When you send a message, your question, recent chat history, and selected job data "
                "are sent to OpenAI. API usage may incur charges; avoid entering personal information.")
-    if st.button("Clear chat", key="clear_chat"):
-        st.session_state.chat_messages = []
+    history_left, history_right = st.columns([4, 1])
+    with history_left:
+        st.markdown("#### Chat history")
+        if not st.session_state.chat_messages:
+            st.caption("Your messages will appear here after you start a conversation.")
+    with history_right:
+        if st.button(
+            "Clear chat",
+            key="clear_chat",
+            disabled=not st.session_state.chat_messages,
+            width="stretch",
+        ):
+            st.session_state.chat_messages = []
+            st.rerun()
     for message in st.session_state.chat_messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
+            if message.get("trace"):
+                with st.expander("How this answer was produced"):
+                    for item in message["trace"]:
+                        icon = "✓" if item["status"] == "completed" else "⚠"
+                        st.write(f"{icon} `{item['tool']}` — {item['summary']}")
     typed_question = st.chat_input("Ask Internship Assistant…", disabled=not key, max_chars=2000)
     pending_question = st.session_state.pop("pending_coaching_question", None)
     question = pending_question or typed_question
@@ -303,7 +495,7 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
             st.write(question)
         try:
             with st.spinner("Internship Assistant is checking the dataset…"):
-                answer = answer_question(
+                result = answer_question_with_trace(
                     key,
                     model,
                     context,
@@ -314,10 +506,17 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
                     profile_skills,
                 )
             st.session_state.chat_messages.extend([
-                {"role": "user", "content": question}, {"role": "assistant", "content": answer}])
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": result.text, "trace": result.trace},
+            ])
             st.session_state.chat_messages = st.session_state.chat_messages[-8:]
             with st.chat_message("assistant"):
-                st.write(answer)
+                st.write(result.text)
+                if result.trace:
+                    with st.expander("How this answer was produced"):
+                        for item in result.trace:
+                            icon = "✓" if item["status"] == "completed" else "⚠"
+                            st.write(f"{icon} `{item['tool']}` — {item['summary']}")
         except OpenAIError as error:
             failure = classify_openai_error(error)
             st.session_state.agent_health = failure.to_dict()
