@@ -2,6 +2,8 @@
 
 import json
 import os
+import re
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable
@@ -31,6 +33,7 @@ MAX_HISTORY_TOTAL_CHARS = 8_000
 MAX_QUESTION_CHARS = 2_000
 MAX_TOOL_CALLS = 4
 MAX_TOOL_ROUNDS = 3
+MAX_AGENT_OUTPUT_TOKENS = 1600
 
 IDENTITY_INSTRUCTIONS = """# Identity
 You are Internship Assistant, a guide to internships represented in this project's
@@ -116,6 +119,7 @@ class AgentAnswer:
 
     text: str
     trace: list[dict[str, str]]
+    diagnostics: dict[str, int | str | bool]
 
 
 def configured_health(key: str, model: str) -> AgentHealth:
@@ -297,6 +301,7 @@ def answer_question_with_trace(
 ) -> AgentAnswer:
     """Run a bounded read-only tool loop and return a public execution trace."""
     messages = build_response_input(context, history, question, personalization)
+    started = time.perf_counter()
     trace: list[dict[str, str]] = []
     seen_calls: set[str] = set()
     call_count = 0
@@ -305,7 +310,7 @@ def answer_question_with_trace(
             model=model, instructions=INSTRUCTIONS, input=messages,
             tools=AGENT_TOOLS,
             tool_choice="auto", parallel_tool_calls=False,
-            max_output_tokens=1600, store=False,
+            max_output_tokens=MAX_AGENT_OUTPUT_TOKENS, store=False,
         )
         conversation = list(messages)
         for round_index in range(MAX_TOOL_ROUNDS):
@@ -360,10 +365,20 @@ def answer_question_with_trace(
                 tools=AGENT_TOOLS,
                 tool_choice="none" if must_finish else "auto",
                 parallel_tool_calls=False,
-                max_output_tokens=1600,
+                max_output_tokens=MAX_AGENT_OUTPUT_TOKENS,
                 store=False,
             )
             if must_finish:
                 break
     text = response.output_text.strip() or "No answer was returned. Please try a shorter question."
-    return AgentAnswer(text, trace)
+    usage = getattr(response, "usage", None)
+    diagnostics: dict[str, int | str | bool] = {
+        "status": "completed",
+        "latency_ms": round((time.perf_counter() - started) * 1000),
+        "tool_call_count": len(trace),
+        "citation_count": len(re.findall(r"\[[^\]]+\]\(https?://[^)]+\)", text)),
+        "input_tokens": int(getattr(usage, "input_tokens", 0) or 0),
+        "output_tokens": int(getattr(usage, "output_tokens", 0) or 0),
+        "response_stored": False,
+    }
+    return AgentAnswer(text, trace, diagnostics)

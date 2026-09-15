@@ -278,7 +278,7 @@ makes every figure reproducible from the underlying posting data.
 ```mermaid
 flowchart TD
     LOAD[Load enriched postings + difficulty CSV] --> CACHE[Streamlit data cache]
-    CACHE --> FILTERS[Title, company, skill, and difficulty filters]
+    CACHE --> FILTERS[Title, company, location, skill, and difficulty filters]
     FILTERS --> VIEW[Filtered Pandas dataframe]
     VIEW --> METRICS[Summary metrics]
     VIEW --> BAR[Plotly skill-demand chart]
@@ -290,6 +290,10 @@ flowchart TD
     GAP --> LEARN[Missing-skill priority ranking]
     TABLE --> DETAIL[Escaped job detail + skill tags]
     DETAIL --> LINK[Original company application URL]
+    RESUME[Reviewed candidate profile] --> GAP
+    VIEW --> TOOLS[Read-only agent tools]
+    GAP --> TOOLS
+    TOOLS --> ANSWER[Grounded answer + trace]
 ```
 
 The interface performs read-only exploration. Skill-gap scores are calculated in
@@ -340,6 +344,11 @@ The offline regression suite verifies:
 - Greenhouse, Amazon Jobs, and Workday payload conversion
 - URL deduplication
 - Five-postings-per-company enforcement
+- Retrieval limits, citations, and prompt-injection boundaries
+- Deterministic skill matching, search, comparison, and market tools
+- Bounded multi-tool orchestration and privacy-safe traces
+- Resume extraction, review, matching, AI consent boundary, and deletion
+- Evaluation case coverage and deterministic scoring
 
 Run it with:
 
@@ -366,7 +375,7 @@ not make the offline unit tests unreliable:
 | CSV artifacts in Git | Transparent, portable, and easy to review | Less scalable than a database for much larger datasets |
 | Streamlit UI | Rapid Python-native delivery | Less frontend control than a separate web client/API |
 
-## 12. Known limitations and next steps
+## 12. Known limitations and future extensions
 
 1. Add connectors for more large-company career systems where collection is
    technically and contractually appropriate.
@@ -374,8 +383,9 @@ not make the offline unit tests unreliable:
 3. Expand and test the software-engineering skill taxonomy.
 4. Add end-to-end pipeline automation and scheduled refreshes.
 5. Add data-quality monitoring for provider schema changes.
-6. Add a grounded chatbot that answers only from the analyzed dataset.
-7. Move to a database if data volume or refresh frequency outgrows versioned CSVs.
+6. Add OCR for image-only resumes and malware scanning before public deployment.
+7. Move to authenticated database storage only if users explicitly request
+   cross-session profiles and the privacy model is updated.
 
 ## 13. Interview walkthrough
 
@@ -389,9 +399,11 @@ A concise way to present the project:
    aliases into a documented skill taxonomy.
 5. **Analysis:** Pandas calculates demand, category reach, co-occurrence, and an
    explainable difficulty heuristic.
-6. **Delivery:** Static reports support reproducible findings, while Streamlit lets
-   users filter opportunities and open the original application pages.
-7. **Engineering judgment:** The design favors traceability and explainability, and
+6. **Delivery:** Streamlit combines market charts, job exploration, candidate
+   matching, learning plans, and a grounded tool-using assistant.
+7. **Privacy and reliability:** Candidate content is session-only; model requests
+   require consent, use bounded inputs, and return visible traces and diagnostics.
+8. **Engineering judgment:** The design favors traceability and explainability, and
    explicitly documents where broader coverage or statistical validity is limited.
 
 ## 14. Reproduce the US pipeline
@@ -416,3 +428,30 @@ A concise way to present the project:
 
 The collection step uses live public endpoints. The remaining stages are fully
 reproducible from the saved raw CSV.
+
+## 15. Candidate and agent lifecycle
+
+```mermaid
+flowchart LR
+    U[Resume upload] --> V[Local validation]
+    V --> X[Local text and skill extraction]
+    X --> R[User review]
+    R --> M[Deterministic job matching]
+    R --> C{Explicit AI consent}
+    C -->|No| M
+    C -->|Yes| A[Stateless application guidance]
+    F[Dashboard filters] --> M
+    F --> T[Read-only agent tools]
+    T --> O[Grounded answer]
+    O --> D[Safe diagnostics and trace]
+```
+
+Candidate files are not written to the repository or database. The original
+bytes are discarded after local extraction, reviewed fields remain in Streamlit
+session state, and the delete action clears the uploader and all derived values.
+The API receives candidate information only for a user-initiated guidance request.
+
+The assistant's search, comparison, skill-gap, and market calculations are
+allowlisted read-only functions. The orchestration loop is bounded and returns a
+sanitized trace plus latency, tool, citation, and token counts without logging
+private content.

@@ -9,10 +9,10 @@ independently demonstrable improvements to the assistant.
 | Item | Status |
 | --- | --- |
 | Completed foundation | Phase 1 — Personal Skill-Gap Analyzer |
-| Current phase | Phase 6 — Evaluation and Production Readiness |
-| Last completed milestone | Phase 5, Milestone 5 — Privacy controls and testing |
-| Current milestone | Phase 6, Milestone 1 — Evaluation dataset and test harness |
-| Roadmap day | Day 17 of 19 |
+| Current phase | Complete |
+| Last completed milestone | Phase 6, Milestone 3 — Observability and interview demo |
+| Current milestone | None — portfolio roadmap complete |
+| Roadmap day | Day 19 of 19 |
 
 Status: ✅ Complete · 🚧 Current · ⬜ Not started
 
@@ -59,9 +59,9 @@ The milestones below improve this baseline instead of rebuilding it.
 | 14 | Phase 5, Milestone 3 | Resume-to-internship matching | ✅ |
 | 15 | Phase 5, Milestone 4 | Tailored resume and cover-letter guidance | ✅ |
 | 16 | Phase 5, Milestone 5 | Privacy controls and testing | ✅ |
-| 17 | Phase 6, Milestone 1 | Agent evaluation dataset and test harness | 🚧 |
-| 18 | Phase 6, Milestone 2 | Safety, privacy, reliability, and cost controls | ⬜ |
-| 19 | Phase 6, Milestone 3 | Observability, demo flow, and final documentation | ⬜ |
+| 17 | Phase 6, Milestone 1 | Agent evaluation dataset and test harness | ✅ |
+| 18 | Phase 6, Milestone 2 | Safety, privacy, reliability, and cost controls | ✅ |
+| 19 | Phase 6, Milestone 3 | Observability, demo flow, and final documentation | ✅ |
 
 ## Daily workflow
 

@@ -1,609 +1,205 @@
-# AI-Powered Data Science Internship Skill Tracker
+# Internship Skill Analyzer
 
-## Project Overview
+[![Tests](https://github.com/adarshcm28/Internship-Skill-Analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/adarshcm28/Internship-Skill-Analyzer/actions/workflows/tests.yml)
 
-The **AI-Powered Data Science Internship Skill Tracker** is a beginner-friendly data science project that analyzes data science internship and entry-level job postings to answer one practical question:
+An end-to-end Python application that collects US internship postings, extracts
+employer-requested skills, compares them with a candidate profile, and provides
+grounded AI career guidance with privacy and reliability controls.
 
-> What skills do companies actually ask for, and what should I learn next?
+## Portfolio snapshot
 
-Instead of working with a generic practice dataset, this project uses job posting text to discover real skill trends for data science students. The final version of the project will let a user explore common internship requirements, view charts of in-demand skills, and paste in a job description to receive an AI-generated skill breakdown and learning plan.
+- **Data:** 23 US internships from 13 companies and 17 locations in the committed snapshot
+- **Pipeline:** five structured career-system connectors, cleaning, skill extraction, analysis, and charts
+- **Product:** interactive Streamlit dashboard, job explorer, learning plans, and resume matching
+- **AI:** grounded OpenAI Responses API assistant with four deterministic read-only tools
+- **Quality:** offline unit tests, Streamlit smoke tests, evaluation cases, and documented limitations
+- **Status:** roadmap complete — 19 of 19 daily milestones
 
-This project is designed for a beginner data science student who wants to practice Python, data cleaning, visualization, basic natural language processing, and AI-assisted analysis while building something useful for their own career.
+![Internship Skill Analyzer dashboard](reports/figures/dashboard.png)
 
-## Architecture and Interview Documentation
+## What the application does
 
-See the [project architecture guide](docs/project-architecture.md) for the
-end-to-end system map, provider architecture, data lineage, analysis logic,
-generated charts, engineering tradeoffs, and an interview-ready walkthrough.
+### Explore the internship market
 
-The [personal skill-gap analyzer specification](docs/skill-gap-analyzer.md)
-documents the matching formula, edge cases, result contract, interpretation,
-and limitations for that planned feature.
+- Filter current US postings by title, company, location, skill, and difficulty.
+- View skill frequency, skill categories, combinations, and posting difficulty.
+- Inspect descriptions and follow links to original company application pages.
+- Paste a job description for local, transparent catalog-skill extraction.
 
-## Current
+### Personalize the analysis
 
-- **Completed foundation:** Phase 1 — Personal Skill-Gap Analyzer
-- **Current phase:** Phase 6 — Evaluation and Production Readiness
-- **Completed:** Phase 5 — Private Candidate Profile
-- **Current milestone:** Phase 6, Milestone 1 — Evaluation dataset and test harness
-- **Roadmap day:** Day 17 of 19
-- **AI roadmap:** [Open the Internship Assistant roadmap](docs/roadmap/README.md)
+- Select known skills and calculate deterministic overlap for every visible job.
+- See matched skills, missing skills, strongest opportunities, and learning priorities.
+- Generate a structured 2-, 4-, 8-, or 12-week learning plan.
+- Upload and review a PDF, DOCX, or TXT resume in the private Candidate Profile.
 
-The roadmap contains nineteen daily milestones centered on improving the existing
-Internship Assistant. Update this section and the roadmap after completing each
-milestone.
+### Use a grounded internship assistant
 
-## Problem Statement
+The Internship Assistant can search jobs, compare two or three postings, calculate
+skill gaps, and summarize market trends. Project code performs the calculations;
+the model explains verified results and cites supplied company sources.
 
-Data science students often ask:
+The tool loop is read-only and bounded to four calls over three rounds. A visible
+trace explains which tools supported an answer, while developer diagnostics show
+latency, citations, and token counts without logging private content.
 
-- Which skills should I learn first?
-- Are Python and SQL enough for internships?
-- How often do companies ask for machine learning?
-- Do I need Tableau, Excel, cloud tools, or deep learning?
-- How can I compare my current skills to a real internship posting?
+## Architecture
 
-This project helps answer those questions by collecting internship descriptions, extracting skills from the text, and turning the results into simple insights.
-
-## Main Features
-
-The completed app should include:
-
-- A dataset of 50-200 data science internship or entry-level job postings
-- Text cleaning for messy job descriptions
-- Skill extraction for tools, programming languages, statistics, machine learning, and soft skills
-- Charts showing the most common skills and tools
-- Analysis of beginner-friendly versus advanced requirements
-- A Streamlit dashboard for exploring results
-- An AI-powered job description analyzer
-- A personalized learning recommendation feature
-
-## Example Questions This Project Can Answer
-
-- What are the top 10 skills requested in data science internships?
-- How often do postings mention Python, SQL, Excel, Tableau, or machine learning?
-- Which skills commonly appear together?
-- Which job postings seem beginner-friendly?
-- What skills am I missing for a specific internship?
-- What should I learn next based on a job description?
-
-## Tech Stack
-
-| Tool | Purpose |
-| --- | --- |
-| Python | Main programming language |
-| Pandas | Data cleaning and analysis |
-| Matplotlib or Plotly | Data visualization |
-| Streamlit | Interactive dashboard |
-| OpenAI API or another AI model | Skill extraction and recommendations |
-| Jupyter Notebook | Optional exploration and experimentation |
-| GitHub | Version control and portfolio sharing |
-
-## Suggested Project Structure
-
-```text
-Internship-Skill-Analyzer/
-├── data/
-│   ├── raw/
-│   │   └── internship_postings.csv
-│   └── processed/
-│       └── cleaned_postings.csv
-├── notebooks/
-│   └── exploration.ipynb
-├── src/
-│   ├── clean_text.py
-│   ├── extract_skills.py
-│   ├── analyze_skills.py
-│   └── ai_recommender.py
-├── app.py
-├── requirements.txt
-├── .env.example
-└── README.md
+```mermaid
+flowchart LR
+    A[Public career feeds] --> B[US internship collector]
+    B --> C[Raw CSV]
+    C --> D[Text cleaning]
+    D --> E[Catalog skill extraction]
+    E --> F[Analysis and charts]
+    F --> G[Streamlit dashboard]
+    H[Reviewed candidate profile] --> I[Deterministic matching]
+    G --> I
+    G --> J[Read-only agent tools]
+    I --> J
+    J --> K[Grounded AI response]
+    K --> L[Trace and diagnostics]
 ```
 
-This structure can be built gradually. You do not need every file on day one.
+Detailed design, lineage, tradeoffs, and diagrams are in the
+[architecture guide](docs/project-architecture.md).
 
-## Dataset Plan
+## Technology
 
-Start with a small dataset of internship descriptions. A beginner-friendly goal is 50 postings. A stronger portfolio version can use 100-200 postings.
-
-Each row in the dataset should include:
-
-| Column | Description |
+| Area | Tools |
 | --- | --- |
-| `job_title` | Name of the role |
-| `company` | Company name |
-| `location` | Job location or remote status |
-| `description` | Full job description text |
-| `source` | Where the posting came from |
-| `date_collected` | Date the posting was collected |
+| Language and analysis | Python, pandas, NumPy |
+| Collection | Requests, Ashby, Lever, Greenhouse, Amazon Jobs, Workday |
+| NLP | Auditable keyword and alias catalog |
+| Visualization | Plotly, Matplotlib |
+| Interface | Streamlit |
+| AI | OpenAI Responses API and strict function tools |
+| Documents | pypdf, python-docx |
+| Testing | unittest, mocks, Streamlit AppTest |
 
-Example:
+## Quick start
 
-```csv
-job_title,company,location,description,source,date_collected
-Data Science Intern,Example Company,Remote,"We are looking for a student with Python, SQL, Excel, and statistics experience.",Manual,2026-08-18
-```
-
-## Important Note About Data Collection
-
-When collecting job postings, use public datasets or manually collect a small number of descriptions for learning purposes. Do not scrape websites that prohibit scraping in their terms of service. If you copy descriptions manually, keep the dataset small and use it only for educational analysis.
-
-## Step-By-Step Build Plan
-
-### Step 1: Set Up the Project
-
-Create the basic project files and folders:
+Requirements: Python 3.11 or newer.
 
 ```bash
-mkdir -p data/raw data/processed notebooks src
-touch app.py requirements.txt .env.example
-```
-
-Add the main Python libraries to `requirements.txt`:
-
-```text
-pandas
-numpy
-matplotlib
-plotly
-streamlit
-python-dotenv
-openai
-```
-
-Install the dependencies:
-
-```bash
+git clone https://github.com/adarshcm28/Internship-Skill-Analyzer.git
+cd Internship-Skill-Analyzer
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+streamlit run app.py
 ```
 
-### Step 2: Collect Job Posting Data
+Open [http://localhost:8501](http://localhost:8501).
 
-The collector now retains only postings with confirmed US location evidence.
-Unspecified remote and worldwide roles are excluded; see the collection guide
-for multi-location handling and limitations.
+The dashboard, local extraction, charts, matching, and job-description analyzer
+work without an API key. To enable AI features, copy `.env.example` to `.env` and
+add a key from your own OpenAI API project:
 
-Company job boards are configured in:
-
-```text
-config/job_boards.json
+```dotenv
+OPENAI_API_KEY=your_api_key_here
+OPENAI_MODEL=gpt-5.6-luna
 ```
 
-The collector checks 32 configured company boards through structured Ashby,
-Lever, Greenhouse, Amazon Jobs, and Workday career feeds for US data and
-software internships. Amazon and Intel are now included as large-company
-career-system connectors. Results are capped at five postings per company.
-The August 29, 2026 refresh retained 23 postings from 13 companies, including
-five Amazon postings and one Intel posting.
-Updated US charts are in `reports/figures/us/`; the earlier worldwide charts
-remain separate. Test the live collection without changing the current
-dataset:
+`.env` is ignored by Git. Never commit or display the actual key.
+
+## Candidate privacy
+
+Resume extraction happens locally. The original file is not written to the
+repository or a database. Users review and edit the extracted profile before it
+is used. Deterministic resume matching does not call OpenAI.
+
+For resume suggestions or a cover-letter draft, the app requires explicit consent
+and sends only the reviewed fields, selected posting evidence, and calculated
+match. API calls use `store=False`. **Delete uploaded data** clears the uploader,
+extracted content, profile, consent, target, and generated guidance from the session.
+
+See [production readiness](docs/production-readiness.md) for the full privacy,
+safety, reliability, and deployment checklist.
+
+## Reproduce the data pipeline
+
+Test current public endpoints without replacing saved data:
 
 ```bash
 python -m src.collect_postings --dry-run
 ```
 
-After a successful dry run, create the raw dataset:
+Rebuild the US artifacts:
 
 ```bash
 python -m src.collect_postings
+python -m src.clean_text --input data/raw/us_internship_postings.csv --output data/processed/us/cleaned_postings.csv
+python -m src.extract_skills --input data/processed/us/cleaned_postings.csv --postings-output data/processed/us/postings_with_skills.csv --skills-output data/processed/us/posting_skills.csv
+python -m src.analyze_skills --postings data/processed/us/postings_with_skills.csv --skills data/processed/us/posting_skills.csv --output-dir data/processed/us/analysis
+python -m src.create_visualizations --analysis-dir data/processed/us/analysis --output-dir reports/figures/us
 ```
 
-The generated `data/raw/us_internship_postings.csv` records the title, company,
-location, full public description, source URL, collection date, provider,
-external posting ID, publication time, employment type, and workplace type.
-To keep the analysis balanced, the collector retains at most five postings per
-company by default; use `--max-per-company` to change that limit.
-See `docs/data-collection.md` for API details, filtering rules, validation, and
-configuration instructions.
+Collection behavior and US-location rules are documented in the
+[data collection guide](docs/data-collection.md).
 
-### Open the dashboard
-
-Launch the interactive user interface from the project folder:
+## Testing and evaluation
 
 ```bash
-streamlit run app.py
+python -m unittest discover -s tests -v
 ```
 
-Then open `http://localhost:8501` in a browser. The dashboard reads the latest
-US processed data and provides company, skill, difficulty, and title filters,
-interactive charts, an opportunity table, and links to the original postings.
+Tests mock OpenAI calls and cover collection filters, extraction, retrieval,
+matching, tools, orchestration, uploads, deletion, and evaluation scoring. No paid
+API request is made by the normal test suite.
 
-Select skills under **My Skills** to create a 2-, 4-, 8-, or 12-week structured
-learning plan. Select an internship row and choose **Ask Internship Assistant**
-for posting-specific preparation help. You can also ask the assistant to find
-visible internships by company, title, US location, skills, difficulty, or
-minimum skill overlap; searches remain limited to the current dashboard data.
-The assistant can compare two or three posting IDs and calculate selection-wide
-skill and difficulty insights. When tools support a response, expand **How this
-answer was produced** below that message to see the safe execution summary.
+The [evaluation cases](evals/cases.json) cover search, comparison, personalization,
+market insights, empty evidence, prompt injection, and unsupported submission.
+See the [baseline and human rubric](evals/baseline.md).
 
-### Candidate Profile
+## Repository map
 
-Open **Candidate Profile** in the dashboard to upload a PDF, DOCX, or TXT resume
-up to 5 MB. Text extraction and resume-to-job matching run locally. Review every
-field before use; uploaded files and extracted data remain in the current browser
-session and are not written to the repository or a database.
-
-AI resume suggestions and cover-letter drafts are optional. The app sends only
-the reviewed fields and selected posting after you select the consent checkbox
-and press **Generate application guidance**. Use **Delete uploaded data** to clear
-the extracted document, profile, consent, target, and generated guidance.
-
-### Internship Assistant setup
-
-The dashboard includes an **Internship Assistant** chat panel. To enable replies,
-add `OPENAI_API_KEY` to the local `.env` file (already excluded from Git):
-
-```dotenv
-OPENAI_API_KEY=your_actual_key
-OPENAI_MODEL=gpt-5.6-luna
+```text
+├── app.py                       Streamlit application
+├── config/job_boards.json       Company board configuration
+├── data/raw/                    Saved collection snapshots
+├── data/processed/us/           Cleaned and analyzed US data
+├── evals/                       Evaluation cases and baseline
+├── reports/figures/us/          Generated portfolio charts
+├── src/                         Pipeline, matching, agent, and evaluation code
+├── tests/                       Offline regression suite
+└── docs/                        Architecture, controls, roadmap, and demo
 ```
 
-Refresh the dashboard after saving. Do not share or commit the actual key.
-The model is configurable with `OPENAI_MODEL`; access and API billing are required.
-Open the assistant panel and select **Check connection**. Detecting a key only
-confirms that configuration exists; the check validates authentication and access
-to the configured model without generating a chat response. See the
-[Internship Assistant guide](docs/internship-assistant.md) for status meanings
-and security details.
-Chat sends the question, recent conversation, and filtered job data to OpenAI only
-when submitted. Descriptions are excerpted, chat history is bounded, and changing
-filters resets the conversation. The bot does not browse or submit applications.
-Without a key, the panel remains visible but AI replies are disabled.
-The API logic lives in `src/chatbot.py` and uses the
-[Responses API](https://developers.openai.com/api/docs/quickstart).
+## Current findings
 
-### Step 3: Clean the Text
-
-Job descriptions are messy. They may include bullet points, repeated spaces, inconsistent capitalization, and extra symbols.
-
-Cleaning should include:
-
-- Convert text to lowercase
-- Remove extra spaces
-- Remove unnecessary punctuation
-- Handle missing descriptions
-- Standardize common terms
-
-Example cleaning goals:
-
-- `Machine Learning` becomes `machine learning`
-- `SQL, Python, and Excel required!` becomes easier to search
-- Empty descriptions are removed or flagged
-
-### Step 4: Extract Skills
-
-Start with a simple keyword-based skill extractor before adding AI.
-
-Example skill categories:
-
-**Programming Languages**
-
-- Python
-- R
-- SQL
-
-**Data Tools**
-
-- Excel
-- Tableau
-- Power BI
-- Jupyter
-
-**Machine Learning**
-
-- Machine learning
-- Deep learning
-- NLP
-- Computer vision
-
-**Statistics and Math**
-
-- Statistics
-- Probability
-- A/B testing
-- Regression
-
-**Soft Skills**
-
-- Communication
-- Collaboration
-- Problem solving
-- Presentation
-
-The first version can count whether each skill appears in a job description.
-
-### Step 5: Analyze Skill Trends
-
-Use Pandas to calculate:
-
-- Total number of postings analyzed
-- Most common skills
-- Percentage of postings mentioning each skill
-- Most common skill categories
-- Skill combinations, such as Python + SQL
-- Beginner-friendly postings versus advanced postings
-
-Example outputs:
-
-| Skill | Count | Percentage |
+| Skill | Postings | Share |
 | --- | ---: | ---: |
-| Python | 42 | 84% |
-| SQL | 37 | 74% |
-| Excel | 29 | 58% |
-| Tableau | 18 | 36% |
-
-### Step 6: Create Visualizations
-
-Create charts such as:
-
-- Bar chart of top skills
-- Pie chart or bar chart of skill categories
-- Heatmap of skill combinations
-- Beginner versus advanced posting comparison
-
-Recommended beginner chart:
-
-```text
-Top 10 Most Requested Skills
-```
-
-This is simple, readable, and immediately useful.
-
-### Step 7: Build the Streamlit Dashboard
-
-The dashboard should allow users to:
-
-- View the total number of postings analyzed
-- See the most common skills
-- Filter by company, location, or job title
-- Explore charts
-- Paste in a new job description
-- Get extracted skills and recommendations
-
-Possible dashboard sections:
-
-- Overview
-- Skill Trends
-- Job Posting Explorer
-- AI Job Description Analyzer
-- Learning Plan
-
-Run the app with:
-
-```bash
-streamlit run app.py
-```
-
-### Step 8: Add the AI Feature
-
-The AI feature should let a user paste a job description and receive:
-
-- Required technical skills
-- Required soft skills
-- Nice-to-have skills
-- Beginner-friendly explanation
-- Suggested learning plan
-
-Example prompt idea:
-
-```text
-You are helping a beginner data science student understand an internship posting.
-Extract the required skills, separate technical skills from soft skills, and suggest a simple learning plan.
-Return the answer in clear bullet points.
-```
-
-Store API keys in a `.env` file, not directly in code.
-
-`.env.example`:
-
-```text
-OPENAI_API_KEY=your_api_key_here
-```
-
-### Step 9: Compare User Skills to a Job Posting
-
-Add a text input where the user enters skills they already know:
-
-```text
-Python, Excel, basic statistics
-```
-
-Then compare those skills to the extracted job requirements.
-
-The app should show:
-
-- Skills already matched
-- Missing skills
-- Recommended next skills to learn
-- A short learning plan
-
-### Step 10: Polish the Project for a Portfolio
-
-Before sharing the project, add:
-
-- Screenshots of the dashboard
-- A short project summary
-- Clear setup instructions
-- A sample dataset or sample data format
-- A list of limitations
-- Future improvements
-
-## Beginner-Friendly Development Milestones
-
-### Milestone 1: Basic Data Analysis
-
-Goal:
-
-- Load the CSV file
-- Clean job descriptions
-- Count skill keywords
-- Print the top skills
-
-What this teaches:
-
-- Pandas basics
-- String cleaning
-- Simple feature extraction
-
-### Milestone 2: Visualizations
-
-Goal:
-
-- Create charts for top skills
-- Save or display charts
-
-What this teaches:
-
-- Data visualization
-- Communicating insights
-- Ranking and grouping data
-
-### Milestone 3: Streamlit App
-
-Goal:
-
-- Build a simple dashboard
-- Display charts interactively
-
-What this teaches:
-
-- Turning analysis into a usable app
-- User interface basics
-- Sharing data science work
-
-### Milestone 4: AI Skill Extraction
-
-Goal:
-
-- Paste a job description
-- Use AI to identify required skills
-- Summarize the posting
-
-What this teaches:
-
-- Prompt design
-- AI-assisted analysis
-- Responsible use of language models
-
-### Milestone 5: Personalized Learning Plan
-
-Goal:
-
-- Compare job requirements to user skills
-- Recommend what to learn next
-
-What this teaches:
-
-- Basic recommendation logic
-- Practical career-focused analysis
-- Building a more useful final product
-
-## Example User Flow
-
-1. User opens the Streamlit app.
-2. User sees the most common skills across internship postings.
-3. User filters postings by role or location.
-4. User pastes a new internship description.
-5. The app extracts required skills.
-6. User enters their current skills.
-7. The app shows missing skills and a suggested learning plan.
-
-## Possible AI Output
-
-If a user pastes a job description, the app might return:
-
-```text
-Required technical skills:
-- Python
-- SQL
-- Statistics
-- Data visualization
-
-Soft skills:
-- Communication
-- Teamwork
-- Problem solving
-
-You already match:
-- Python
-- Statistics
-
-You may want to learn next:
-- SQL
-- Tableau or Power BI
-
-Suggested 3-week learning plan:
-Week 1: Practice SQL SELECT, WHERE, JOIN, and GROUP BY.
-Week 2: Build a small dashboard using Tableau, Power BI, or Plotly.
-Week 3: Complete a mini project combining Python, SQL, and visualization.
-```
-
-## Responsible AI Use
-
-AI output should be treated as helpful guidance, not absolute truth. Job descriptions can be vague, and AI models may miss skills or infer skills that are not explicitly listed.
-
-Good practices:
-
-- Show the original job description alongside AI output
-- Let users review extracted skills
-- Use clear labels like "AI-generated recommendation"
-- Avoid making promises about employability
-- Keep API keys private
+| Python | 22 | 95.7% |
+| Communication | 17 | 73.9% |
+| Problem Solving | 14 | 60.9% |
+| Collaboration | 11 | 47.8% |
+| Statistics | 9 | 39.1% |
+
+These figures describe the committed 23-posting educational sample, not the
+entire US internship market.
 
 ## Limitations
 
-This project has some natural limitations:
+- The dataset is a small, dated sample and may contain closed postings.
+- Provider coverage depends on public structured career endpoints.
+- Keyword extraction can miss synonyms and context outside the catalog.
+- “Beginner-friendly” is an explainable skill-count heuristic.
+- Skill overlap does not predict eligibility, interviews, or hiring.
+- Image-only and password-protected resume PDFs are not supported.
+- AI guidance requires user review and never submits applications.
 
-- A small dataset may not represent the entire job market
-- Manually collected postings can introduce bias
-- Keyword matching may miss skills written in unusual ways
-- AI extraction may produce imperfect results
-- Skill demand changes over time
+## Interview resources
 
-These limitations are normal for a beginner project and can be discussed honestly in a portfolio or presentation.
+- [Seven-minute interview demo](docs/interview-demo.md)
+- [System architecture](docs/project-architecture.md)
+- [Responsible AI and production readiness](docs/production-readiness.md)
+- [Complete 19-day roadmap](docs/roadmap/README.md)
+- [Skill-gap specification](docs/skill-gap-analyzer.md)
 
-## Future Improvements
+## Portfolio summary
 
-Possible upgrades:
-
-- Add more job postings over time
-- Compare internship postings by city, remote status, or company type
-- Add resume skill matching
-- Use embeddings to find similar job postings
-- Track skill trends month by month
-- Add downloadable reports
-- Deploy the Streamlit app online
-- Add a database for storing postings
-- Improve AI prompts and validation
-
-## Why This Project Is Valuable
-
-This project shows more than basic chart-making. It demonstrates that you can:
-
-- Ask a useful real-world question
-- Work with messy text data
-- Clean and structure data
-- Extract patterns from unstructured information
-- Visualize insights clearly
-- Use AI responsibly
-- Build a small interactive app
-- Explain technical findings to a non-technical audience
-
-That makes it a strong portfolio project for a beginner data science student.
-
-## Final Project Goal
-
-By the end of this project, you should have a working dashboard that helps data science students understand internship skill requirements and decide what to learn next.
-
-Final title:
-
-```text
-AI-Powered Data Science Internship Skill Tracker
-```
-
-## UI preview
-
-Open [`sample-ui.html`](sample-ui.html) in a web browser to view the responsive dashboard concept.
+This project demonstrates data engineering, NLP, analytics, UI design, AI tool
+orchestration, testing, privacy engineering, and technical communication in one
+explainable application. It deliberately separates deterministic facts from
+generative guidance and documents what the system cannot guarantee.

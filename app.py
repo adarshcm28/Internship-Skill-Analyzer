@@ -27,7 +27,7 @@ from src.candidate_profile import (
     rank_candidate_matches,
 )
 from src.coaching import build_coaching_question
-from src.extract_skills import SKILL_CATALOG
+from src.extract_skills import SKILL_CATALOG, extract_skills
 from src.learning_plan import (
     TIMEFRAME_OPTIONS,
     build_learning_plan_evidence,
@@ -35,7 +35,7 @@ from src.learning_plan import (
 )
 from src.personalization import build_personalization_context, profile_fingerprint
 from src.retrieval import selection_fingerprint
-from src.skill_gap import rank_missing_skills, score_postings
+from src.skill_gap import calculate_skill_gap, rank_missing_skills, score_postings
 
 
 ROOT = Path(__file__).resolve().parent
@@ -104,6 +104,7 @@ with st.sidebar:
     st.caption("Narrow the internship market to what matters to you.")
     search = st.text_input("Search job titles", placeholder="e.g. software, machine learning")
     companies = st.multiselect("Companies", sorted(data["company"].unique()))
+    locations = st.multiselect("Locations", sorted(data["location"].unique()))
     all_skills = sorted({skill for skills in data["skills_list"] for skill in skills})
     selected_skills = st.multiselect("Required skills", all_skills)
     levels = st.multiselect("Difficulty", sorted(data["experience_level"].unique()))
@@ -115,6 +116,8 @@ if search:
     filtered = filtered.loc[filtered["job_title"].str.contains(search, case=False, na=False)]
 if companies:
     filtered = filtered.loc[filtered["company"].isin(companies)]
+if locations:
+    filtered = filtered.loc[filtered["location"].isin(locations)]
 if selected_skills:
     filtered = filtered.loc[filtered["skills_list"].apply(
         lambda skills: all(skill in skills for skill in selected_skills))]
@@ -144,7 +147,7 @@ with st.expander("🧭 My Skills", expanded=True):
         if profile_skills:
             st.success(f"{len(profile_skills)} skill{'s' if len(profile_skills) != 1 else ''} selected")
         else:
-            st.info("Select at least one skill to create your profile. Match calculations arrive in Milestone 3.")
+            st.info("Select at least one skill to calculate matches and learning priorities.")
     with profile_right:
         st.button(
             "Clear my skills",
@@ -418,6 +421,43 @@ with st.expander("📄 Candidate Profile", expanded=False):
                 st.markdown("##### Generated guidance")
                 st.write(st.session_state.candidate_guidance)
 
+with st.expander("📝 Quick Job Description Analyzer", expanded=False):
+    st.markdown("### Quick Job Description Analyzer")
+    st.caption(
+        "Paste a job description to detect catalog skills locally. The text is not saved "
+        "and is not sent to OpenAI."
+    )
+    custom_description = st.text_area(
+        "Job description",
+        key="custom_job_description",
+        height=180,
+        max_chars=10_000,
+        placeholder="Paste a job description here…",
+    )
+    if st.button("Analyze description", disabled=not custom_description.strip()):
+        detected_pairs = extract_skills(custom_description)
+        st.session_state.custom_analysis = {
+            "description_fingerprint": hashlib.sha256(custom_description.encode()).hexdigest(),
+            "skills": [skill for skill, _ in detected_pairs],
+            "categories": sorted({category for _, category in detected_pairs}),
+        }
+    custom_analysis = st.session_state.get("custom_analysis")
+    current_description_id = hashlib.sha256(custom_description.encode()).hexdigest()
+    if custom_analysis and custom_analysis["description_fingerprint"] == current_description_id:
+        if custom_analysis["skills"]:
+            st.write("**Detected skills:** " + ", ".join(custom_analysis["skills"]))
+            st.write("**Skill categories:** " + ", ".join(custom_analysis["categories"]))
+            if profile_skills:
+                custom_gap = calculate_skill_gap(custom_analysis["skills"], profile_skills)
+                st.metric(
+                    "Your catalog-skill overlap",
+                    f"{custom_gap['match_percentage']:.0f}%" if custom_gap["match_percentage"] is not None else "Unavailable",
+                )
+                st.write("**Matched:** " + (", ".join(custom_gap["matched_skills"]) or "None"))
+                st.write("**Missing:** " + (", ".join(custom_gap["missing_skills"]) or "None"))
+        else:
+            st.info("No skills from the current project catalog were detected.")
+
 skill_counts = skill_frequency(filtered)
 with st.expander(f"💬 {BOT_NAME}", expanded=True):
     st.markdown(f"### {BOT_NAME}")
@@ -509,6 +549,7 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
                 {"role": "user", "content": question},
                 {"role": "assistant", "content": result.text, "trace": result.trace},
             ])
+            st.session_state.last_agent_diagnostics = result.diagnostics
             st.session_state.chat_messages = st.session_state.chat_messages[-8:]
             with st.chat_message("assistant"):
                 st.write(result.text)
@@ -521,6 +562,21 @@ with st.expander(f"💬 {BOT_NAME}", expanded=True):
             failure = classify_openai_error(error)
             st.session_state.agent_health = failure.to_dict()
             st.error(f"{failure.label}: {failure.message} Your dashboard still works.")
+
+    with st.expander("Developer diagnostics", expanded=False):
+        diagnostics = st.session_state.get("last_agent_diagnostics")
+        if not diagnostics:
+            st.caption("Diagnostics appear after an assistant response.")
+        else:
+            diagnostic_columns = st.columns(4)
+            diagnostic_columns[0].metric("Status", diagnostics["status"])
+            diagnostic_columns[1].metric("Latency", f"{diagnostics['latency_ms']} ms")
+            diagnostic_columns[2].metric("Tool calls", diagnostics["tool_call_count"])
+            diagnostic_columns[3].metric("Citations", diagnostics["citation_count"])
+            st.caption(
+                f"Tokens — input: {diagnostics['input_tokens']}; output: {diagnostics['output_tokens']}. "
+                "No prompts, API keys, resume text, or private skill selections are logged."
+            )
 
 advanced_count = int(filtered["experience_level"].eq("Advanced").sum())
 metrics = st.columns(4)
