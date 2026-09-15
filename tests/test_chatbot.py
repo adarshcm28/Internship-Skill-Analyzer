@@ -216,6 +216,8 @@ class ChatbotTests(unittest.TestCase):
                          ["market_insights", "search_internships"])
         self.assertTrue(all(item["status"] == "completed" for item in result.trace))
         self.assertNotIn("Python", json.dumps(result.trace))
+        self.assertEqual(result.diagnostics["tool_call_count"], 2)
+        self.assertFalse(result.diagnostics["response_stored"])
 
     @patch("src.chatbot.OpenAI")
     def test_repeated_tool_call_is_blocked(self, client_type):

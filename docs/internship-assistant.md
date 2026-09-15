@@ -48,7 +48,8 @@ deterministic search over the already-filtered dashboard data:
    sample while preserving exact counts for the current dashboard selection.
 
 Each retrieved posting contains a `citation_id` and `source_url`. The assistant's
-instructions require job-specific claims to use `[citation_id](source_url)` and
+instructions require job-specific claims to use the Markdown format
+`[citation_id](source_url)` and
 forbid invented or altered citations. This is application-supplied Markdown
 evidence, not a built-in web-search citation.
 
@@ -83,13 +84,17 @@ The model receives instructions to explain these values without recalculating or
 changing them. If the user has selected no skills, personalized matching is
 explicitly marked unavailable.
 
-## Skill-gap function tool
+## Read-only function tools
 
-For questions about a particular job match, the Responses API can request the
-read-only `analyze_skill_gap` function. Its strict public schema accepts one field:
-the exact posting ID from retrieved evidence. It does not accept user skills from
-the model. The application supplies those directly from the current Streamlit
-session.
+The Responses API can request four strict, read-only functions:
+
+- `analyze_skill_gap` calculates one verified posting match.
+- `search_internships` filters only the active dashboard selection.
+- `compare_internships` compares two or three exact posting IDs.
+- `market_insights` calculates counts and distributions with pandas.
+
+User skills come directly from trusted Streamlit state rather than model-generated
+arguments.
 
 `src/agent_tools.py` then:
 
@@ -101,10 +106,10 @@ session.
    metadata as structured JSON.
 6. Returns safe structured errors for invalid data without mutating the dataset.
 
-The assistant performs at most one tool call per response during this milestone.
-The tool result is returned as `function_call_output`, after which the model must
-produce its final explanation with tool choice disabled. This is a deliberately
-small orchestration loop; broader multi-tool behavior belongs to a later phase.
+The assistant performs at most four calls over three rounds. Identical calls are
+blocked, parallel calls are disabled, and the final answer includes a sanitized
+tool trace. The trace contains no arguments, hidden instructions, credentials, or
+profile values.
 
 ## Health states
 
@@ -140,8 +145,8 @@ small orchestration loop; broader multi-tool behavior belongs to a later phase.
   personalization, evidence, and the current question in distinct messages.
 - `tests/test_personalization.py` covers empty, partial, complete, and invalid
   profiles without making API requests.
-- `src/agent_tools.py` contains the strict tool schema, validated calculation,
-  structured result contract, and allowlisted dispatcher.
+- `src/agent_tools.py` contains strict tool schemas, deterministic calculations,
+  structured result contracts, and the allowlisted dispatcher.
 - `tests/test_agent_tools.py` tests successful calculations and every validation
   error without contacting OpenAI.
 
@@ -152,3 +157,7 @@ key in Streamlit session state. Only the status name, label, message, readiness
 boolean, and configured model name appear in the UI. A real chat request sends the
 user's question, recent conversation, and bounded posting context to OpenAI; it
 does not send the API key as prompt content.
+
+All response requests use `store=False`. Session-only developer diagnostics record
+latency, tool-call count, citation count, token usage when available, and completion
+state without recording prompts, resumes, API keys, or selected skills.
